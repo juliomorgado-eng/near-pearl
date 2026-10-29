@@ -40,14 +40,42 @@ const ITEMS: { q: string; a: string }[] = [
 ];
 
 /**
- * FAQPage JSON-LD, FOR AEO/GEO. `mainEntity` is the ITEMS array, mapped
+ * FIVE, FROM THE LAUNCH POST — /v2's set. Each answer is the post's own
+ * argument cut to a sentence or two; the PRL note rides in the first answer
+ * rather than getting a question of its own.
+ */
+export const FAQ_V2: { q: string; a: string }[] = [
+  {
+    q: 'What is PEARL?',
+    a: "PEARL is the native asset of Pearl, a Proof of Useful Work network. Pearl is designed to let GPUs run AI workloads while producing the proofs that secure the chain. On NEAR Intents it is listed as PRL; it is not the unrelated Perle token traded under the same symbol.",
+  },
+  {
+    q: 'How do I trade PEARL on near.com?',
+    a: 'Swap supported assets from other chains into PEARL, or take PEARL out to the wider onchain economy, from one interface. NEAR Intents finds the route, so there is no bridge to pick.',
+  },
+  {
+    q: 'Are my PEARL swaps private?',
+    a: 'Yes. near.com has been confidential by default since September, so your swaps happen out of public view.',
+  },
+  {
+    q: 'Can my wallet or app offer PEARL?',
+    a: 'Yes. The Pearl network is on the NEAR Intents 1Click API. If you already use NEAR Intents, PEARL is one more supported asset on the same integration, not a new project.',
+  },
+  {
+    q: 'How do I turn PEARL into stablecoins?',
+    a: 'Swap PEARL for a stablecoin on near.com and pick the chain your bills are paid from. For GPU operators paid in PEARL, that closes the gap without broadcasting the trade.',
+  },
+];
+
+/**
+ * FAQPage JSON-LD, FOR AEO/GEO. `mainEntity` is the items array, mapped
  * verbatim — question in `name`, answer in `acceptedAnswer.text`. One source,
  * two readers: this script tag and the accordion below.
  */
-const FAQ_SCHEMA = {
+const faqSchema = (items: { q: string; a: string }[]) => ({
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: ITEMS.map(({ q, a }) => ({
+  mainEntity: items.map(({ q, a }) => ({
     '@type': 'Question',
     name: q,
     acceptedAnswer: {
@@ -55,7 +83,7 @@ const FAQ_SCHEMA = {
       text: a,
     },
   })),
-};
+});
 
 /**
  * Hiding an answer until it is asked for is the right behaviour in an FAQ and
@@ -66,7 +94,7 @@ const FAQ_SCHEMA = {
  * value. It has to be RE-measured on resize: a panel measured at one width
  * clips its own answer at a narrower one.
  */
-export function Faq() {
+export function Faq({ items = ITEMS }: { items?: { q: string; a: string }[] }) {
   const [open, setOpen] = useState<number | null>(null);
   const panels = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -86,7 +114,7 @@ export function Faq() {
     <section className="band" id="faq">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(items)) }}
       />
       <div className="shell split top">
         <div className="copy rv">
@@ -97,7 +125,7 @@ export function Faq() {
         </div>
         <div className="rv">
           <div className="acc">
-            {ITEMS.map((item, i) => (
+            {items.map((item, i) => (
               <div className={'acc-item' + (open === i ? ' open' : '')} key={item.q}>
                 <button
                   className="acc-btn"

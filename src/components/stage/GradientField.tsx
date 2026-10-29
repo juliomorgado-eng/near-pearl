@@ -1,3 +1,5 @@
+import { PearlScatter } from './PearlScatter';
+
 /**
  * The full-bleed field behind the tour.
  *
@@ -34,7 +36,9 @@ export function GradientField() {
   return (
     <div className="grad">
       <div className="isomark" aria-hidden="true" />
-      <div className="gcss" />
+      {/* the hidden pearls live INSIDE the field, so the ones tucked behind
+          the big pearl can sit under `.gcss::before` (41-theme-near.css) */}
+      <div className="gcss"><PearlScatter /></div>
       {/* THE SHADER IS NOT DRAWN. `#gl` was the WebGL field and `.gcss` its
           fallback; the comp asks for a clean diagonal — solid #5EFAA7 through
           the first half of the axis, easing to #16B862 in the lower right —

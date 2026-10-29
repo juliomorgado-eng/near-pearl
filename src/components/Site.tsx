@@ -10,12 +10,12 @@ import { LightZone } from '@/components/light/LightZone';
  * two, redundant at one. `LightZone`'s editorial band (`Story`) carries the
  * why-PEARL job from here.
  */
-export function Site() {
+export function Site({ variant = 'v1' }: { variant?: 'v1' | 'v2' }) {
   return (
     <>
       <Nav />
       <Stage />
-      <LightZone />
+      <LightZone variant={variant} />
     </>
   );
 }

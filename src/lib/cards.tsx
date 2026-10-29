@@ -92,6 +92,13 @@ export const RISK_NOTE = (
 export const CTA_URL =
   'https://near.com/login?ref=uykzkl1o&utm_source=pearlcampaign&utm_medium=landing&utm_campaign=near_q4_pearl';
 
+/**
+ * "Learn more about Pearl" on /v3. PLACEHOLDER: points at the near.com blog
+ * index until the launch post ("Pearl Is Live on NEAR Intents and near.com")
+ * has its own URL — swap it here, nowhere else.
+ */
+export const BLOG_URL = 'https://near.com/blog';
+
 export const PERM_WORDS = ['Get started with', 'a wallet or passkey.'] as const;
 export const PERM_BODY =
   'Works with NEAR, Solana, EVM and more. No email, no KYC, no application. ' +
