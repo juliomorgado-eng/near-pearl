@@ -1,0 +1,92 @@
+/* =========================================================================
+   /v2 — NEAR LEADS
+   -------------------------------------------------------------------------
+   The same page as `/`, in near.com's own colours: the green field the perps
+   landing shipped with, the paper light zone, the #272727 footer. Pearl keeps
+   only what is Pearl's — the PEARL token in the device, the asset's name in
+   the copy.
+
+   SCOPED BY `html:has(.theme-near)`. `/v2` renders a hidden `.theme-near`
+   marker (app/v2/page.tsx), so one stylesheet serves both routes and `/`
+   never sees a rule from here. The marker is in the server HTML, so the
+   splash paints green from the first frame, before hydration.
+
+   Every value is the perps landing's (confidentialperps, 31-hero-green.css
+   and 08-light.css) unless noted.
+   ========================================================================= */
+
+html:has(.theme-near) {
+  --pearl-field: linear-gradient(150deg, #5EFAA7 0%, #5EFAA7 50%, #16B862 100%);
+  /* the lustre is a layer in a background list, so it cannot be `none` */
+  --pearl-lustre: linear-gradient(transparent, transparent);
+  /* `.stage-black` and `#stage .grad` read paper as the field's flat */
+  --pearl-paper: #5EFAA7;
+  --focus-ring: var(--near-green);
+}
+
+html:has(.theme-near) .sart { background: #F6F5F1 }
+
+@media (max-width: 1080px) {
+  html:has(.theme-near) .nav:not(.on-light)::before {
+    background: linear-gradient(180deg, rgba(94, 250, 167, .92) 0%, rgba(94, 250, 167, .5) 58%, rgba(94, 250, 167, 0) 100%);
+  }
+}
+
+/* the splash candles are ink on green, as they were */
+html:has(.theme-near) .spc::before,
+html:has(.theme-near) .spc::after { background: var(--hero-ink) }
+html:has(.theme-near) .spc.dn::after { background: none; border-color: var(--hero-ink) }
+
+/* ---- the closing plate is the field's green -------------------------- */
+html:has(.theme-near) .finalcta { background: #5EFAA7 }
+
+/* ---- the light zone is paper again ------------------------------------ */
+html:has(.theme-near) .light {
+  --l-bg: #F3F2EF; --l-surface: #FFF; --l-gray: #E7E6E1; --l-gray-2: #DCDBD5;
+  --l-fg: #0B0D0D; --l-fg-2: #4A4E4D; --l-fg-3: #767A78;
+  --l-border: rgba(11, 13, 13, .10); --l-border-strong: rgba(11, 13, 13, .20);
+  --focus-ring: var(--near-green);
+  background: #272727;
+  color: var(--l-fg);
+}
+html:has(.theme-near) .light .btn-outline:hover { background: rgba(0, 0, 0, .05) }
+html:has(.theme-near) .sfig { color: var(--green-600) }
+html:has(.theme-near) .acc-btn .plus { color: var(--green-600) }
+@media (hover: hover) and (pointer: fine) {
+  html:has(.theme-near) .acc-btn:hover .plus { color: var(--l-fg) }
+}
+
+/* STORY ON PAPER. Green text fails on #F3F2EF (#3FEFAD is 1.4:1), so the
+   NEAR runs are ink under a green rule, and the Pearl runs are plain ink —
+   on this page the asset does not get a colour of its own. */
+html:has(.theme-near) .story .k-near {
+  color: var(--l-fg);
+  text-decoration: underline 2px var(--near-green);
+  text-underline-offset: .22em;
+}
+html:has(.theme-near) .story .k-pearl { color: var(--l-fg) }
+html:has(.theme-near) .story .st-num.k-near,
+html:has(.theme-near) .story .st-num.k-pearl { color: var(--green-600); text-decoration: none }
+
+/* ---- the nav over paper ------------------------------------------------ */
+html:has(.theme-near) .nav.on-light {
+  background: rgba(243, 242, 239, .5);
+  border-bottom-color: var(--l-border);
+  color: var(--l-fg);
+}
+html:has(.theme-near) .nav.on-light .btn-ghost { color: var(--l-fg); border-color: var(--l-border-strong) }
+html:has(.theme-near) .nav.on-light .btn-ghost:hover { background: var(--l-fg); border-color: var(--l-fg); color: #fff }
+html:has(.theme-near) .nav.on-light .btn-primary:hover { background: var(--green-300); border-color: transparent; color: #000; box-shadow: var(--glow-near-sm) }
+html:has(.theme-near) .nav.on-light .btn-primary:active { background: var(--green-500) }
+html:has(.theme-near) .nav.on-light .brand .brandnear { background-image: url('/img/near-logo-black.webp') }
+
+/* ---- the footer -------------------------------------------------------- */
+html:has(.theme-near) footer { background: #272727; color: #fff }
+html:has(.theme-near) .fcol h4 { color: rgba(255, 255, 255, .45) }
+html:has(.theme-near) .fcol a { color: rgba(255, 255, 255, .78) }
+html:has(.theme-near) .fcol a:hover { color: var(--near-green) }
+html:has(.theme-near) .fbot { border-top-color: rgba(255, 255, 255, .14); color: rgba(255, 255, 255, .5) }
+html:has(.theme-near) .socials a { border-color: rgba(255, 255, 255, .22) }
+html:has(.theme-near) .socials a:hover { border-color: var(--near-green); color: var(--near-green) }
+
+html:has(.theme-near) ::selection { background: var(--near-green); color: #000 }
