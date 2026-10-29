@@ -7,6 +7,9 @@
  * It replaces the testimonial marquee. Reveal hooks are the light zone's
  * shared `.rv` (see `useReveal`, run once by `LightZone`), so there is no
  * motion code here. Styles: 40-story.css.
+ *
+ * `.k-near` / `.k-pearl` tag a run by whose it is: NEAR green for the rails
+ * (Intents, near.com, the 1Click API), Pearl blush for the asset.
  */
 
 const CONNECTIONS = [
@@ -54,7 +57,9 @@ export function Story() {
         <div className="copy rv st-intro">
           <h2 className="h1">An asset born from AI work. Now it can reach everything else.</h2>
           <p className="lead">
-            PEARL is live on NEAR Intents, and near.com is the first confidential
+            <span className="k-pearl">PEARL</span> is live on{' '}
+            <span className="k-near">NEAR Intents</span>, and{' '}
+            <span className="k-near">near.com</span> is the first confidential
             venue for it. One integration instead of many: every chain and app
             that supports Intents can reach PEARL, and PEARL can reach them.
           </p>
@@ -62,7 +67,7 @@ export function Story() {
 
         <div className="st-blocks">
           <article className="st-block rv">
-            <p className="st-num" aria-hidden="true">01</p>
+            <p className="st-num k-pearl" aria-hidden="true">01 · Pearl</p>
             <h3 className="h4">The work underneath the asset</h3>
             <div className="st-body">
               <p>
@@ -80,24 +85,24 @@ export function Story() {
           </article>
 
           <article className="st-block rv">
-            <p className="st-num" aria-hidden="true">02</p>
+            <p className="st-num k-near" aria-hidden="true">02 · NEAR Intents</p>
             <h3 className="h4">Two connections</h3>
             <div className="st-body">
               {CONNECTIONS.map((c) => (
                 <p key={c.title}>
-                  <b>{c.title}</b> {c.body}
+                  <b className="k-near">{c.title}</b> {c.body}
                 </p>
               ))}
             </div>
           </article>
 
           <article className="st-block rv">
-            <p className="st-num" aria-hidden="true">03</p>
+            <p className="st-num k-pearl" aria-hidden="true">03 · Holders</p>
             <h3 className="h4">What changes for holders</h3>
             <div className="st-body">
               {HOLDERS.map((c) => (
                 <p key={c.title}>
-                  <b>{c.title}</b> {c.body}
+                  <b className="k-pearl">{c.title}</b> {c.body}
                 </p>
               ))}
             </div>

@@ -49,3 +49,10 @@
   .st-facts ul{flex-direction:column;gap:6px}
   .st-facts li+li::before{display:none}
 }
+
+/* WHOSE IT IS. NEAR green for the rails, Pearl blush for the asset. Both are
+   text on the dark zone: #3FEFAD is 13.9:1 on #080807, #f0c3ae 12.5:1. */
+.story .k-near{color:var(--green-300)}
+.story .k-pearl{color:var(--pearl-blush)}
+.story .st-body b.k-near,.story .st-body b.k-pearl{font-weight:500}
+.st-facts li+li::before{background:var(--near-green);opacity:1}

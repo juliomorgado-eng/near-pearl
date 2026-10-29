@@ -142,18 +142,18 @@
   background: #000;
   color: #fff;
 }
-/* THE ARROW IS BLUSH (it was the field's own green). It marks the one control on the page
+/* THE ARROW IS NEAR GREEN — near.com's ask, on Pearl's field. It marks the one control on the page
    that goes somewhere, and it is the only piece of colour on a black pill —
    which is what makes it read as a direction rather than as decoration. */
 #stage .btn-primary .arw,
-.mobcta .btn-primary .arw { color: var(--pearl-blush) }
+.mobcta .btn-primary .arw { color: var(--near-green) }
 /* ON HOVER THE LABEL JOINS IT. The fill does not move — it is already the
    darkest thing on the page and there is nowhere for it to go — so the whole
    of the response is the word turning green under a pointer while the arrow
    steps forward. `--tr-ui` already animates `color`, so the two are one
    gesture on one clock. */
 #stage .btn-primary:hover,
-.mobcta .btn-primary:hover { background: #000; color: var(--pearl-blush); box-shadow: none }
+.mobcta .btn-primary:hover { background: #000; color: var(--near-green); box-shadow: none }
 #stage .btn-primary:active,
 .mobcta .btn-primary:active { background: #000 }
 
@@ -297,14 +297,14 @@
    (07-stage.css, right for the dark field it was written for); wrong here. */
 .finalcta .wordmark { color: var(--hero-ink) }
 
-/* the ask is the same black pill with the same blush arrow it is on the
-   stage. A blush fill would put blush on blush. */
+/* the ask is the same black pill with the same green arrow it is on the
+   stage. */
 .finalcta .btn-primary {
   background: #000;
   color: #fff;
 }
-.finalcta .btn-primary .arw { color: var(--pearl-blush) }
-.finalcta .btn-primary:hover { background: #000; color: var(--pearl-blush); box-shadow: none }
+.finalcta .btn-primary .arw { color: var(--near-green) }
+.finalcta .btn-primary:hover { background: #000; color: var(--near-green); box-shadow: none }
 .finalcta .btn-primary:active { background: #000 }
 
 /* =========================================================================
@@ -334,19 +334,20 @@
   --l-fg-3: var(--pearl-muted-2);
   --l-border: var(--pearl-divider);
   --l-border-strong: var(--pearl-divider-strong);
-  --focus-ring: var(--pearl-blush);
+  --focus-ring: var(--near-green);
   background: var(--pearl-surface);
   color: var(--pearl-cream);
 }
 .light .btn-outline:hover { background: rgba(246, 242, 237, .06) }
 
 /* the schematic plates stay paper — their own tiles are drawn #F1F0EC — and
-   their one accent is deep teal now (components/marks). */
+   their one accent is NEAR green again (components/marks): the section is
+   about near.com's infrastructure, not about the asset. */
 .sart { background: var(--pearl-paper) }
-.sfig { color: var(--pearl-blush) }
-.acc-btn .plus { color: var(--pearl-blush) }
+.sfig { color: var(--green-300) }
+.acc-btn .plus { color: var(--near-green) }
 @media (hover: hover) and (pointer: fine) {
-  .acc-btn:hover .plus { color: var(--pearl-teal-bright) }
+  .acc-btn:hover .plus { color: var(--pearl-blush) }
 }
 
 /* THE NAV OVER THE DARK ZONE. It was a translucent paper plate with dark
@@ -357,21 +358,32 @@
   background: rgba(8, 8, 7, .62);
   border-bottom-color: var(--pearl-divider);
   color: var(--pearl-cream);
-  --focus-ring: var(--pearl-blush);
+  --focus-ring: var(--near-green);
 }
 .nav.on-light .btn-ghost { color: var(--pearl-cream); border-color: rgba(246, 242, 237, .34) }
 .nav.on-light .btn-ghost:hover { background: var(--pearl-cream); border-color: var(--pearl-cream); color: var(--pearl-canvas) }
-.nav.on-light .btn-primary:hover { background: var(--pearl-canvas); border-color: var(--pearl-blush); color: var(--pearl-blush); box-shadow: none }
-.nav.on-light .btn-primary:active { background: var(--pearl-blush-hover) }
+.nav.on-light .btn-primary:hover { background: var(--pearl-canvas); border-color: var(--near-green); color: var(--near-green); box-shadow: none }
+.nav.on-light .btn-primary:active { background: var(--green-500) }
 .nav.on-light .brand .brandnear { background-image: url('/img/near-logo-light.webp') }
 
 footer { background: var(--pearl-surface); color: var(--pearl-cream) }
 .fcol h4 { color: var(--pearl-muted-2) }
 .fcol a { color: var(--pearl-muted) }
-.fcol a:hover { color: var(--pearl-blush) }
+.fcol a:hover { color: var(--near-green) }
 .fbot { border-top-color: var(--pearl-divider); color: var(--pearl-muted-2) }
 .socials a { border-color: var(--pearl-divider-strong) }
-.socials a:hover { border-color: var(--pearl-blush); color: var(--pearl-blush) }
-footer :focus-visible { outline-color: var(--pearl-blush) }
+.socials a:hover { border-color: var(--near-green); color: var(--near-green) }
+footer :focus-visible { outline-color: var(--near-green) }
 
 ::selection { background: var(--pearl-blush); color: var(--pearl-canvas) }
+
+/* THE PROOF FIGURE IS NEAR'S. `$30B+` is NEAR Intents' number, so it sits on
+   a near-green highlighter under ink (#1F1F1F on #00EC97 is 11.6:1) — green
+   as a fill, never as text on the paper plate. */
+.rollquote p b {
+  background: var(--near-green);
+  color: var(--hero-ink);
+  padding: 0 .28em;
+  border-radius: 4px;
+  box-decoration-break: clone;
+}

@@ -74,8 +74,8 @@
      held through 45% (the green held through 50%; blush is lighter than the
      old dark end, so the sweep can start a little earlier and still read as a
      corner). The lustre is two static radials over it — a white sheen in the
-     upper right and a cool teal breath in the lower left — the way a pearl
-     carries one warm and one cool reflection. No blur, no animation: it is
+     upper right and a NEAR-green breath in the lower left — the way a pearl
+     carries one warm and one cool reflection, the cool one near.com's. No blur, no animation: it is
      paint, composited once. */
   --pearl-canvas:#080807; --pearl-surface:#100f0e; --pearl-surface-2:#171513;
   --pearl-cream:#f6f2ed; --pearl-muted:#b3afa8; --pearl-muted-2:#8c8880;
@@ -86,8 +86,14 @@
   --pearl-field:linear-gradient(150deg,#F0EFEA 0%,#F0EFEA 45%,#f0c3ae 100%);
   --pearl-lustre:
     radial-gradient(58% 52% at 74% 22%,rgba(255,255,255,.62) 0%,rgba(255,255,255,0) 72%),
-    radial-gradient(52% 46% at 14% 92%,rgba(121,194,191,.16) 0%,rgba(121,194,191,0) 70%);
+    radial-gradient(52% 46% at 14% 92%,rgba(0,236,151,.18) 0%,rgba(0,236,151,0) 70%);
   --glow-pearl-sm:0 0 16px rgba(240,195,174,.45);
+  /* TWO BRANDS, TWO ROLES. NEAR green marks what near.com does — the ask,
+     the rails, the infrastructure, every control that goes somewhere.
+     Blush marks what Pearl is — the asset, its network, its numbers.
+     Green as TEXT on paper fails contrast (#00EC97 is 1.5:1 on #F0EFEA),
+     so on light surfaces green is a fill under ink, never the ink. */
+  --glow-near-sm:0 0 16px rgba(0,236,151,.40);
   /* the focus ring: deep teal on the paper field (5.1:1 on #F0EFEA), re-pointed
      at blush wherever the surface is dark (31-hero-green.css). */
   --focus-ring:var(--pearl-teal);
