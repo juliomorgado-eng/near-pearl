@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { CARDS, CTA_URL, PERM_BODY, PERM_WORDS, RISK_NOTE } from '@/lib/cards';
 import { CH_TITLES } from '@/lib/schedule';
 import { ChapterScreen } from './phone/AppDevice';
+import { Cobrand } from './Cobrand';
 
 /* NO OBSERVER, NO GATE. The gate below is an optimisation — four demo flows
    are three too many to run at once — and a browser that cannot express it
@@ -86,6 +87,7 @@ export function MobileTour() {
             {i === 0 && (
               <div className="mbrow">
                 <span className="nearw" role="img" aria-label="near.com" />
+                <Cobrand />
               </div>
             )}
             <h2 className={'mchhead' + (c.headClass ?? '')}>{c.head}</h2>

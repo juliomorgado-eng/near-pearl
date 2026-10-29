@@ -31,7 +31,7 @@ export const CARDS: Card[] = [
     face: 2,
     head: (
       <>
-        Trade PEARL, confidentially.<br />
+        Trade <span className="k-asset">PEARL</span>, confidentially.<br />
         Swap in from any chain, any asset you already hold.<br />
         All from near.com.<br />
         <span className="wordmark">Nobody can trace the trade back to you.</span>

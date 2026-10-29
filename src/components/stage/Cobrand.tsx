@@ -1,0 +1,17 @@
+/**
+ * `× Pearl`, beside near's mark in the hero eyebrow. Drawn on every route but
+ * shown only on `/v2` (41-theme-near.css): `/` is Pearl-led already and keeps
+ * near alone in its eyebrow. `display:none` takes it out of the accessibility
+ * tree too, so `/` reads exactly as before.
+ *
+ * The wordmark is Pearl Research's own logotype file, served as an <img>.
+ */
+export function Cobrand() {
+  return (
+    <span className="cobrand" role="img" aria-label="× Pearl">
+      <span className="cox" aria-hidden="true">×</span>
+      {/* eslint-disable-next-line @next/next/no-img-element -- a static SVG mark */}
+      <img className="pearlw" src="/logos/pearl-logotype.svg" alt="" />
+    </span>
+  );
+}

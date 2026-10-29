@@ -27,7 +27,7 @@ export function FinalCta() {
   return (
     <section className="finalcta" id="start" ref={ref}>
       <div className="inner">
-        <h2 className="h1">Trade PEARL <span className="wordmark">confidentially.</span></h2>
+        <h2 className="h1">Trade <span className="k-asset">PEARL</span> <span className="wordmark">confidentially.</span></h2>
         <div style={{ marginTop: 'var(--space-6)' }}>
           <a
             className="btn btn-primary btn-lg"

@@ -1,5 +1,6 @@
 import { CARDS, CTA_URL, RISK_NOTE } from '@/lib/cards';
 import { PhoneShell } from './phone/PhoneShell';
+import { Cobrand } from './Cobrand';
 
 /**
  * THE CARD LOCKUP — copy left, phone centre, offer and CTA right.
@@ -25,6 +26,7 @@ export function Lockup() {
           curtain and the nav) on request. */}
       <div className="rollbrow">
         <span className="nearw" role="img" aria-label="near.com" />
+        <Cobrand />
       </div>
 
       {/* THE HEADLINES, RENDERED FROM `CARDS`. Both columns walk the same

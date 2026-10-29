@@ -111,7 +111,97 @@ html:has(.theme-near) .socials a:hover { border-color: var(--near-green); color:
 
 html:has(.theme-near) ::selection { background: var(--near-green); color: #000 }
 
-/* the drifting lustre layers paint nothing here (sheen and breath are
-   transparent above) — take them out so they do not animate for nothing */
-html:has(.theme-near) .gcss::before,
+
+/* =========================================================================
+   PEARL, VISIBLY — the second brand on a NEAR page
+   -------------------------------------------------------------------------
+   NEAR keeps the field, the paper, the asks and the footer. Pearl gets four
+   things it owns outright, each in Pearl's own colours and none of them
+   competing with a control:
+     1. its logotype beside near's in the eyebrow (near × Pearl)
+     2. the asset's name set as a Pearl chip — canvas plate, blush type — in
+        both headlines, the way `$30B+` is NEAR's green highlighter
+     3. a pearl: one large lit sphere in the field's lower right, drifting
+     4. the Story band as Pearl's canvas (above), and a second, smaller pearl
+        on the closing plate
+   ========================================================================= */
+
+/* 1 ---- the co-brand lockup -------------------------------------------- */
+.cobrand { display: none }
+html:has(.theme-near) .cobrand {
+  display: inline-flex; align-items: center; gap: clamp(10px, 1.1vw, 16px);
+  flex: none;
+}
+html:has(.theme-near) .cox {
+  font-family: var(--font-body); font-weight: 300; line-height: 1;
+  font-size: clamp(22px, 1.9vw, 30px); color: var(--hero-ink);
+}
+/* the logotype's cap height sits a little under near's x-height-heavy word
+   at the same box height; .78 of near's box reads level */
+html:has(.theme-near) .pearlw {
+  display: block; width: auto;
+  height: calc(clamp(35px, 2.93vw, 44px) * .78);
+}
+@media (max-width: 1080px) {
+  html:has(.theme-near) .pearlw { height: 23px }
+  html:has(.theme-near) .cox { font-size: 22px }
+}
+
+/* 2 ---- the asset chip -------------------------------------------------- */
+html:has(.theme-near) .k-asset {
+  background: var(--pearl-canvas);
+  color: var(--pearl-blush);
+  padding: 0 .22em .04em;
+  border-radius: .16em;
+  box-decoration-break: clone;
+  white-space: nowrap;
+}
+
+/* 3 ---- the pearl in the field ------------------------------------------
+   One sphere, lit from the upper left: a white specular, cream body, blush
+   falling into its shadow side and a teal rim — Pearl's parametric pearls,
+   drawn in CSS. It sits mostly off the lower right so the phone and the
+   headline keep the field; it drifts on a 38s float. The lustre layers
+   above are switched off on this route, so `::before` is free to be it. */
+html:has(.theme-near) .gcss::before {
+  display: block; content: ''; position: absolute; inset: auto;
+  right: -9vmax; bottom: -17vmax;
+  width: 50vmax; height: 50vmax; border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, 0) 16%),
+    radial-gradient(circle at 40% 36%, #f6f2ed 0%, #f0d9cc 34%, #f0c3ae 58%, #c99a86 80%, #6f8f8a 100%);
+  box-shadow:
+    inset -2.4vmax -2.4vmax 5vmax rgba(32, 110, 118, .28),
+    0 3vmax 7vmax rgba(10, 46, 38, .22);
+  opacity: .96;
+  animation: pearl-float 38s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
 html:has(.theme-near) .gcss::after { display: none }
+@keyframes pearl-float {
+  0%   { transform: none }
+  50%  { transform: translate3d(-1.6vmax, -1.2vmax, 0) rotate(8deg) }
+  100% { transform: translate3d(.8vmax, -2vmax, 0) rotate(-4deg) }
+}
+@media (max-width: 1080px) {
+  html:has(.theme-near) .gcss::before { width: 70vmin; height: 70vmin; right: -22vmin; bottom: -26vmin }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.theme-near) .gcss::before { animation: none }
+}
+
+/* 4 ---- the pearl on the closing plate ---------------------------------- */
+html:has(.theme-near) .finalcta { position: relative; overflow: hidden }
+html:has(.theme-near) .finalcta .inner { position: relative; z-index: 1 }
+html:has(.theme-near) .finalcta::after {
+  /* 08-light.css gives this pseudo `inset:0`; clear it or `left` wins */
+  content: ''; position: absolute; inset: auto; z-index: 0; pointer-events: none;
+  width: clamp(180px, 22vw, 340px); aspect-ratio: 1; border-radius: 50%;
+  right: clamp(-90px, -4vw, -40px); top: 50%; transform: translateY(-50%);
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, 0) 16%),
+    radial-gradient(circle at 40% 36%, #f6f2ed 0%, #f0d9cc 34%, #f0c3ae 58%, #c99a86 80%, #6f8f8a 100%);
+  box-shadow: inset -18px -18px 40px rgba(32, 110, 118, .28), 0 24px 60px rgba(10, 46, 38, .22);
+}
+@media (max-width: 700px) {
+  html:has(.theme-near) .finalcta::after { width: 150px; right: -60px; top: auto; bottom: -40px; transform: none }
+}

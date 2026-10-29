@@ -39,7 +39,7 @@ docs/analytics.md   events, sources, attribution
 ## Two themes
 
 - `/` — Pearl leads: paper-to-blush field, Pearl canvas below, NEAR green on the asks and the rails.
-- `/v2` — NEAR leads: the perps landing's green field, paper light zone, #272727 footer. Same components and copy; `app/v2/page.tsx` renders a hidden `.theme-near` marker and `src/styles/41-theme-near.css` scopes every override to `html:has(.theme-near)`. Noindex, canonical `/`.
+- `/v2` — NEAR leads: the perps landing's green field, paper light zone, #272727 footer. Pearl owns four things on it: the `near × Pearl` eyebrow (`components/stage/Cobrand.tsx`), the PEARL chip in both headlines (`.k-asset`), a drifting CSS pearl in the field and on the closing plate, and the Story band as Pearl's canvas. Same components and copy; `app/v2/page.tsx` renders a hidden `.theme-near` marker and `src/styles/41-theme-near.css` scopes every override to `html:has(.theme-near)`. Noindex, canonical `/`.
 
 ## Where the copy lives
 
