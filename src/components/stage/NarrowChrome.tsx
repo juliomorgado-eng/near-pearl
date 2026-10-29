@@ -58,7 +58,7 @@ export function NarrowChrome() {
         (es) => {
           const on = !es[es.length - 1].isIntersecting;
           nav?.classList.toggle('on-light', on);
-          meta?.setAttribute('content', on ? '#F3F2EF' : '#000000');
+          meta?.setAttribute('content', on ? '#080807' : '#F0EFEA');
         },
         { rootMargin: '-63px 0px 0px 0px' },
       );

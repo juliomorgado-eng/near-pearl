@@ -14,9 +14,9 @@
  */
 
 /**
- * Perps, alone. `/v2` still runs the full deck (Perps, Account, Swap, Earn) —
- * this route dropped to its first chapter only, so the phone never advances
- * past the trading screen: `(N - 1) * W_MOVE` and `(N - 1) * SCH_CYC` below
+ * Swap, alone — USD Coin into PEARL. The deck was four chapters (Perps,
+ * Account, Swap, Earn); this route plays its first only, so the phone never
+ * advances past the swap screen: `(N - 1) * W_MOVE` and `(N - 1) * SCH_CYC` below
  * both go to zero on their own, which is what turns the [rest][move] cycle
  * into a single dwell that runs straight into the shrink.
  */
@@ -24,7 +24,7 @@ export const N = 1;
 
 /**
  * The phone is on screen from the first pixel, so there is no hero band and no
- * entry travel — the stage opens on Perps, landed. Both weights are kept at
+ * entry travel — the stage opens on Swap, landed. Both weights are kept at
  * zero rather than deleted so the band structure below stays readable and the
  * -1 ("nothing on stage") path is still reachable if they are ever restored.
  */
@@ -162,12 +162,13 @@ export const SNAP_MS = 180;
 /* ---- phone chrome ----------------------------------------------------- */
 
 /**
- * v06 reordered the deck to Perps-first. `data-face` attributes are NOT
- * renumbered — the demo-app wiring selects on them — so these index-keyed
- * arrays are what maps a DISPLAY index onto the chrome.
+ * v06 reordered the deck to Perps-first, and the PEARL page put Swap first and
+ * dropped Perps and Earn. `data-face` attributes are NOT renumbered — the
+ * demo-app wiring selects on them — so these index-keyed arrays are what maps
+ * a DISPLAY index onto the chrome. Same order as `SCREENS` in AppDevice.tsx.
  */
-export const CH_TITLES = ['Perps', 'Account', 'Swap', 'Earn'] as const;
+export const CH_TITLES = ['Swap', 'Account'] as const;
 /** display index -> tab index in (Home, Earn, Swap, Perps, Menu) */
-export const CH_TAB = [3, 0, 2, 1];
+export const CH_TAB = [2, 0];
 /** display index of the frame the jurisdiction note belongs to */
 export const DISC_FACE = 0;

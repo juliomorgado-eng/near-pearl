@@ -3,34 +3,33 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { subscribeShownFace } from '@/stage/bus';
 import { useDeck } from '@/components/demo/shell/deck';
 
-import { Phone as PerpsPhone } from '@/components/demo/perpsv5/Phone';
-import { perpsV5Flow } from '@/components/demo/perpsv5/script';
 import { Phone as OwnPhone } from '@/components/demo/ownv5/Phone';
 import { ownV5Flow } from '@/components/demo/ownv5/script';
 import { Phone as SwapPhone } from '@/components/demo/swapv5/Phone';
 import { swapV5Flow } from '@/components/demo/swapv5/script';
-import { Phone as EarnPhone } from '@/components/demo/earnv5/Phone';
-import { earnV5Flow } from '@/components/demo/earnv5/script';
 
 /**
  * THE APP, ON THE HOME PAGE, WITH THE SCROLL CHOOSING THE SCREEN
  * ==================================================================
- * Four chapters, four screens, and the four are the same files `/demo/*-v5`
- * run — not versions of them. Anything fixed there is fixed here.
+ * Two screens, and on `/` only the first is ever on stage — `N` is 1 in
+ * lib/schedule.ts. They are the same files the `/demo/*-v5` routes ran — not
+ * versions of them.
  *
- * THE MAPPING IS THE PAGE'S OWN. `Lockup.tsx` already writes a headline per
- * chapter and the engine already fades between them; all this does is put the
- * matching screen under each one:
+ * THE MAPPING IS THE PAGE'S OWN. `Lockup.tsx` writes a headline per chapter
+ * and the engine fades between them; all this does is put the matching screen
+ * under each one:
  *
- *   0  Perps     "Trade where the liquidity is. Hedge where your assets are."
- *   1  Account   "Everything you own, one screen"
- *   2  Swap      "Swap anything, anywhere"
- *   3  Earn      "Earn on what you're not using"
+ *   0  Swap      USD Coin into PEARL — the page's whole argument
+ *   1  Account   "Everything you own, one screen" — kept, not staged
+ *
+ * PERPS AND EARN ARE GONE, files and all. near.com offers no PEARL perps, and
+ * a page selling a trade into PEARL that opened on a Bitcoin chart was the
+ * phone arguing with the headline.
  *
  * That order is `CH_TITLES` in lib/schedule.ts, which is the DISPLAY order —
  * the `data-face` attributes on the copy column carry the original indices and
  * are a different numbering. Getting those two confused puts the swap screen
- * under the perps headline, which is the one mistake this component can make.
+ * under the wrong headline, which is the one mistake this component can make.
  *
  * THE INDEX COMES FROM THE ENGINE, not from the DOM. `setActiveFace(curIdx)`
  * is computed from the schedule, so it keeps working on a route where the
@@ -45,19 +44,19 @@ import { earnV5Flow } from '@/components/demo/earnv5/script';
  * only one clock, one chart and one settlement are ever running.
  */
 
-const SCREENS = [PerpsScreen, OwnScreen, SwapScreen, EarnScreen];
+const SCREENS = [SwapScreen, OwnScreen];
 
 /**
  * ONE CHAPTER'S SCREEN, ADDRESSED BY INDEX.
  *
  * The wide composition has one device and swaps the screen inside it; the
- * narrow one (MobileTour.tsx) has four devices and each shows a fixed chapter.
- * Both want the same four components with the same four flows, and this is the
+ * narrow one (MobileTour.tsx) has a device per chapter and each shows a fixed
+ * one. Both want the same components with the same flows, and this is the
  * seam between them — export the mapping, not the device.
  *
  * The index is the DISPLAY order, which is `CH_TITLES` in lib/schedule.ts, and
- * not the `data-face` numbering. Confusing the two puts the swap screen under
- * the perps headline.
+ * not the `data-face` numbering. Confusing the two puts a screen under the
+ * wrong headline.
  */
 export function ChapterScreen({ at }: { at: number }) {
   const Screen = SCREENS[at] ?? SCREENS[0];
@@ -149,15 +148,11 @@ function Layer({ children }: { children: ReactNode }) {
   return <div className={'appswap' + (settled ? '' : ' noentry')}>{children}</div>;
 }
 
-/* Four one-line components, because a hook cannot be called conditionally and
-   each flow needs its own deck. Rendering one of four components is the ordinary
-   way to say that; a single component with four `useDeck` calls would run four
-   clocks to show one screen. */
+/* One-line components, because a hook cannot be called conditionally and
+   each flow needs its own deck. Rendering one of them is the ordinary way to
+   say that; a single component with a `useDeck` per flow would run every
+   clock to show one screen. */
 
-function PerpsScreen() {
-  const d = useDeck(perpsV5Flow);
-  return <PerpsPhone d={d} />;
-}
 function OwnScreen() {
   const d = useDeck(ownV5Flow);
   return <OwnPhone d={d} />;
@@ -165,8 +160,4 @@ function OwnScreen() {
 function SwapScreen() {
   const d = useDeck(swapV5Flow);
   return <SwapPhone d={d} />;
-}
-function EarnScreen() {
-  const d = useDeck(earnV5Flow);
-  return <EarnPhone d={d} />;
 }

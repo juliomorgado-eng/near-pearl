@@ -1,4 +1,4 @@
-import { PERPS_NOTE } from '@/lib/cards';
+import { RISK_NOTE } from '@/lib/cards';
 
 const LOGIN = 'https://near.com/login';
 
@@ -9,7 +9,7 @@ const LOGIN = 'https://near.com/login';
  * owns those transforms, one window per line in `HW_RANGE` (schedule.ts). The
  * CTA block — button, friction, legal — rides --cue-out so it recedes on
  * exactly the same curve as the scroll cue and the headline. (The proof stat
- * that briefly sat here moved to the Perps chapter's white plate — see
+ * that briefly sat here moved to the chapter's white plate — see
  * `CARDS[0].aside` in lib/cards.tsx.)
  */
 export function Hero() {
@@ -18,10 +18,10 @@ export function Hero() {
       <div className="herotype live" id="herotype">
         <div className="inner" id="top">
           <h1 className="display long">
-            <span className="hline"><span className="hw" data-hw="0">Trade perps, confidentially.</span></span>
-            <span className="hline"><span className="hw" data-hw="1">Fund from any chain, any asset you already hold.</span></span>
+            <span className="hline"><span className="hw" data-hw="0">Trade PEARL, confidentially.</span></span>
+            <span className="hline"><span className="hw" data-hw="1">Swap in from any chain, any asset you already hold.</span></span>
             <span className="hline"><span className="hw" data-hw="2">All from near.com.</span></span>
-            <span className="hline"><span className="hw" data-hw="3"><span className="wordmark">Nobody can trace your position back to you.</span></span></span>
+            <span className="hline"><span className="hw" data-hw="3"><span className="wordmark">Nobody can trace the trade back to you.</span></span></span>
           </h1>
 
           <div className="herocta">
@@ -36,7 +36,7 @@ export function Hero() {
               Start trading <span className="arw">&rarr;</span>
             </a>
             <p className="friction">No seed phrase. Ready in seconds.</p>
-            <p className="herolegal">{PERPS_NOTE}</p>
+            <p className="herolegal">{RISK_NOTE}</p>
           </div>
         </div>
       </div>

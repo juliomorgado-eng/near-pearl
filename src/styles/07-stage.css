@@ -15,7 +15,7 @@
    plate. It was #000 — right when the field was near-black, a hole punched in
    the page now that it is green. The light end of the ramp reads as the field
    continuing past its own edge. */
-.stage-black{position:absolute;inset:0;background:#5EFAA7;opacity:calc(1 - var(--fade-light))}
+.stage-black{position:absolute;inset:0;background:var(--pearl-paper);opacity:calc(1 - var(--fade-light))}
 .grad{
   position:absolute;inset:0;background:#02100C;overflow:hidden;
   clip-path:inset(var(--ci-t) var(--ci-r) var(--ci-b) var(--ci-l) round var(--ci-rad));
@@ -37,7 +37,8 @@
 /* ---- THE FIELD ---------------------------------------------------------
    ONE GRADIENT, AND IT IS THE WHOLE BACKGROUND NOW. The WebGL canvas above it
    is not drawn (see GradientField.tsx), so this is not a fallback any more —
-   it is what every reader sees at every width.
+   it is what every reader sees at every width. (PEARL pass: the two greens
+   below are now paper #F0EFEA and blush #f0c3ae — see the rule itself.)
 
    The axis is the comp's: 150deg runs from the top left down toward the bottom
    right — steeper than a corner-to-corner 135, so the sweep falls down the
@@ -55,7 +56,10 @@
    brief names would not land where it says. */
 .gcss{
   position:absolute;inset:0;
-  background:linear-gradient(150deg, #5EFAA7 0%, #5EFAA7 50%, #16B862 100%);
+  /* PEARL: paper through 45%, easing to blush, under the two-radial lustre.
+     Both are tokens (02-tokens.css) so the curtain and the 404 paint the
+     identical surface — the curtain's fade is invisible only if they match. */
+  background:var(--pearl-lustre),var(--pearl-field);
 }
 .gshade{
   position:absolute;inset:0;pointer-events:none;

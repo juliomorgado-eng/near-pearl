@@ -8,13 +8,13 @@ const BOXES = [
   },
   {
     Art: PasskeySigningArt,
-    title: <>Passkey signing</>,
-    body: 'Sign in and approve transactions with a passkey. No seed phrase to write down.',
+    title: <>Confidential by default</>,
+    body: 'Your PEARL swaps happen out of public view. No public trail tying the trade to your wallet.',
   },
   {
     Art: VolumeArt,
-    title: <><span className="sfig" style={{ color: 'var(--l-fg)' }}>$25+ billion</span> in volume</>,
-    body: 'Traders have moved over $25 billion through NEAR Intents, the settlement layer near.com runs on.',
+    title: <><span className="sfig" style={{ color: 'var(--l-fg)' }}>$30B+</span> in volume</>,
+    body: 'Over $30B in all-time cross-chain volume has moved through NEAR Intents, the settlement layer near.com runs on.',
   },
   {
     Art: QuantumReadyArt,
@@ -30,9 +30,9 @@ export function Security() {
         <div className="copy rv">
           <h2 className="h1">Secure by design</h2>
           <p className="lead" style={{ color: 'var(--l-fg-2)' }}>
-            Every transaction is signed on your device and settled onchain
-            through NEAR Intents, the universal liquidity layer used by leading
-            DeFi protocols.
+            Every swap is signed on your device with a passkey and settled
+            onchain through NEAR Intents, the universal liquidity layer used by
+            leading DeFi protocols.
           </p>
         </div>
         <div className="secgrid rv">

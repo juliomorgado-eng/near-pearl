@@ -1,10 +1,10 @@
-import { CARDS, CTA_URL, PERPS_NOTE } from '@/lib/cards';
+import { CARDS, CTA_URL, RISK_NOTE } from '@/lib/cards';
 import { PhoneShell } from './phone/PhoneShell';
 
 /**
  * THE CARD LOCKUP — copy left, phone centre, offer and CTA right.
  *
- * Three stacks of ONE face now (`lib/cards.tsx` trimmed the deck to Perps) —
+ * Three stacks of ONE face now (`lib/cards.tsx` trimmed the deck to one chapter) —
  * `/v2` still walks four, index-aligned across `.side.l .face`, `.cswap >
  * .face` and `.side.r .face`.
  *
@@ -65,7 +65,7 @@ export function Lockup() {
         <p className="friction">No seed phrase. Ready in seconds.</p>
       </div>
 
-      <p className="perpsdisc">{PERPS_NOTE}</p>
+      <p className="perpsdisc">{RISK_NOTE}</p>
 
       <PhoneShell />
 

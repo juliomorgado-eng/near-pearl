@@ -27,10 +27,6 @@
   .herocta .friction{font-size:.88rem}
 }
 
-/* --- testimonial grid --------------------------------------------------- */
-/* Was a moving marquee. The cards are unchanged; only the container is new,
-   so .qcard's fixed 27rem width has to be released back to the grid. */
-
 /* --- tablet: keep the three-column lockup ------------------------------- */
 /* Below 1081 the lockup collapsed to one column and stacked the copy under a
    short phone. On a tablet there is width for the desktop composition, so it

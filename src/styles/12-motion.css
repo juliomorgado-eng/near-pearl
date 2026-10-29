@@ -164,20 +164,6 @@
 .acc-btn .t{transition:color var(--dur) var(--ease-out)}
 .acc-btn .plus{transition:transform var(--dur) var(--ease-out),color var(--dur) var(--ease-out)}
 
-/* --- 5. the testimonial reveal was 15 cards at once ---------------------
-   Simultaneous entry reads as a single block wiping in, and it also meant
-   fifteen concurrent blur transitions on one frame. A left-to-right stagger
-   across the first eight costs nothing and turns the wipe into a sweep. The
-   rest are off-screen when the rail reveals, so they need no delay. */
-.marquee.mq-in .qcard:nth-child(1){transition-delay:0ms}
-.marquee.mq-in .qcard:nth-child(2){transition-delay:45ms}
-.marquee.mq-in .qcard:nth-child(3){transition-delay:90ms}
-.marquee.mq-in .qcard:nth-child(4){transition-delay:135ms}
-.marquee.mq-in .qcard:nth-child(5){transition-delay:180ms}
-.marquee.mq-in .qcard:nth-child(6){transition-delay:225ms}
-.marquee.mq-in .qcard:nth-child(7){transition-delay:270ms}
-.marquee.mq-in .qcard:nth-child(8){transition-delay:315ms}
-
 /* --- 6. reduced motion: gentler, not zero -------------------------------
    The old block set transition-duration to .01ms on EVERYTHING, which removes
    the fades that carry meaning along with the movement that causes trouble.
@@ -189,7 +175,6 @@
     transition-property:opacity,color,background-color,border-color,box-shadow,fill,stroke !important;
     transition-duration:160ms !important;
   }
-  .marquee.mq-in .qcard{transition-delay:0ms !important}
   .rv{opacity:1;transform:none}
 }
 

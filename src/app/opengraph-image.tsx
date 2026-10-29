@@ -10,8 +10,10 @@ import { ImageResponse } from 'next/og';
  * colour as the hero and the footer, so there is nothing here to fall out of
  * step with the page it is a card for.
  *
- * DELIBERATELY BARE. The brief was "only the logotype and the green field" —
- * no headline, no proof stat, no city. A share card is read at thumbnail
+ * DELIBERATELY BARE. The brief was "only the logotype and the field" — no
+ * headline, no proof stat, no city. PEARL: the field is the hero's paper →
+ * blush sweep with its white sheen, and the lockup gains "× " and a PEARL
+ * token disc (canvas #080807, a pearl inside it). A share card is read at thumbnail
  * size, where a page's own hierarchy of claim-then-detail has no room to
  * work; the mark and the colour are the two things that still read at 40px
  * tall in a timeline.
@@ -20,7 +22,7 @@ import { ImageResponse } from 'next/og';
  * renders this once at build and serves the same PNG after that — the same
  * caching behaviour the static file had.
  */
-export const alt = 'The near.com mark on a bright green field.';
+export const alt = 'near.com — Trade PEARL, confidentially.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -34,10 +36,12 @@ export default function Image() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#5EFAA7',
+          backgroundColor: '#F0EFEA',
+          backgroundImage:
+            'radial-gradient(58% 52% at 74% 22%, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0) 72%), linear-gradient(150deg, #F0EFEA 0%, #F0EFEA 45%, #f0c3ae 100%)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
           {/* NearGlyph, the N ribbon — same mark as the account avatar and
               the nav's icon, recoloured from currentColor to the hero's own
               ink so it reads dark on this field. */}
@@ -52,6 +56,32 @@ export default function Image() {
             <path d="m1115.42,48.75c-60.47,0-112.71,35.31-112.71,81.75,0,3.87,3.39,6.77,7.74,6.77h39.18c3.87,0,6.77-2.9,7.26-6.77,3.87-21.28,29.51-36.76,57.08-36.76,32.89,0,55.15,20.32,55.15,55.15v42.09c0,43.05-31.93,64.82-71.6,64.82-30.96,0-48.86-11.61-48.86-30.48,0-16.45,8.71-30.48,44.5-38.7l51.76-14.03c5.32-1.45,7.26-5.81,6.29-10.64-.48-3.87-4.83-5.81-8.71-5.81h-53.69c-45.47,0-91.43,29.02-91.43,71.59v6.77c0,43.54,41.12,66.27,88.04,66.27,29.99,0,55.63-11.61,71.59-25.15l23.71-20.32c3.87-3.39,7.74-3.39,11.12,0,2.9,2.9,1.93,7.26-.49,10.64l-14.51,22.74c-2.42,3.39-.49,7.74,3.87,7.74h34.83c4.35,0,7.74-3.39,7.74-7.74v-146.58c0-56.11-40.15-93.36-107.88-93.36Z" />
             <path d="m1432.26,54.56h-54.18c-18.86,0-37.25,11.61-50.31,22.74l-21.28,18.38c-2.42,1.94-6.78,3.39-9.68.97-3.39-2.42-4.84-7.26-1.93-11.13l15.48-23.22c2.42-3.39.49-7.74-3.87-7.74h-36.28c-4.35,0-7.74,3.39-7.74,7.74v226.4c0,4.35,3.39,7.74,7.74,7.74h39.67c4.35,0,7.74-3.39,7.74-7.74v-116.1c0-49.83,20.32-72.08,64.34-72.08h50.31c4.35,0,7.74-3.39,7.74-7.74v-30.48c0-4.35-3.39-7.74-7.74-7.74Z" />
           </svg>
+          {/* × — drawn, not typed, so it does not depend on the fallback font */}
+          <svg width="44" height="44" viewBox="0 0 44 44" stroke="#1F1F1F" strokeWidth="5" strokeLinecap="round">
+            <path d="M8 8 L36 36 M36 8 L8 36" />
+          </svg>
+          {/* the PEARL token disc: canvas, with a lustrous pearl in it */}
+          <div
+            style={{
+              width: 140,
+              height: 140,
+              borderRadius: 70,
+              background: '#080807',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div
+              style={{
+                width: 76,
+                height: 76,
+                borderRadius: 38,
+                backgroundImage:
+                  'radial-gradient(circle at 34% 30%, #ffffff 0%, #f6f2ed 26%, #f0c3ae 64%, #79c2bf 100%)',
+              }}
+            />
+          </div>
         </div>
       </div>
     ),

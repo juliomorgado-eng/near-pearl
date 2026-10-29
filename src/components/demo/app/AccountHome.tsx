@@ -6,7 +6,7 @@ import { Dot } from '@/components/demo/app/Dot';
 import { NearAvatar } from '@/components/demo/app/NearAvatar';
 import { ArrowDownIcon, ArrowRightIcon, EyeIcon, ScanIcon, SendIcon } from '@/components/demo/icons';
 import {
-  EARN_BAL, HOLDINGS, PERPS_BAL, crypto, total,
+  EARN_BAL, HOLDINGS, crypto, total,
 } from '@/components/demo/ownv5/state';
 
 /**
@@ -40,8 +40,8 @@ const SYMS = [...new Set(HOLDINGS.map((h) => h.sym))];
  * THREE NAMES AND A COUNT, NOT FIVE NAMES.
  *
  * The strip listed every symbol, which was fine at two and wrapped onto a
- * second line at five — and a Crypto row a line taller than Perps and Earn
- * makes the card read as three rows of different importance. The marks beside
+ * second line at five — and a Crypto row a line taller than Earn makes the
+ * card read as rows of different importance. The marks beside
  * it already say which assets these are; the text only has to say how many.
  */
 const STRIP = SYMS.length > 3
@@ -51,12 +51,12 @@ const STRIP = SYMS.length > 3
 /**
  * WHAT ON THIS SCREEN CAN BE PRESSED.
  *
- * The three balance rows, and `send` — the second of the two buttons under the
+ * The two balance rows, and `send` — the second of the two buttons under the
  * total. It was drawn and inert for as long as nothing led anywhere from it;
  * the earn chapter's last scene goes through it into Universal Send, which is
  * the screen that pays for a transfer out of a yield position.
  */
-export type HomeRow = 'crypto' | 'perps' | 'earn' | 'send';
+export type HomeRow = 'crypto' | 'earn' | 'send';
 
 export function AccountHome({ go, lit }: {
   /** what pressing a row does. A row with no entry is drawn and inert. */
@@ -135,10 +135,8 @@ export function AccountHome({ go, lit }: {
           <i>{STRIP}</i>
         </Row>
 
-        <Row row="perps" label="Perps" value={PERPS_BAL} go={go} lit={lit}>
-          <i>Trade with up to <b>50x</b> leverage</i>
-        </Row>
-
+        {/* NO PERPS ROW. near.com offers no PEARL perps, and this page is
+            about PEARL — see `EARN_BAL` in ownv5/state.ts. */}
         <Row row="earn" label="Earn" value={EARN_BAL} go={go} lit={lit}>
           <i className="ownup">▲ 5.1%</i><i>blended APY</i>
         </Row>

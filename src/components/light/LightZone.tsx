@@ -3,9 +3,9 @@ import { useReveal } from '@/hooks/useReveal';
 import { Faq } from './Faq';
 import { FinalCta } from './FinalCta';
 import { Footer } from './Footer';
-import { Marquee } from './Marquee';
 import { MobileCta } from './MobileCta';
 import { Security } from './Security';
+import { Story } from './Story';
 
 /**
  * Everything below the stage. It sits on cream paper with its own rounded
@@ -23,14 +23,7 @@ export function LightZone() {
   return (
     <div className="light">
       <div className="lightbody">
-        <section className="band">
-          <div className="shell rv">
-            <h2 className="h1" style={{ maxWidth: '16ch' }}>
-              The DeFi app power users love
-            </h2>
-          </div>
-          <Marquee />
-        </section>
+        <Story />
 
         <Security />
         <Faq />

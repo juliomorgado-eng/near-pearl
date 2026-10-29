@@ -1,10 +1,10 @@
 /**
  * THE TOUR'S PRICES, ONCE
  * ==================================================================
- * Five figures, read on 2 September 2026, and every screen in the product tour
- * is arithmetic on top of them: the assets list, the perps ticket and its book,
- * the swap quote, the earn deposit. Two files quoting one coin is exactly the
- * pair that drifts, and it has happened here before — `tokens.ts` said
+ * Six figures, five of them read on 2 September 2026, and every screen in the
+ * product tour is arithmetic on top of them: the assets list, the account's
+ * totals, the swap quote. Two files quoting one coin is exactly the pair that
+ * drifts, and it has happened here before — `tokens.ts` said
  * $68,420.10 for Bitcoin while `/demo/perps-v5` marked $79,567.50, two prices
  * for one coin on two faces of the same scroll.
  *
@@ -21,6 +21,12 @@
  *
  * AAPL IS A SHARE AND IS PRICED LIKE ONE — $325.64, the close on the same day.
  *
+ * PEARL IS THE ONE FIGURE READ LATER — $1.80, off CoinGecko in late October
+ * 2026, when the swap chapter turned into a trade into it. It is a demo
+ * figure, not a quote: the swap screen's amount out, its rate line and its
+ * minimum received are all divisions by it, and a round 1.80 is what keeps
+ * `1 PEARL = 1.80 USDC` legible on the frame.
+ *
  * `lib/tokens.ts` keeps its own, older figures. It serves the v1–v4 flows,
  * which were built against their own recordings and should not move because
  * this table did.
@@ -31,4 +37,5 @@ export const PRICE: Record<string, number> = {
   ZEC: 797.02,
   USDC: 1,
   AAPL: 325.64,
+  PEARL: 1.80,
 };

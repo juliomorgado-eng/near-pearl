@@ -1,6 +1,17 @@
 /* =========================================================================
-   THE STAGE TURNS GREEN — background and type colour, and nothing else
+   THE STAGE TURNS PEARL — background and type colour, and nothing else
    =========================================================================
+   PEARL PASS (the file keeps its old name; the history below is the green
+   pass it grew out of). The field is paper #F0EFEA easing to blush #f0c3ae
+   under a static lustre (`--pearl-field` / `--pearl-lustre`, 02-tokens.css).
+   The ink stays #1F1F1F — 14.3:1 on paper, 10.3:1 on blush. Every accent
+   that was the field's green is now blush on a black pill (13.1:1), deep teal
+   where a dark accent has to sit on paper (5.1:1). The light zone below the
+   tour and the footer turn DARK — canvas #080807 / surface #100f0e, cream
+   type, hairlines at rgba(246,242,237,.12), hovers in blush — by re-pointing
+   the `--l-*` scale on `.light` (bottom of this file), never at :root, so the
+   device's own light mode (`html.ui-light .morph`) keeps its paper.
+
    The tour's field was near-black with a copper highlight and every word on it
    was white. The supplied comp puts it on the two greens — #5EFAA7 lit through
    the upper middle, #01A44D banked into the corners — with the type in
@@ -63,7 +74,7 @@
    next to the gradient that replaces it, is the version that can be read.
 
    `!important` on `.gcss` only, because the rule being answered uses it too. */
-#stage .grad { background: #5EFAA7 }
+#stage .grad { background: var(--pearl-paper) }
 #stage .gcss { opacity: 1 !important }
 /* the vignettes and the diagonal wash */
 #stage .grad::before { background: none }
@@ -131,18 +142,18 @@
   background: #000;
   color: #fff;
 }
-/* THE ARROW IS THE FIELD'S OWN GREEN. It marks the one control on the page
+/* THE ARROW IS BLUSH (it was the field's own green). It marks the one control on the page
    that goes somewhere, and it is the only piece of colour on a black pill —
    which is what makes it read as a direction rather than as decoration. */
 #stage .btn-primary .arw,
-.mobcta .btn-primary .arw { color: #5EFAA7 }
+.mobcta .btn-primary .arw { color: var(--pearl-blush) }
 /* ON HOVER THE LABEL JOINS IT. The fill does not move — it is already the
    darkest thing on the page and there is nowhere for it to go — so the whole
    of the response is the word turning green under a pointer while the arrow
    steps forward. `--tr-ui` already animates `color`, so the two are one
    gesture on one clock. */
 #stage .btn-primary:hover,
-.mobcta .btn-primary:hover { background: #000; color: #5EFAA7; box-shadow: none }
+.mobcta .btn-primary:hover { background: #000; color: var(--pearl-blush); box-shadow: none }
 #stage .btn-primary:active,
 .mobcta .btn-primary:active { background: #000 }
 
@@ -185,7 +196,7 @@
    light end of the field instead. */
 @media (max-width: 1080px) {
   .nav:not(.on-light)::before {
-    background: linear-gradient(180deg, rgba(94, 250, 167, .92) 0%, rgba(94, 250, 167, .5) 58%, rgba(94, 250, 167, 0) 100%);
+    background: linear-gradient(180deg, rgba(240, 239, 234, .92) 0%, rgba(240, 239, 234, .5) 58%, rgba(240, 239, 234, 0) 100%);
   }
 }
 
@@ -198,7 +209,7 @@
   .mobcta {
     background: rgba(255, 255, 255, .82);
     border-color: rgba(31, 31, 31, .10);
-    box-shadow: 0 8px 34px rgba(1, 90, 44, .18);
+    box-shadow: 0 8px 34px rgba(8, 8, 7, .14);
   }
   .mobcta span { color: var(--hero-ink) }
 }
@@ -227,7 +238,7 @@
 #stage .mchbody .rollquote {
   background: #fff;
   border-color: rgba(31, 31, 31, .08);
-  box-shadow: 0 18px 44px rgba(1, 90, 44, .12);
+  box-shadow: 0 18px 44px rgba(8, 8, 7, .08);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -271,8 +282,11 @@
    supporting line and the emphasised run were all white — invisible on this
    green. Ink, at full, like every other word on the page.
    ========================================================================= */
+/* PEARL: the plate is blush under the same lustre as the field — the last
+   light surface before the dark footer, so it no longer has a flat to match.
+   Ink on blush is 10.3:1. */
 .finalcta {
-  background: #5EFAA7;
+  background: var(--pearl-lustre), var(--pearl-blush);
   color: var(--hero-ink);
 }
 .finalcta::before,
@@ -283,37 +297,81 @@
    (07-stage.css, right for the dark field it was written for); wrong here. */
 .finalcta .wordmark { color: var(--hero-ink) }
 
-/* the ask is the same black pill with the same green arrow it is on the stage.
-   `--near-green` would put a green fill on a green field. */
+/* the ask is the same black pill with the same blush arrow it is on the
+   stage. A blush fill would put blush on blush. */
 .finalcta .btn-primary {
   background: #000;
   color: #fff;
 }
-.finalcta .btn-primary .arw { color: #5EFAA7 }
-.finalcta .btn-primary:hover { background: #000; color: #5EFAA7; box-shadow: none }
+.finalcta .btn-primary .arw { color: var(--pearl-blush) }
+.finalcta .btn-primary:hover { background: #000; color: var(--pearl-blush); box-shadow: none }
 .finalcta .btn-primary:active { background: #000 }
 
 /* =========================================================================
-   THE FOOTER STAYS DARK — GRAY, NOT THE GREEN OF THE FIELD ABOVE IT
+   THE DARK ZONE AND THE FOOTER — PEARL CANVAS
    -------------------------------------------------------------------------
-   The field above turned green; the footer was asked to stay its own dark
-   plate rather than follow, on the brief's own reference (a near-black
-   gray, not #000 — the same family as the field's ink, several steps
-   darker). `NearMark` and the social icons are `fill="currentColor"`, so
-   they follow `footer`'s own colour without their own rule.
+   The light zone was cream paper on a #272727 footer. It is Pearl's canvas
+   now: `.lightbody` on #080807, the footer (and `.light`'s own background,
+   which shows through `.lightbody`'s rounded bottom corners — 08-light.css)
+   on the one-step-lighter #100f0e, so those corners still read as the
+   footer's edge.
 
-   `.light`'s OWN BACKGROUND HAS TO MATCH IT. `08-light.css` states why that
-   element is dark in the first place: "so the light panel's rounded bottom
-   corners reveal the footer colour rather than the page behind it" —
-   `.lightbody`'s bottom-left and bottom-right corners are rounded, and
-   whatever sits behind them in that sliver shows through. Same gray as the
-   footer, so the sliver reads as the footer's own edge rather than a notch
-   cut into it. */
-.light { background: #272727 }
-footer { background: #272727; color: #fff }
-.fcol h4 { color: rgba(255, 255, 255, .45) }
-.fcol a { color: rgba(255, 255, 255, .78) }
-.fcol a:hover { color: var(--near-green) }
-.fbot { border-top-color: rgba(255, 255, 255, .14); color: rgba(255, 255, 255, .5) }
-.socials a { border-color: rgba(255, 255, 255, .22) }
-.socials a:hover { border-color: var(--near-green); color: var(--near-green) }
+   THE `--l-*` SCALE IS RE-POINTED HERE, ON `.light`, NOT ON :root. Every rule
+   in 08-light.css asks for `--l-bg` / `--l-fg` / `--l-border`, so this is the
+   whole zone in one block — and `html.ui-light .morph` (07-stage.css), the
+   device's own light mode, also reads `--l-bg` and must keep its paper.
+   `.light`'s `--fg: var(--l-fg)` resolves against these on the same element.
+
+   Contrast, on #080807 / #171513: cream 18.0 / 16.3, muted #b3afa8 9.2 / 8.3,
+   muted-2 #8c8880 5.7 / 5.2, blush 12.5. */
+.light {
+  --l-bg: var(--pearl-canvas);
+  --l-surface: var(--pearl-surface);
+  --l-gray: var(--pearl-surface-2);
+  --l-gray-2: #2a2724;
+  --l-fg: var(--pearl-cream);
+  --l-fg-2: var(--pearl-muted);
+  --l-fg-3: var(--pearl-muted-2);
+  --l-border: var(--pearl-divider);
+  --l-border-strong: var(--pearl-divider-strong);
+  --focus-ring: var(--pearl-blush);
+  background: var(--pearl-surface);
+  color: var(--pearl-cream);
+}
+.light .btn-outline:hover { background: rgba(246, 242, 237, .06) }
+
+/* the schematic plates stay paper — their own tiles are drawn #F1F0EC — and
+   their one accent is deep teal now (components/marks). */
+.sart { background: var(--pearl-paper) }
+.sfig { color: var(--pearl-blush) }
+.acc-btn .plus { color: var(--pearl-blush) }
+@media (hover: hover) and (pointer: fine) {
+  .acc-btn:hover .plus { color: var(--pearl-teal-bright) }
+}
+
+/* THE NAV OVER THE DARK ZONE. It was a translucent paper plate with dark
+   type; the zone under it is canvas now, so the plate is smoked canvas and
+   the type cream. The blur stays as 06-nav.css declares it (unprefixed only —
+   README, "Two build traps"). The mark swaps to the white lockup. */
+.nav.on-light {
+  background: rgba(8, 8, 7, .62);
+  border-bottom-color: var(--pearl-divider);
+  color: var(--pearl-cream);
+  --focus-ring: var(--pearl-blush);
+}
+.nav.on-light .btn-ghost { color: var(--pearl-cream); border-color: rgba(246, 242, 237, .34) }
+.nav.on-light .btn-ghost:hover { background: var(--pearl-cream); border-color: var(--pearl-cream); color: var(--pearl-canvas) }
+.nav.on-light .btn-primary:hover { background: var(--pearl-canvas); border-color: var(--pearl-blush); color: var(--pearl-blush); box-shadow: none }
+.nav.on-light .btn-primary:active { background: var(--pearl-blush-hover) }
+.nav.on-light .brand .brandnear { background-image: url('/img/near-logo-light.webp') }
+
+footer { background: var(--pearl-surface); color: var(--pearl-cream) }
+.fcol h4 { color: var(--pearl-muted-2) }
+.fcol a { color: var(--pearl-muted) }
+.fcol a:hover { color: var(--pearl-blush) }
+.fbot { border-top-color: var(--pearl-divider); color: var(--pearl-muted-2) }
+.socials a { border-color: var(--pearl-divider-strong) }
+.socials a:hover { border-color: var(--pearl-blush); color: var(--pearl-blush) }
+footer :focus-visible { outline-color: var(--pearl-blush) }
+
+::selection { background: var(--pearl-blush); color: var(--pearl-canvas) }

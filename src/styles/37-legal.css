@@ -18,7 +18,7 @@
    white plate; this note travelled with it). The same slot in both, never
    both at once.
 
-   TWO LINES. `PERPS_NOTE` (lib/cards.tsx) splits on a `<br>`: two separate
+   TWO LINES. `RISK_NOTE` (lib/cards.tsx) splits on a `<br>`: two separate
    disclaimers, not one running sentence.
    ========================================================================= */
 
@@ -29,7 +29,7 @@
   line-height: 1.5;
   /* stated against the field rather than inherited — dark ink at reduced
      strength, same ladder as the footer's own dim type (31-hero-green.css).
-     White at any opacity is close to unreadable on `#5EFAA7`. */
+     White at any opacity is close to unreadable on the paper field. */
   color: rgba(31, 31, 31, .55);
   max-width: 44ch;
   text-align: center;

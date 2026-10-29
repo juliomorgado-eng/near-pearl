@@ -10,7 +10,7 @@
   transition:var(--tr-btn);white-space:nowrap;
 }
 .btn:hover .arw{transform:translateX(3px)}
-/* THE DEFAULT PRIMARY IS STILL THE GREEN PILL, and that is a correction.
+/* THE DEFAULT PRIMARY IS STILL THE BRAND PILL (green then, blush now), and that is a correction.
    The brushed gradient went in here first, on the reading that "the CTA
    button" meant every `.btn-primary` on the site. It does not: it means the
    big ask — `Create account` on the stage, the fixed bar's copy of it, and
@@ -25,9 +25,12 @@
 
    THE SWEEP GOES WITH THE GRADIENT. `background-size` has nothing to grow
    here: this is a flat fill, so the hover is the fill it always was. */
-.btn-primary{background:var(--near-green);color:#000}
-.btn-primary:hover{background:var(--green-300);box-shadow:var(--glow-green-sm)}
-.btn-primary:active{background:var(--green-500);transform:translateY(1px)}
+/* PEARL: the site's default pill is blush with canvas ink (12.5:1) — the
+   nav's `Create account` over the dark zone. The in-phone app never uses
+   `.btn-primary`, so near-green stays where it belongs. */
+.btn-primary{background:var(--pearl-blush);color:var(--pearl-canvas)}
+.btn-primary:hover{background:var(--pearl-blush-hover);box-shadow:var(--glow-pearl-sm)}
+.btn-primary:active{background:var(--pearl-blush-hover);transform:translateY(1px)}
 .btn-outline{border-color:var(--border-strong);color:#fff;backdrop-filter:blur(8px)}
 .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.17)}
 /* thinner, not smaller — the type size is unchanged, only the space above and

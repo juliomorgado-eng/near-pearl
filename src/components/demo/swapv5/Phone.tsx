@@ -28,7 +28,7 @@ type Deck = GenericDeck<SV, SVAction>;
 /**
  * SWAP v5 — THE DEVICE
  * ==================================================================
- * The same device as `/demo/perps-v5`: `.pdev.app` carries the face, the
+ * The same device every chapter uses: `.pdev.app` carries the face, the
  * palette, the tempo, the chrome, the fields, the sheets and the CTA, so this
  * file only draws what is actually a swap. That class was `.pdev.btc` while
  * perps was the only screen wearing it — a name that would have been a lie
@@ -122,10 +122,11 @@ const cut = (n: number, dp: number) => {
 const rateStr = (n: number) => {
   /* about six figures of information wherever the decimal point lands, never
      fewer than two places and never more than nine: 77118.98, 96.7591,
-     1.87669, 0.000012966 */
+     1.87669, 0.000012966 — and the trailing zeros come off only down to those
+     two places, so a round price prints as a price: `1.80`, not `1.8` */
   const dp = Math.min(9, Math.max(2, 5 - Math.floor(Math.log10(Math.abs(n) || 1))));
   const k = 10 ** dp;
-  return (Math.trunc(n * k) / k).toFixed(dp).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
+  return (Math.trunc(n * k) / k).toFixed(dp).replace(/(\.\d\d\d*?)0+$/, '$1');
 };
 
 /** every token pill carries one */
@@ -152,9 +153,9 @@ export function Phone({ d }: { d: Deck }) {
   return (
     <div className="pdev app swp" data-motion="rich" data-tempo="fast" style={PALETTE_VARS}>
       {/* THE ACCOUNT FIRST, and the swap is reached from the bar like anything
-          else in this app. `AccountHome` is the same component `/demo/own-v5`
-          and `/demo/earn-v5` open on — one account, three chapters, each
-          pressing something different on it. Here it is not a row: swap IS a
+          else in this app. `AccountHome` is the same component the account
+          chapter opens on — one account, each chapter pressing something
+          different on it. Here it is not a row: swap IS a
           tab, so the gesture is down at the bottom. */}
       {d.s.screen === 'home' ? (
         <div className="pdview"><AccountHome lit={d.s.lit} /></div>
@@ -242,8 +243,8 @@ function Swap({ d }: { d: Deck }) {
       <div className="swbox">
         <div className="swline">
           {/* NO FOCUS RING HERE, AND THAT IS THE DIFFERENCE BETWEEN THE TWO
-              KINDS OF FIELD. `/demo/perps-v5`'s amount is a bordered input, so
-              being in it brightens the border — `.bfin.on`, eased at `--dur`.
+              KINDS OF FIELD. A bordered amount input brightens its border when
+              it is in use — `.bfin.on`, eased at `--dur`.
               This one is a bare figure on a card, and the app marks it with the
               caret alone. The class was here and the stylesheet never drew it,
               which is a focus state that exists only in the JSX. */}
@@ -294,7 +295,7 @@ function Swap({ d }: { d: Deck }) {
             which is how `6635.616976` gets there: it is this figure, to the same
             six decimals, and nobody arrives at their own balance by typing. */}
         <span className="swfoot">
-          {/* IT TRAVELS, like every derived figure on `/demo/perps-v5`. The
+          {/* IT TRAVELS, like every derived figure in this app. The
               balance tap fills the field and four numbers answer in the same
               frame; without the trip the eye cannot tell which of them moved
               because of it. 780ms is that cut's duration for a derived
@@ -316,7 +317,7 @@ function Swap({ d }: { d: Deck }) {
       <div className="swbox">
         <div className="swline">
           {/* NO THOUSANDS SEPARATOR in the amount fields. The app writes
-              `3535.799`, and it is right to: this is the contents of an input,
+              `2777.777`, and it is right to: this is the contents of an input,
               which is a thing you could have typed, and nobody types a comma. */}
           {/* THIS ONE IS NOT WRITTEN, AND IT DOES NOT START UNTIL THE OTHER
               ONE HAS FINISHED BEING.
@@ -347,8 +348,9 @@ function Swap({ d }: { d: Deck }) {
         </div>
         {/* and the same two facts here — the value, and the balance. The right
             side used to repeat the output amount that is already six times the
-            size directly above it; what belongs there is `0 NEAR`, the app
-            saying you do not hold any yet, which is the reason for the screen. */}
+            size directly above it; what belongs there is the balance, the app
+            saying you do not hold any yet — `0 PEARL` — which is the reason
+            for the screen. */}
         <span className="swfoot">
           {/* AND IT IS THE SMALLER FIGURE. `$6,636` goes in and `$6,612` comes
               out, because the trade fills at the quote and the dollars are read
@@ -384,9 +386,10 @@ function Swap({ d }: { d: Deck }) {
           on the screen, and this is a footnote to the thing above it.
 
           `Exchange rate` IS QUOTED THE OTHER WAY ROUND: one of what you are
-          buying, in units of what you are spending. `1 NEAR = 1.87 USDT` is a
-          price a reader can hold; `1 USDT = 0.53 NEAR` is the same fact stated
-          so that nobody can.
+          buying, in units of what you are spending. `1 PEARL = 1.80 USDC` is a
+          price a reader can hold; `1 USDC = 0.555555 PEARL` is the same fact
+          stated so that nobody can. (`rateOf` flips it when the bought coin is
+          the cheaper one — see state.ts.)
 
           `Network — Best route, auto` is gone. It was a row this cut had no
           frame for, and the frame's third row is `Max slippage`, which is a
@@ -433,10 +436,10 @@ function Swap({ d }: { d: Deck }) {
  *
  * FOUR DECIMALS AND NO SEPARATOR, which is a third format for the same two
  * figures and all three are the frames'. The field upstairs is an input
- * (`3535.799`, three, cut). The review sheet is a statement being authorised
- * (`3,535.79972`, five, grouped). This is a receipt (`3535.7997`, four, plain)
- * — and it is cut rather than rounded like the rest of them, or 6635.616976
- * would read as 6635.6170.
+ * (`2777.777`, three, cut). The review sheet is a statement being authorised
+ * (`2,777.77778`, five, grouped). This is a receipt (`2777.7777`, four, plain)
+ * — and it is cut rather than rounded like the rest of them, or 2777.777…
+ * would read as 2777.7778.
  */
 function Settle({ d, from, to }: { d: Deck; from: Asset; to: Asset | null }) {
   const { s } = d;
@@ -472,10 +475,10 @@ function Settle({ d, from, to }: { d: Deck; from: Asset; to: Asset | null }) {
  * WHAT `REVIEW TRADE` OPENS, AND FOR A WHILE IT OPENED NOTHING.
  *
  * The button reviewed nothing and settled immediately, which on a screen about
- * to move six and a half thousand dollars is the one shortcut it cannot take.
+ * to move five thousand dollars is the one shortcut it cannot take.
  * The sheet is where the trade is stated at FULL PRECISION — the form rounds
- * `3535.799` into an input box and this says `3,535.79972`, which is the same
- * figure with the four digits the form had no room for.
+ * `2777.777` into an input box and this says `2,777.77778`, which is the same
+ * figure with the two digits the form had no room for.
  *
  * THE FIGURES ARE GROUPED HERE AND NOT IN THE FORM, and that is the app being
  * right twice. Upstairs they are the contents of an input — a thing you could

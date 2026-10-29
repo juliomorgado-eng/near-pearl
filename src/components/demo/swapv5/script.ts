@@ -7,13 +7,13 @@ const type_ = (act: SVAction, chars: string, lead?: number, gap?: number) =>
 /**
  * SWAP v5 — THE SHORT CUT
  * ==================================================================
- * The brief, in four lines:
+ * The brief, in six lines:
  *
- *   the swap page, already loaded, Tether pre-filled from the home screen tap,
- *   the whole position put in by a tap on the balance, destination already set
- *   the destination picker opens, and a long list is scrolled
- *   the destination is picked and the quote fills in
- *   the trade is reviewed at full precision, then swapped
+ *   the swap tab, pressed from the account
+ *   USD Coin in the top field, 5000 typed, a destination already set
+ *   the destination picker opens, a long list is flicked, PEARL is found
+ *   PEARL is picked and the quote fills in — 2,777.78 PEARL at 1.80
+ *   the trade is reviewed at full precision, then swapped, confidentially
  *   a success state, and back to the top
  *
  * THE ARITHMETIC. The deck plays every beat at `PACE` (1.25), and
@@ -45,21 +45,19 @@ const type_ = (act: SVAction, chars: string, lead?: number, gap?: number) =>
  * first pass, which is what the assertion is for: four digits at 160ms with a
  * 420ms lead is 900, not 1,900. Nobody would have caught that by reading.
  *
- * SCENE 1 IS STILL 2,300 THOUGH THE GESTURE IN IT CHANGED. It used to type
- * `2500` a digit at a time; it now taps the balance, because the frame swaps
- * the whole Tether position and `6635.616976` is not a figure anyone enters by
- * hand. Eleven keystrokes at 160ms would have been 2,020 where four were 900 —
- * a second and an eighth of somebody typing their own balance at you — so the
- * 900 the typing had went to the tap and its landing, and the clip's length
- * did not move.
+ * SCENE 1 KEPT ITS LENGTH THROUGH THREE PAIRS. It typed `2500` of Tether, then
+ * tapped the balance for a whole position, then typed `0.25` of Bitcoin, and
+ * now types `5000` of USD Coin into PEARL. Each typed amount is four glyphs
+ * 160ms apart behind a 380ms lead — 860 — and the tap was given the same 860,
+ * so the pair changed three times and the clock did not.
  *
- * IT IS PACED LIKE `/demo/perps-v5` AND NOT LIKE ITS OWN FIRST DRAFT. Every
+ * IT IS PACED LIKE THE OLD PERPS CUT AND NOT LIKE ITS OWN FIRST DRAFT. Every
  * number below is the one that cut arrived at after two rounds of being too
  * fast: a 500ms rest after each value lands, sheets given longer than the 390ms
  * they take to arrive, and a hold on the last frame that is the longest beat in
  * the script. None of that was guessed twice.
  *
- * FOUR STEPS, NOT ONE. The copy is not drawn on this route — the stage has no
+ * SIX STEPS, NOT ONE. The copy is not drawn on this route — the stage has no
  * headline — but the steps are what `check:flows` walks and what a reader of
  * this file needs to see the shape of the thing.
  */
@@ -75,17 +73,17 @@ const CHAPTERS: Chapter[] = [
 const STEPS: Step<SV, SVAction>[] = [
   /* ---- scene 0 · 1,320ms ----------------------------------------------
      THE ACCOUNT, AND THE TAB THAT LEAVES IT. The frame is on screen for 1,125ms
-     and the whole scene for 1,650: it has already been read twice by anybody
-     who scrolled the other two chapters, and nothing on it moves, so what it
+     and the whole scene for 1,650: it only plays from the second pass, once the
+     reader has already watched a swap, and nothing on it moves, so what it
      owes here is not a read but an ANSWER — where the swap screen came from. */
   {
     id: 'home', ch: 'acct',
     title: 'Swap is a tab on your account',
-    note: 'Not a page you navigate to and not another app: the third item in the bar, from the same account screen the other chapters open on.',
+    note: 'Not a page you navigate to and not another app: the third item in the bar, on the same account screen that holds the dollars being spent.',
     beats: [
       /* 700, AND IT WAS 1,400. Nothing moves on this screen — no figure is
-         answering, no sheet is arriving, it is a frame the reader has met twice
-         already in the two chapters above it. What it owes is the ANSWER to
+         answering, no sheet is arriving, it is a frame the reader has already
+         read on the way in. What it owes is the ANSWER to
          where the swap screen came from, and an answer does not need two
          seconds. 875ms of it, and then the press. */
       { ms: 700 },
@@ -101,9 +99,9 @@ const STEPS: Step<SV, SVAction>[] = [
   {
     id: 'amount', ch: 'form',
     title: 'A form that already knows half of it',
-    note: 'Tether is in the top field because the reader tapped it a screen ago, and the destination is the pair the app was last on. What is left is how much — and the balance underneath is the answer.',
+    note: 'USD Coin is in the top field and the destination is the pair the app was last on. What is left is how much — 5,000 of the 18,400 the balance underneath says the wallet holds.',
     beats: [
-      /* the opening frame: Tether in, ZEC already in the destination, nothing
+      /* the opening frame: USD Coin in, NEAR already in the destination, nothing
          entered. It holds before anything moves, because what it is showing is
          a form that was filled in somewhere else.
 
@@ -113,10 +111,10 @@ const STEPS: Step<SV, SVAction>[] = [
          first was half a second of a screen that had already been read, and on
          a loop the reader has just watched the same form settle. */
       { ms: 380 },
-      /* AND IT IS TYPED. The previous cut spent a whole Tether position and got
+      /* AND IT IS TYPED. An earlier cut spent a whole Tether position and got
          it in with one tap on the balance, because `6635.616976` is not a
-         figure anyone enters by hand. `0.25` is four characters and a QUARTER
-         of the holding, and `Use max` is the wrong gesture for a fraction. */
+         figure anyone enters by hand. `5000` is four characters and a PART of
+         the holding, and `Use max` is the wrong gesture for a part. */
       ...type_('key', AMOUNT, 380, 160),
       { ms: 540 },
       /* and the chip is pressed here, on this screen, rather than the sheet
@@ -127,30 +125,29 @@ const STEPS: Step<SV, SVAction>[] = [
 
   /* ---- scene 2 · 4,220ms ----------------------------------------------
      The list is the point of this scene and its length is the only thing it
-     has to say, so it is given the most time of the four. TWO stops, not
-     three: down into the catalogue and back, which is the shape a thumb makes.
-     See `STOPS` in state.ts for why three read as three cuts. */
+     has to say, so it is given the most time of the six. TWO stops, not
+     three: a throw down the catalogue past PEARL and a nudge back to it, which
+     is the shape a thumb makes. See `STOPS` in state.ts for the rows. */
   {
     id: 'list', ch: 'list',
     title: 'Everything, and it keeps going',
-    note: 'The picker opens on your own tokens, then the catalogue. NEAR is nine rows down, so getting to it means passing eight coins you did not come for — which is the argument.',
+    note: 'The picker opens on your own tokens, then the catalogue. PEARL is below the fold, so getting to it means passing a wallet and three coins you did not come for — which is the argument.',
     beats: [
       /* IT RESTS BEFORE IT MOVES. At 620 the track started travelling while the
-         sheet was still arriving, so `Your tokens` — the wallet the reader saw
-         two faces ago, with the same three quantities — went past unread. */
+         sheet was still arriving, so `Your tokens` — the wallet the account
+         screen lists, with the same five quantities — went past unread. */
       { ms: 1200, do: 'picker' },
-      /* DOWN, ONCE, into the catalogue. 1,000 against 620ms of travel: the
+      /* DOWN, ONCE, past PEARL. 1,000 against 620ms of travel: the
          move is still the shorter half of the move-settle pair, which is what
          keeps it reading as somebody scrolling rather than as a cut, and the
          380 left over is the list coming to rest under its own weight. */
       { ms: 1000, do: 'scroll', arg: String(STOPS[0]) },
-      /* and back to the top, where it turns out the account already held it.
-         Longer than the way down — a flick back is the same gesture but the
-         reader now knows what they are returning to, so the settle is what
-         they are watching. */
+      /* and back four rows, to the coin the throw went past. Longer than the
+         way down — a nudge back is the same gesture but the reader now knows
+         what they are returning to, so the settle is what they are watching. */
       { ms: 1120, do: 'scroll', arg: String(STOPS[1]) },
       /* AND THEN IT PRESSES, rather than sitting on the answer. The beat is
-         the last of the travel plus long enough to see ZEC arrive at the top.
+         the last of the travel plus long enough to see PEARL arrive at the top.
 
          THE SCENE'S LENGTH DID NOT MOVE: 1,200 + 1,000 + 1,120 + 900 is the
          4,220 that 1,200 + 680 + 700 + 820 + 820 was. One fewer stop bought
@@ -177,8 +174,8 @@ const STEPS: Step<SV, SVAction>[] = [
   /* ---- scene 4 · 2,180ms ----------------------------------------------
      THE SHEET IS A SCENE, and it was nothing at all until now: `Review trade`
      used to settle the trade it named. It gets long enough to be read, because
-     what it is for is the four decimals the form rounds away — `3535.799` in
-     the box, `3,535.79972` here — and a sheet that flashes past has stated
+     what it is for is the decimals the form rounds away — `2777.777` in the
+     box, `2,777.77778` here — and a sheet that flashes past has stated
      nothing. */
   {
     id: 'review', ch: 'send',
@@ -193,13 +190,12 @@ const STEPS: Step<SV, SVAction>[] = [
 
   /* ---- scene 5 · 5,400ms ----------------------------------------------
      `step` runs one past the last row so all three read as done before the
-     success state replaces them — the fix /demo/perps-v5 needed and the
-     reason is the same: a settlement whose last line is still spinning when
+     success state replaces them, because a settlement whose last line is still spinning when
      the screen changes is a settlement nobody saw finish. */
   {
     id: 'send', ch: 'send',
     title: 'One press',
-    note: 'Finding best price, executing, complete — and the Tether balance that was whole a moment ago.',
+    note: 'Finding best price, executing, swapped confidentially — 2,777.78 PEARL in, and nothing on a public ledger tying it to this account.',
     beats: [
       { ms: 200, set: { lit: 'swap' } },
       { ms: 420, do: 'swap' },
@@ -229,8 +225,10 @@ export const swapV5Flow = buildFlow<SV, SVAction>({
      Scene 0 exists to answer where the swap screen came from — Swap is a tab on
      the account, not a page you navigate to — and that answer is worth keeping.
      What it cannot do is be the FIRST thing this chapter shows, because the
-     chapter directly above it is the account: scrolling from 02 to 03 landed on
-     the screen just left behind, and the tour looked like it had not advanced.
+     tour used to put the account chapter directly above it: scrolling from 02
+     to 03 landed on the screen just left behind, and it looked stuck. And on
+     the page as it is now this is the FIRST screen anyone sees, so it should
+     open on the thing the page is selling — a trade into PEARL.
 
      So the establishing shot moves to pass two. Arrive at the chapter and the
      swap form is already up, which is what the chapter is named for; stay

@@ -24,6 +24,7 @@ export const TOKENS: Token[] = [
   { sym: 'BTC',    name: 'Bitcoin',       price: 68420.1,  color: '#F7931A', ink: '#fff', chain: 'Bitcoin',  dp: 5 },
   { sym: 'SOL',    name: 'Solana',        price: 208.42,   color: '#F2F2F1', ink: '#000', chain: 'Solana',   dp: 3 },
   { sym: 'NEAR',   name: 'NEAR',          price: 1.73,     color: '#00EC97', ink: '#000', chain: 'NEAR',     dp: 2, bal: 612 },
+  { sym: 'PEARL',  name: 'Pearl',         price: 1.80,     color: '#f0c3ae', ink: '#080807', chain: 'Pearl', dp: 2 },
   { sym: 'ZEC',    name: 'Zcash',         price: 503.24,   color: '#F4B728', ink: '#000', chain: 'Zcash',    dp: 6, bal: 0 },
   { sym: 'ARB',    name: 'Arbitrum',      price: 1.08,     color: '#2D374B', ink: '#fff', chain: 'Arbitrum', dp: 2 },
   { sym: 'wstETH', name: 'Wrapped stETH', price: 3402.1,   color: '#00A3FF', ink: '#fff', chain: 'Ethereum', dp: 4 },
@@ -153,4 +154,10 @@ export const TOK_ICONS: Record<string, TokenGlyph> = {
      of being cropped by it; see the note on the type above for why the round
      clip was eating it and why no stylesheet could have stopped that. */
   AAPL: { img: '/logos/tokens/aapl.webp', bare: true },
+  /* DRAWN FOR THIS PAGE, NOT COPIED FROM THE SET — near-intents has no Pearl
+     file. It is the house shape anyway: a full-bleed #080807 disc on a 600
+     grid, with the logotype's own "P" (stem, outlined bowl, and the blush
+     half-disc) scaled into it, so it needs neither `spin` nor `bare`. Like the
+     rest it carries no `<style>` block, and it is served as an `<img>`. */
+  PEARL: { img: '/logos/tokens/pearl.svg' },
 };

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useEffect, useRef, type ComponentType, type ReactNode } from 'react';
 import { live, press } from '@/components/stage/phone/ui/tap';
-import { CandlesIcon, HomeIcon, MenuIcon, SwapIcon, WalletIcon, type IconProps } from '@/components/demo/icons';
+import { EarnIcon, HomeIcon, MenuIcon, SwapIcon, WalletIcon, type IconProps } from '@/components/demo/icons';
 import type { Deck } from './deck';
 import type { DemoFlow } from './flow';
 
@@ -171,7 +171,7 @@ export function StatusBar({ time = '12:03' }: { time?: string }) {
   );
 }
 
-export type TabName = 'Home' | 'Assets' | 'Swap' | 'Perps' | 'Menu';
+export type TabName = 'Home' | 'Assets' | 'Swap' | 'Earn' | 'Menu';
 
 /**
  * THE FIVE TAB GLYPHS, from the phone's icon set — see `demo/icons.tsx`.
@@ -194,11 +194,14 @@ const TAB_ICONS: Record<TabName, ComponentType<IconProps>> = {
   Home: HomeIcon,
   Assets: WalletIcon,
   Swap: SwapIcon,
-  Perps: CandlesIcon,
+  Earn: EarnIcon,
   Menu: MenuIcon,
 };
 
-const TABS: TabName[] = ['Home', 'Assets', 'Swap', 'Perps', 'Menu'];
+/* EARN WHERE PERPS WAS. The app's bar carries Perps fourth; this page is about
+   PEARL, near.com offers no PEARL perps, and a Perps tab under the swap is the
+   one place the device would still be selling a product the page is not. */
+const TABS: TabName[] = ['Home', 'Assets', 'Swap', 'Earn', 'Menu'];
 
 /**
  * `on` may be a tab, or `'None'` — which is what the bar looks like on a screen

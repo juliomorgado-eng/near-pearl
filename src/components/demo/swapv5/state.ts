@@ -5,20 +5,20 @@ import { HOLDINGS, type Holding } from '@/components/demo/ownv5/state';
 /**
  * SWAP, THE SHORT CUT — the figures and the machine
  * ==================================================================
- * A FOURTH machine, and its own for the same reason `demo/perpsv5` needed one.
+ * Its own machine rather than a re-grouping of an older one.
  * `demo/swap/state.ts` is the whole recording: three screens (account, assets,
  * swap), a confidential/main balance split, a token-actions sheet, and a vault
  * deposit running alongside the swap as a second story. It bakes `from: USDT`
  * into its initial state and derives its wallet from `START`.
  *
- * This cut is one screen and one gesture: the swap page, already loaded, with
- * Tether in the top field because the reader tapped it on the home screen. Cutting
+ * This cut is one screen and one gesture: the swap page, reached from the tab
+ * bar, with USD Coin in the top field and PEARL as what it buys. Cutting
  * the long machine down to that would have meant carrying four screens' worth
  * of fields through a flow that shows one.
  *
  * WHAT IT KEEPS is the shape every machine here keeps — named pure
  * transitions, guards that refuse, a `tap` that says which control was pressed
- * — so `pnpm check:flows` walks it exactly as it walks the other four.
+ * — so `pnpm check:flows` walks it exactly as it walks the account's.
  */
 
 /* ---- the figures ------------------------------------------------------ */
@@ -27,43 +27,43 @@ import { HOLDINGS, type Holding } from '@/components/demo/ownv5/state';
  * THE SOURCE IS ALREADY CHOSEN, and that is the first thing this screen says.
  *
  * The screen does not open on an empty form — it opens on one that already
- * knows half of what it needs, because the reader answered that half by
- * tapping an asset a screen ago. IT IS TETHER BECAUSE THAT IS WHAT THE WALLET
- * HOLDS: the account chapter ends on the Tether row's Swap action, and a form
- * offering to spend a Bitcoin that is not in the assets list is the two
- * chapters contradicting each other on the same scroll.
+ * knows half of what it needs. IT IS USD COIN BECAUSE THAT IS WHAT THE WALLET
+ * HOLDS TO SPEND: 18,400 of it on the account's own assets list, and dollars
+ * are what a reader buying a newly listed coin reaches for. A form offering to
+ * spend something that is not in the assets list is the two screens
+ * contradicting each other on the same scroll.
  */
-export const FROM = 'BTC';
+export const FROM = 'USDC';
 
-/** the wallet's whole Bitcoin position, from the account chapter's own list */
+/** the wallet's whole USD Coin position, from the account chapter's own list */
 export const FROM_BAL = HOLDINGS.find((h) => h.sym === FROM)!.qty;
 
 /**
- * A QUARTER OF IT, AND IT IS TYPED.
+ * PART OF IT, AND IT IS TYPED.
  *
- * The previous cut spent a whole Tether position and got it into the field with
+ * An earlier cut spent a whole Tether position and got it into the field with
  * one tap on the balance, because `6635.616976` is not a figure anyone enters
- * by hand. `0.25` is: it is four characters, it is a FRACTION of the holding
- * rather than all of it, and `Use max` is the wrong gesture for a fraction.
- * So the keypad is back for this one, and the field fills a glyph at a time
- * the way `Typed` fills it either way.
+ * by hand. `5000` is: it is four characters — the same four keystrokes the
+ * `0.25` of Bitcoin before it took, so the scene's length did not move — it is
+ * a FRACTION of the holding rather than all of it, and `Use max` is the wrong
+ * gesture for a fraction. At $1.80 it buys 2,777.78 PEARL.
  */
-export const AMOUNT = '0.25';
+export const AMOUNT = '5000';
 
 /**
  * WHERE IT ENDS UP, which is not where it starts.
  *
- * The screen opens with USD Coin already in the destination — the app holds the
+ * The screen opens with NEAR already in the destination — the app holds the
  * last pair rather than an empty field, and the reference frame shows exactly
- * that. What the reader is here for is Zcash, which is nine rows down.
- * The picker then does what this chapter is for: it opens over a destination
+ * that. What the reader is here for is PEARL, which is a flick down the
+ * catalogue. The picker then does what this chapter is for: it opens over a destination
  * that is already valid, which is the honest version of the argument. A picker
  * you only ever see because the form cannot proceed without it is a required
  * step; one you open with a working answer already in the field is a choice,
  * and "swap anything, anywhere" is a claim about choice.
  */
-export const START_TO = 'USDC';
-export const TO = 'ZEC';
+export const START_TO = 'NEAR';
+export const TO = 'PEARL';
 
 /**
  * The spread the quote is shown net of. `demo/swap/state.ts` reads 0.50% off
@@ -81,15 +81,19 @@ export const SLIPPAGE = 0.005;
  * both sides. `quoteOf` still carries that idea and this table is where a
  * measured spread goes.
  *
- * IT IS EMPTY, AND THAT IS THE POINT. This cut swaps Bitcoin into Zcash and no
+ * IT IS EMPTY, AND THAT IS THE POINT. This cut swaps USD Coin into PEARL and no
  * frame anywhere quotes that pair, so there is no spread to read — the two
  * dollar figures are equal, which is honest, and a number invented to make
  * them differ would be a spread pretending to have been observed.
  */
 export const QUOTE: Record<string, number> = {};
 
-/** the settlement, read off `rec-Swap.MP4` */
-export const SWAP_STEPS = ['Finding best price', 'Executing trade', 'Trade complete'];
+/**
+ * the settlement, read off `rec-Swap.MP4` — except the last row, which says
+ * what the app's confidential-by-default swap actually did rather than only
+ * that it finished
+ */
+export const SWAP_STEPS = ['Finding best price', 'Executing trade', 'Swapped confidentially'];
 
 /* ---- what is actually in the picker ---------------------------------- */
 
@@ -103,7 +107,7 @@ export const SWAP_STEPS = ['Finding best price', 'Executing trade', 'Trade compl
  * has a lot of assets; this says the app knows which ones are yours.
  *
  * YOUR TOKENS IS THE ACCOUNT CHAPTER'S OWN WALLET, imported rather than
- * retyped. It is the same three holdings the assets screen lists two faces
+ * retyped. It is the same five holdings the assets screen lists two faces
  * earlier on the same scroll, and a picker quoting different quantities than
  * the screen the reader just came from is the kind of contradiction that only
  * ever gets noticed by the person you were trying to convince.
@@ -116,8 +120,12 @@ const MINE = new Set(HOLDINGS.map((h) => h.sym));
  * `Your tokens` is the wallet and `More tokens` is everything else, so the head
  * of the second list has to skip the five the first one has. It listed ZEC,
  * BTC and NEAR before now, from a wallet that held none of them.
+ *
+ * PEARL IS FOURTH, and that is placement rather than rank — see the note in
+ * catalogue.ts. Fourth puts it at row 11 of the sheet, 572px down: below the
+ * ~470px the sheet shows when it opens, so the reader has to go and find it.
  */
-const HEAD_ORDER = ['ETH', 'XRP', 'SOL', 'BNB', 'DOGE', 'ADA', 'TRX', 'LINK', 'AVAX']
+const HEAD_ORDER = ['ETH', 'XRP', 'SOL', 'PEARL', 'BNB', 'DOGE', 'ADA', 'TRX', 'LINK', 'AVAX']
   .filter((sym) => !MINE.has(sym));
 const MORE: Asset[] = [
   ...HEAD_ORDER.map((sym) => CATALOGUE.find((a) => a.sym === sym)!),
@@ -150,37 +158,33 @@ export const PICK_TOTAL = pickOffset(PICK_ROWS.length);
 /**
  * HOW FAR THE PICKER TRAVELS, as indices into PICK_ROWS — AND WHERE IT ENDS UP.
  *
- * Down past the wallet, into the catalogue, and then BACK TO THE TOP, because
- * the token this trade is for turned out to be one the account already holds.
- * Zcash is the fourth row of `Your tokens`, four rows from where the sheet
- * opened, and the scroll goes looking anyway — which is the truer version of
- * the argument this scene was always making. It used to end nine rows down on
- * NEAR, from a wallet that held no NEAR; now the list is long, the reader sees
- * that it is long, and the answer was in their own five the whole time.
+ * Down past the wallet, past PEARL, and then a short way BACK, so the token
+ * this trade is for comes to rest at the top of the sheet. The rows are the
+ * `Your tokens` heading, the five holdings, the tab row, `More tokens` (row 7),
+ * and then the catalogue — ETH, XRP, SOL, and PEARL at row 11.
  *
- * TWO STOPS, AND IT WAS THREE. `[5, 9, 0]` rested on the wallet, stepped into
- * the catalogue, then came home — three moves, and on screen they read as
- * three cuts rather than as one person scrolling. Each was short (266px, then
- * 198), each was over in 380ms, and the eye had barely started following one
- * before the next began.
+ * TWO STOPS, AND THEY ARE ONE GESTURE. An older `[5, 9, 0]` rested on the
+ * wallet, stepped into the catalogue, then came home — three moves that read on
+ * screen as three cuts rather than as one person scrolling. One throw and one
+ * correction is the shape a thumb actually makes: a flick that overshoots, a
+ * look, and a nudge back to the thing it went past.
  *
- * One move down and one move back is the same argument in the shape a thumb
- * actually makes: a flick, a look, and a flick back. It goes to 8 rather than
- * 9 so the `More tokens` heading lands at the top — the reader is not just
- * further down a list, they are in a different and much longer section of it,
- * which is the fact this scene exists to deliver. And the wallet is still
- * rested on: it is what the sheet OPENS on, held for the 1,200ms before
- * anything moves, so it no longer needs a stop of its own to be seen.
+ * 15, THEN 11. The throw is 788px — the wallet and the first half of the
+ * catalogue gone in one move, which is the fact this scene exists to deliver:
+ * the list is long. The nudge back is 216px, four rows, and it lands PEARL
+ * directly under the top edge where the press that follows can be seen. The
+ * wallet is still read: it is what the sheet OPENS on, held for the 1,200ms
+ * before anything moves.
  *
- * The travel itself is 620ms now against 380 — see `.swlist` in
- * 26-demo-swap-v5.css. A longer list travelled in one go has to take longer,
- * or "smoother" just means the same jump with fewer of them.
+ * The travel itself is 620ms — see `.swlist` in 26-demo-swap-v5.css. A longer
+ * list travelled in one go has to take longer, or "smoother" just means the
+ * same jump with fewer of them.
  *
- * `check:flows` walks these as ordinary beats; that ZEC is actually on screen
+ * `check:flows` walks these as ordinary beats; that PEARL is actually on screen
  * at the last one is checked against the rendered device rather than against
  * this file.
  */
-export const STOPS = [8, 0];
+export const STOPS = [15, 11];
 
 export type SV = {
   /**
@@ -239,14 +243,14 @@ export const initial: SV = {
 
 /* ---- derived, all of it ---------------------------------------------- */
 
-/* the source's own price, whatever the source is — it was hard-wired to the
-   perps mark for as long as the source could only be Bitcoin */
+/* the source's own price, whatever the source is — it was hard-wired to one
+   coin's mark for as long as the source could only be Bitcoin */
 export const fromPrice = () => assetOf(FROM).price ?? 1;
 export const toPrice = (s: SV) => (s.to ? assetOf(s.to).price ?? 1 : 0);
 
 /**
  * what this trade fills at. Falls back to spot for the pairs this cut has no
- * quote for — the resting USDT/ZEC opening frame is one of them, and a made-up
+ * quote for — the resting USDC/NEAR opening frame is one of them, and a made-up
  * spread on a pair with no frame behind it is a number pretending to be read.
  */
 export const quoteOf = (s: SV) => (s.to ? QUOTE[s.to] ?? toPrice(s) : 0);
@@ -268,9 +272,10 @@ export const least = (s: SV) => out(s) * (1 - SLIPPAGE);
  * which side it is quoted from, it is that the figure is a WHOLE NUMBER rather
  * than a fraction.
  *
- * On Bitcoin into Zcash the readable direction flips. `1 ZEC = 0.01033 BTC` is
- * the fraction and `1 BTC = 96.7649 ZEC` is the price — and on Bitcoin into a
- * dollar the old rule printed `1 USDC = 0.00001 BTC`, five decimals of nothing.
+ * On dollars into PEARL it lands the way a reader wants: `1 PEARL = 1.80 USDC`
+ * is the price, and `1 USDC = 0.555555 PEARL` is the fraction. It flips the
+ * other way on a coin worth more than the one spent — Bitcoin into a dollar
+ * printed `1 USDC = 0.00001 BTC` under the old rule, five decimals of nothing.
  * Quoting from whichever side lands above one gives the frame's own answer on
  * the frame's own pair and a legible one everywhere else.
  */
@@ -287,7 +292,7 @@ export const rateOf = (s: SV) => {
  * WHAT THE WALLET HOLDS OF A SYMBOL — the right-hand side of a field's sub-row.
  *
  * Both fields print a balance there, and the destination's is usually ZERO:
- * `0 NEAR` under the amount you are about to receive is the app saying you do
+ * `0 PEARL` under the amount you are about to receive is the app saying you do
  * not have any yet, which is the whole reason you are on this screen. The field
  * used to repeat the output amount there instead, which said nothing twice.
  *
@@ -389,7 +394,7 @@ export const actions: Record<SVAction, Act<SV>> = {
    *
    * The button said Review and then settled, which is the one thing a button
    * named after a confirmation step must not do — on a screen whose subject is
-   * moving six and a half thousand dollars, the sheet between the form and the
+   * moving five thousand dollars, the sheet between the form and the
    * settlement is not ceremony, it is where the figures are stated at the
    * precision the form rounds away.
    */
@@ -405,8 +410,7 @@ export const actions: Record<SVAction, Act<SV>> = {
   /**
    * THE CHECKLIST TICKS, AND STOPS WHEN THERE IS NOTHING LEFT TO TICK.
    *
-   * Same shape as `/demo/perps-v5`'s `ostep`, and for the same reason it was
-   * fixed there: it runs one PAST the last row so every row reads as done
+   * It runs one PAST the last row so every row reads as done
    * while the sheet is still up. A settlement whose last line is still
    * spinning when the screen changes is a settlement nobody saw finish.
    */

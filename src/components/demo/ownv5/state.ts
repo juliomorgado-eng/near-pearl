@@ -1,5 +1,4 @@
 import type { Act } from '@/components/stage/phone/flows/machine';
-import { vaultOf } from '@/components/demo/earnv5/state';
 import { PRICE } from '@/lib/prices';
 
 /**
@@ -88,26 +87,22 @@ export const HOLDINGS: Holding[] = [
 ];
 
 /**
- * THE OTHER TWO BALANCES ON THE HOME, AND THEY ARE THEIR OWN ACCOUNTS.
+ * THE OTHER BALANCE ON THE HOME, AND IT IS ITS OWN ACCOUNT.
  *
- * Perps and Earn are not slices of the assets list — they are separate
- * balances, and only the home's total puts the three together. That is what
- * lets 20,000 NEAR be staked under Earn while the assets list still shows all
- * 25,000: they are not the same NEAR twice, they are two accounts.
+ * Earn is not a slice of the assets list — it is a separate balance, and only
+ * the home's total puts the two together. That is what lets 20,000 NEAR be
+ * staked under Earn while the assets list still shows all 25,000: they are not
+ * the same NEAR twice, they are two accounts.
  *
- * PERPS IS IMPORTED BY `/demo/perps-v5` RATHER THAN RETYPED THERE. That screen
- * carried its own `PERPS_BAL` of 11,428.61 while this one said 1,053.89 — two
- * figures for one account, on two faces of the same scroll. It is one number
- * now, and it is large enough to open the position the perps chapter opens:
- * $20,000 of margin against $6,000 already committed needs more than the
- * $5,428.61 that was free.
- */
-export const PERPS_BAL = 28400;
-/**
- * AND EARN'S, WHICH IS THE SUM OF WHAT THAT CHAPTER HOLDS: $8,650 in Gauntlet,
- * $3,240 in Taler and 20,000 NEAR staked at $1.84. Written out rather than
- * imported, because importing it would close the cycle this file spent two
- * passes opening — `earnv5/state.ts` already needs the wallet from here.
+ * PERPS IS GONE FROM THE HOME. It was a third balance, $28,400 of margin, kept
+ * here so the perps chapter could import it rather than retype it. That
+ * chapter is gone — near.com offers no PEARL perps, and this page is about
+ * PEARL — and a row offering 50x leverage on a page with no perps on it is the
+ * home promising a product the tour never shows.
+ *
+ * EARN'S IS THE SUM OF WHAT THE OLD EARN CHAPTER HELD: $8,650 in Gauntlet,
+ * $3,240 in Taler and 20,000 NEAR staked at $1.84. That chapter is gone too;
+ * the figures are the account's, so they stay.
  */
 export const EARN_BAL = 8650 + 3240 + 20000 * 1.84;
 
@@ -124,8 +119,8 @@ export const value = (h: Holding) => h.qty * (PRICE[h.sym] ?? 0);
  * and the machinery that told them apart is gone.
  */
 export const crypto = () => HOLDINGS.reduce((t, h) => t + value(h), 0);
-/** the home's headline is the sum of its three accounts, always */
-export const total = () => crypto() + PERPS_BAL + EARN_BAL;
+/** the home's headline is the sum of its accounts, always */
+export const total = () => crypto() + EARN_BAL;
 
 /**
  * WHAT EARNS, AND AT WHAT RATE — the pill on the right of a row.
@@ -136,18 +131,13 @@ export const total = () => crypto() + PERPS_BAL + EARN_BAL;
  * rather than a vault, and the other three have nothing to be put into, so a
  * pill offering one would be the demo inventing a product.
  *
- * THE RATE IS IMPORTED, NOT TYPED. It is Gauntlet's, the same number the Earn
- * chapter prints two faces later, and two screens quoting one rate at each
- * other is exactly the pair that drifts.
+ * THE RATE IS GAUNTLET'S, 6.00%, written out here. It was imported from the
+ * earn chapter so that two screens could not quote one rate at each other;
+ * that chapter is gone, and with it the second screen.
  */
 const EARNABLE = new Set(['USDC']);
-/**
- * A FUNCTION RATHER THAN A TABLE, and for the same reason `usdcAvail` in the
- * earn chapter is one: the two files import each other, and a table built at
- * module scope makes each of them need the other finished before it can start.
- */
-export const earnsOn = (sym: string) =>
-  (EARNABLE.has(sym) ? vaultOf('gauntlet').apr.replace(/\.00%$/, '%') : undefined);
+const GAUNTLET_APR = '6%';
+export const earnsOn = (sym: string) => (EARNABLE.has(sym) ? GAUNTLET_APR : undefined);
 
 /* WITHOUT `MOVE TO MAIN`, which was an action for an app that had two
    balances. There is one now. */

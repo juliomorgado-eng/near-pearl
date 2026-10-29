@@ -2,30 +2,40 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * FIVE QUESTIONS, PERPS-SPECIFIC — the AEO/GEO core. Both the visible
+ * SEVEN QUESTIONS, PEARL-SPECIFIC — the AEO/GEO core. Both the visible
  * accordion and the FAQPage JSON-LD below read from this one array, so the
- * two can never say something different from each other.
+ * two can never say something different from each other. Keep the Proof of
+ * Useful Work answers hedged ("designed to"), and keep the PRL disambiguation:
+ * it is the one answer that stops a reader buying the wrong token.
  */
 const ITEMS: { q: string; a: string }[] = [
   {
-    q: 'What are perps?',
-    a: "Perpetual futures are contracts that let you take a leveraged long or short position on an asset's price without an expiry date. On near.com, you trade 50+ perp markets with up to 40x leverage through a direct integration of Hyperliquid.",
+    q: 'What is Pearl?',
+    a: 'Pearl is a Layer 1 blockchain built by Pearl Research, live on mainnet since April 27, 2026. PEARL is its native asset, with a 2.1B hard cap, no pre-mine or investor allocation (as reported by the project), roughly 3-minute blocks and no halvings.',
   },
   {
-    q: 'How do I fund a perps position?',
-    a: "Fund from any asset on any chain in your account. NEAR Intents auto-swaps your assets to the margin currency, so you don't have to bridge or move funds to a separate venue first.",
+    q: 'What is Proof of Useful Work?',
+    a: "Pearl's consensus. GPU miners run matrix multiplication, the core math of AI training and inference, and the protocol is designed so that the same work produces the proofs that secure the chain and issue PEARL.",
   },
   {
-    q: 'What leverage can I trade with?',
-    a: 'Up to 40x leverage across 50+ markets. Higher leverage increases both potential gains and potential losses.',
+    q: 'Is PEARL the same as PRL?',
+    a: 'Partly. NEAR Intents lists the Pearl network\'s asset under the symbol PRL. But the PRL listed on exchanges such as Coinbase and KuCoin is a different, unrelated token (Perle). On near.com, look for PEARL on the Pearl network.',
   },
   {
-    q: 'Do I control my assets?',
-    a: 'Yes. Funding and settlement are signed on your device and route through NEAR Intents. Your assets stay in your control until you open a position.',
+    q: 'How do I buy PEARL on near.com?',
+    a: 'Sign in with a passkey or wallet, pick PEARL and choose what to pay with: any supported asset, on any supported chain. NEAR Intents finds the route. No bridge to pick, no wrapped token to manage.',
   },
   {
-    q: 'Is my position private?',
-    a: 'near.com provides you with a dedicated account for trading perpetuals on the Hyperliquid platform. Deposits and withdrawals to and from that account are confidential.',
+    q: 'Are my swaps private?',
+    a: 'Yes. near.com has been confidential by default since September, so your PEARL swaps happen out of public view and nobody can trace the trade back to you.',
+  },
+  {
+    q: 'Can my wallet or app offer PEARL?',
+    a: 'Yes. The Pearl network is on the NEAR Intents 1Click API. If you already use NEAR Intents, PEARL cross-chain swaps come through the integration you already have. One integration, not a new project.',
+  },
+  {
+    q: 'How do I turn PEARL into stablecoins?',
+    a: 'Swap PEARL for a stablecoin on near.com and choose the chain you want it on, such as the one your bills are paid from. The swap is confidential by default.',
   },
 ];
 

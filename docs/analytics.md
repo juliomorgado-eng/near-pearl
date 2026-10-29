@@ -3,6 +3,8 @@
 Self-hosted Umami. Cookieless, so the page owes nobody a consent banner.
 Script in `app/layout.tsx`; everything else is `lib/analytics.ts`,
 `lib/domWatch.ts` and the three hooks mounted by `components/Analytics.tsx`.
+The website id reads `NEXT_PUBLIC_UMAMI_WEBSITE_ID` and falls back to the
+perps landing's id — PEARL still needs its own.
 
 ## Events
 
@@ -29,7 +31,7 @@ lists of the same shape.
 ## Where a source comes from
 
 `utm_campaign` → `utm_source` → the path → the `acq_src` cookie (90 days,
-last touch wins). `next.config.ts` rewrites `/perps` and `/r/:source` to `/`,
+last touch wins). `next.config.ts` rewrites `/pearl` and `/r/:source` to `/`,
 so `location.pathname` still names the door — a redirect would have erased it.
 
 A bare path is an allowlist (`SOURCE_PATHS`) kept in step with those rewrites;
@@ -54,7 +56,7 @@ static route into one rendered per request.
 
 ## Open: the ref carries the door, not the button
 
-`ref=therollup-nearperps` says which door they came through. It does not say
+`ref=therollup-nearpearl` says which door they came through. It does not say
 which of the eight buttons they pressed, so near.com can report accounts per
 campaign but not per position.
 
@@ -66,14 +68,14 @@ click counts would point at the worse button.
 
 Two shapes would close it:
 
-- `ref=therollup-nearperps-final` — one field, but eight values per campaign
+- `ref=therollup-nearpearl-final` — one field, but eight values per campaign
   where their report currently has one clean row.
-- `ref=therollup-nearperps&ref_pos=final` — leaves the working field alone,
+- `ref=therollup-nearpearl&ref_pos=final` — leaves the working field alone,
   needs their side to store a second parameter.
 
 **Why it is not done.** The field is theirs, on their domain, in their system.
 If their pipeline validates `ref` against known values, an unregistered
-`therollup-nearperps-hero` drops silently — and that does not merely fail to
+`therollup-nearpearl-hero` drops silently — and that does not merely fail to
 add the position, it breaks the attribution that works today, with nothing
 reporting an error.
 

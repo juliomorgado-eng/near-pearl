@@ -68,7 +68,7 @@ const STEPS: Step<OW, OWAction>[] = [
   {
     id: 'home', ch: 'home',
     title: 'One account, three balances',
-    note: 'Crypto, perps and earn on one screen, and a total that is the sum of the three rows under it.',
+    note: 'Crypto and earn on one screen, and a total that is the sum of the rows under it.',
     beats: [
       { ms: 2380 },
       /* THE PRESS, AND IT COMES OUT OF THE HOLD RATHER THAN ADDING TO IT.

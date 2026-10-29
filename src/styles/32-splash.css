@@ -57,11 +57,11 @@ html[data-splash="again"] { --sp-run: 1800ms; --sp-step: 120ms }
   top: 0; left: 0; right: 0;
   height: 100vh;
   z-index: 1000;
-  /* the literal from 07-stage.css:50, not a token: this page's greens have
-     never been tokens (02-tokens.css declares none of them, and the theme's
-     only token is --hero-ink), so a token invented here would be the only one
-     and the other four sites would still disagree with it. */
-  background: linear-gradient(150deg, #5EFAA7 0%, #5EFAA7 50%, #16B862 100%);
+  /* THE SAME TOKENS AS `.gcss` (07-stage.css), lustre and all. The field is
+     a token now (02-tokens.css, PEARL), so the curtain and the hero cannot
+     disagree — and they must not: the sheet's fade is invisible only because
+     it is the same surface as the field underneath it. */
+  background: var(--pearl-lustre), var(--pearl-field);
   display: grid;
   place-items: center;
   /* TWO ANIMATIONS, AND THE SECOND ONE IS THE SAFETY, because the resting
@@ -207,7 +207,8 @@ html[data-splash="again"] { --sp-run: 1800ms; --sp-step: 120ms }
   left: 50%; top: 0; bottom: 0;
   width: 1px;
   margin-left: -.5px;
-  background: var(--hero-ink);
+  /* PEARL: the candles are deep teal — 5.1:1 on the paper they draw over */
+  background: var(--pearl-teal);
 }
 
 /* the body: 62% of the column slot, which is `cw * 0.62` from Chart.tsx:806
@@ -221,7 +222,7 @@ html[data-splash="again"] { --sp-run: 1800ms; --sp-step: 120ms }
   width: 62%;
   bottom: var(--bb);
   height: max(2px, var(--bh));
-  background: var(--hero-ink);
+  background: var(--pearl-teal);
 }
 
 /* ---- 4. THE TWO DOWN CANDLES ---------------------------------------------
@@ -238,7 +239,7 @@ html[data-splash="again"] { --sp-run: 1800ms; --sp-step: 120ms }
 .spc.dn { transform-origin: top }
 .spc.dn::after {
   background: none;
-  border: 1.5px solid var(--hero-ink);
+  border: 1.5px solid var(--pearl-teal);
 }
 
 /* ---- 5. THE EYEBROW -------------------------------------------------------

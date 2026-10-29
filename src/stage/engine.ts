@@ -595,7 +595,7 @@ export function startStageEngine(): () => void {
        is still dark when the shrink finishes after the last scroll */
     const isLight = shrinkT > 0.3 || pastStage;
     nav!.classList.toggle('on-light', isLight);
-    themeMeta?.setAttribute('content', isLight ? '#F3F2EF' : '#000000');
+    themeMeta?.setAttribute('content', isLight ? '#080807' : '#F0EFEA');
 
     /* the card stage clears as the plate closes in. The shell is visible from
        the first paint (the peek), so its opacity is gated ONLY by the plate

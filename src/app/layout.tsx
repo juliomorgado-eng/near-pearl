@@ -24,10 +24,10 @@ import { Splash } from '@/components/Splash';
  * a partner referral on every LOGIN url; that is all gone, and so is its half
  * of this metadata.
  */
-const TITLE = 'near.com — Trade perps, confidentially';
+const TITLE = 'near.com — Trade PEARL, confidentially';
 const DESCRIPTION =
-  'Trade perps, confidentially. Fund from any chain, any asset you already ' +
-  'hold. All from near.com. Nobody can trace your position back to you.';
+  'Trade PEARL, confidentially. Swap in from any chain, any asset you already ' +
+  'hold. All from near.com. Nobody can trace the trade back to you.';
 
 export const metadata: Metadata = {
   /* WITHOUT THIS, `opengraph-image.tsx`'S OUTPUT RESOLVES TO A RELATIVE URL
@@ -63,14 +63,14 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
   },
-  other: { 'build-version': 'v08' },
+  other: { 'build-version': 'pearl-v01' },
 };
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   /* the engine flips this to the light paper as the closing plate lands */
-  themeColor: '#000000',
+  themeColor: '#F0EFEA',
 };
 
 /* THE SESSION GATE FOR THE CURTAIN, and it has to be a parsing-time script.
@@ -199,7 +199,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script
           defer
           src="https://umami-production-c53b.up.railway.app/script.js"
-          data-website-id="a41381d9-179b-4a9b-8e28-5d759c4f8fcd"
+          /* PENDING: PEARL needs its own Umami website id. Until it is set
+             in NEXT_PUBLIC_UMAMI_WEBSITE_ID this falls back to the perps
+             landing's id, and the two campaigns share one dashboard. */
+          data-website-id={
+            process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID ??
+            'a41381d9-179b-4a9b-8e28-5d759c4f8fcd'
+          }
           data-domains={
             process.env.NEXT_PUBLIC_ANALYTICS_DOMAINS ??
             process.env.VERCEL_PROJECT_PRODUCTION_URL ??

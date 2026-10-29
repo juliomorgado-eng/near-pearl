@@ -8,9 +8,10 @@ import '@/styles/39-not-found.css';
  *
  * It borrows the hero rather than inventing a look: the same green field, the
  * same ink, near's mark as the eyebrow, and a line that answers the hero's
- * last one — "Nobody can trace your position back to you" becomes a page
- * nobody can trace. The chart underneath is the curtain's candles run the
- * other way: a position that went to zero, which is what a dead link is.
+ * last one — "Nobody can trace the trade back to you" becomes a page nobody
+ * can trace, and a missing page is a block that was never mined. The chart
+ * underneath is the curtain's candles run the other way down to zero, which
+ * is what a dead link is.
  *
  * TWO WAYS OUT, AND HOME IS THE FIRST. Someone on a broken link wanted a page,
  * not the signup; the campaign's ask is the second button. It carries
@@ -51,7 +52,7 @@ export default function NotFound() {
       <div className="nf-inner">
         <p className="nf-tag">
           <span className="nf-dot" aria-hidden="true" />
-          Error 404 · Position not found
+          Error 404 · Block not found
         </p>
 
         <h1 className="display nf-title">
@@ -60,8 +61,8 @@ export default function NotFound() {
         </h1>
 
         <p className="nf-body">
-          The link may be old, or the page has moved. Your funds are fine —
-          this is just a url that goes nowhere.
+          The link may be old, or the page has moved. Your PEARL is fine —
+          no miner has found this block, and no one will.
         </p>
 
         <div className="nf-ctas">

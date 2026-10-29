@@ -29,9 +29,6 @@
      described a family the page no longer loads. `--w-roman` is the one number
      left of it, and it is Montreal's. */
   --w-roman:500;
-  /* social-proof marquee: gap between quote cards, and travel speed in px/sec */
-  --mgap:14px;
-  --mspeed:42;
   /* the light panel's bottom corner radius. The final CTA starts full-bleed and
      has to match it exactly, so it lives here rather than inline. */
   --lb-rad:clamp(24px,3vw,44px);
@@ -66,6 +63,34 @@
 
   --near-green:#00EC97; --near-black:#000;
   --green-300:#3FEFAD; --green-500:#00C880; --green-600:#00A268; --green-deep:#0A2E26;
+
+  /* PEARL — the landing's palette. `--near-green` and its ramp above stay
+     exactly as they were: they are near.com's own brand colour and the in-phone
+     app (24–29, demo/app/palette.ts) still draws with them, because the device
+     must look like the real app. Everything OUTSIDE the device — the field, the
+     asks, the dark zone, the footer, focus and selection — draws from here.
+
+     The field is paper easing to blush on the old 150deg axis, with the paper
+     held through 45% (the green held through 50%; blush is lighter than the
+     old dark end, so the sweep can start a little earlier and still read as a
+     corner). The lustre is two static radials over it — a white sheen in the
+     upper right and a cool teal breath in the lower left — the way a pearl
+     carries one warm and one cool reflection. No blur, no animation: it is
+     paint, composited once. */
+  --pearl-canvas:#080807; --pearl-surface:#100f0e; --pearl-surface-2:#171513;
+  --pearl-cream:#f6f2ed; --pearl-muted:#b3afa8; --pearl-muted-2:#8c8880;
+  --pearl-paper:#F0EFEA;
+  --pearl-blush:#f0c3ae; --pearl-blush-hover:#e7b295;
+  --pearl-teal:#206e76; --pearl-teal-bright:#79c2bf;
+  --pearl-divider:rgba(246,242,237,.12); --pearl-divider-strong:rgba(246,242,237,.24);
+  --pearl-field:linear-gradient(150deg,#F0EFEA 0%,#F0EFEA 45%,#f0c3ae 100%);
+  --pearl-lustre:
+    radial-gradient(58% 52% at 74% 22%,rgba(255,255,255,.62) 0%,rgba(255,255,255,0) 72%),
+    radial-gradient(52% 46% at 14% 92%,rgba(121,194,191,.16) 0%,rgba(121,194,191,0) 70%);
+  --glow-pearl-sm:0 0 16px rgba(240,195,174,.45);
+  /* the focus ring: deep teal on the paper field (5.1:1 on #F0EFEA), re-pointed
+     at blush wherever the surface is dark (31-hero-green.css). */
+  --focus-ring:var(--pearl-teal);
 
   /* light zone — sampled from the near.com reference */
   --l-bg:#F3F2EF; --l-surface:#FFF; --l-gray:#E7E6E1; --l-gray-2:#DCDBD5;

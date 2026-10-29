@@ -11,7 +11,7 @@
  *
  *      ?utm_source=x     an explicit campaign tag, which is what the partner
  *                        redirect is asked to append
- *      /perps, /r/x      the path, which survives a link being copied, pasted
+ *      /pearl, /r/x      the path, which survives a link being copied, pasted
  *                        and stripped of its query by every "clean URL" tool
  *      the cookie        a previous visit in the last 90 days
  *
@@ -36,7 +36,7 @@ declare global {
  * BARE PATHS THAT MEAN A DOOR RATHER THAN A ROUTE. Every name here must have a
  * matching rewrite in `next.config.ts` or it is a 404 with a cookie on it.
  */
-const SOURCE_PATHS = new Set(['perps']);
+const SOURCE_PATHS = new Set(['pearl']);
 
 /** first-party, ours, and read by nothing but this file */
 export const SOURCE_COOKIE = 'acq_src';
@@ -90,7 +90,7 @@ function writeCookie(name: string, value: string) {
  *
  * A DOOR IS NOT ERASED ONCE IT IS READ. The url the reader arrives on is left
  * exactly as it came: Umami parses `utm_*` out of the pageview url it reports,
- * and `/r/nearperps` is the row that shows the door in its Pages report. An
+ * and `/r/nearpearl` is the row that shows the door in its Pages report. An
  * earlier version tidied the address bar here and paid for it three times over
  * — it raced Umami's own pageview, it stripped the tags Umami reads, and
  * Umami wraps `history.replaceState` to send a SECOND pageview whenever the
@@ -122,12 +122,12 @@ export function resolveSource(): Acquisition {
   try {
     const q = new URLSearchParams(location.search);
     /* the campaign is the more specific of the two when both are present:
-       `utm_source=newsletter&utm_campaign=perps-launch` should not collapse
+       `utm_source=newsletter&utm_campaign=pearl-launch` should not collapse
        every campaign from one source into a single bucket */
     src = clean(q.get('utm_campaign')) || clean(q.get('utm_source'));
 
     if (!src) {
-      /* THE PATH, AND IT IS STILL `/perps` HERE. `next.config.ts` rewrites
+      /* THE PATH, AND IT IS STILL `/pearl` HERE. `next.config.ts` rewrites
          these to `/` rather than redirecting, so the browser's url — and
          therefore `location.pathname` — is untouched. A redirect would have
          erased the signal before this line ever ran.

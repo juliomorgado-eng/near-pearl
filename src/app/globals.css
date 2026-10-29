@@ -41,7 +41,6 @@
 @import "../styles/25-home-app.css";
 @import "../styles/26-demo-swap-v5.css";
 @import "../styles/27-demo-own-v5.css";
-@import "../styles/28-demo-earn-v5.css";
 @import "../styles/29-account-home.css";
 @import "../styles/30-mobile-tour.css";
 @import "../styles/31-hero-green.css";
@@ -65,6 +64,7 @@
 /* @import "../styles/36-final-cta.css"; */
 @import "../styles/37-legal.css";
 @import "../styles/38-nav-lockup.css";
+@import "../styles/40-story.css";
 
 /* ============================================================
    TAILWIND v4 THEME BRIDGE
@@ -85,6 +85,17 @@
   --color-green-500: var(--green-500);
   --color-green-600: var(--green-600);
   --color-green-deep: var(--green-deep);
+
+  --color-pearl-canvas: var(--pearl-canvas);
+  --color-pearl-surface: var(--pearl-surface);
+  --color-pearl-surface-2: var(--pearl-surface-2);
+  --color-pearl-cream: var(--pearl-cream);
+  --color-pearl-muted: var(--pearl-muted);
+  --color-pearl-muted-2: var(--pearl-muted-2);
+  --color-pearl-paper: var(--pearl-paper);
+  --color-pearl-blush: var(--pearl-blush);
+  --color-pearl-teal: var(--pearl-teal);
+  --color-pearl-teal-bright: var(--pearl-teal-bright);
 
   --color-l-bg: var(--l-bg);
   --color-l-surface: var(--l-surface);

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { CARDS, CTA_URL, PERM_BODY, PERM_WORDS, PERPS_NOTE } from '@/lib/cards';
+import { CARDS, CTA_URL, PERM_BODY, PERM_WORDS, RISK_NOTE } from '@/lib/cards';
 import { CH_TITLES } from '@/lib/schedule';
 import { ChapterScreen } from './phone/AppDevice';
 
@@ -124,7 +124,7 @@ export function MobileTour() {
                   </a>
                 </div>
                 <p className="friction">No seed phrase. Ready in seconds.</p>
-                <p className="herolegal">{PERPS_NOTE}</p>
+                <p className="herolegal">{RISK_NOTE}</p>
               </div>
             )}
           </div>
@@ -151,7 +151,7 @@ export function MobileTour() {
           Start trading <span className="arw">&rarr;</span>
         </a>
         <p className="friction">No seed phrase. Ready in seconds.</p>
-        <p className="mdisc">{PERPS_NOTE}</p>
+        <p className="mdisc">{RISK_NOTE}</p>
       </section>
     </div>
   );
