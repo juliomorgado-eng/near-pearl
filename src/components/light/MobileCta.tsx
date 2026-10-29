@@ -1,0 +1,29 @@
+import { CTA_URL } from '@/lib/cards';
+
+/**
+ * The mobile sticky CTA. Revealed only once the hero has left the viewport, so
+ * it never competes with the hero button.
+ *
+ * The gate is the hero's own recede value, not an IntersectionObserver: the
+ * hero is absolutely positioned inside the sticky stage, so it never leaves the
+ * viewport and an observer on it would never fire. The engine toggles
+ * `.hero-gone` on <html> and manages the tabIndex here.
+ */
+export function MobileCta() {
+  return (
+    <div className="mobcta" id="mobcta" aria-hidden="true">
+      <a
+        className="btn btn-primary"
+        href={CTA_URL}
+        tabIndex={-1}
+        target="_blank"
+        rel="noopener"
+        data-umami-event="cta-click"
+        data-umami-event-pos="sticky"
+      >
+        Start trading
+      </a>
+      <span>No seed phrase.</span>
+    </div>
+  );
+}

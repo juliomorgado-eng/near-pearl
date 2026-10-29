@@ -1,0 +1,231 @@
+/* =========================================================================
+   THE PLATE GIVES UP AND HOLDS THE REAL DEVICE
+   -------------------------------------------------------------------------
+   SCOPED TO `.appmorph`, WHICH IS THE DECK AND NOT A ROUTE. It is what `/`,
+   `/guided` and `/live` all wear now; `/home-v2` is the one that does not.
+   The file was named for the route it was built on, back when that route was
+   the variant — the name is kept because the stylesheets are numbered and
+   renumbering them costs more than it explains.
+   -------------------------------------------------------------------------
+   `.morph` on this route is not a card. It keeps its id and every transform
+   the stage engine writes to it — `--card-y` (the peek), `--card-s` (the plate
+   shrink), `--card-pk`, `--card-o` — so the entry, the recede and the fade all
+   still happen to it. What it stops being is a SURFACE: no glass, no blur, no
+   border, no halo, no clipping. It is a carrier, and the object on the page is
+   `/demo/perps-v5`'s device at its own size.
+
+   WHY NOT COMPACT IT INTO THE PLATE. That was built first and thrown away.
+   `.cswap` gives 547px on a desktop and the device lays out 763, so fitting it
+   meant dropping the chrome, the time axis and the ticket's sheet, and
+   re-authoring the ticket as a composition — a different screen wearing the
+   same palette. The point of putting this screen on this page is to look at
+   THAT screen.
+
+   THE SCALE IS THE ONE 17-demo.css ALREADY USES, keyed to viewport height, for
+   the reason its own note gives: the device is drawn at its own size and only
+   shrinks when it cannot fit. Same ladder, same numbers, so the device on this
+   page and the device on `/demo/perps-v5` are the same size at any window.
+   ========================================================================= */
+
+.morph.appmorph {
+  --k: 1;
+  /* the surface goes, all of it. An opaque device inside a blurred plate is a
+     phone drawn inside a phone; the device carries its own border and shadow
+     (its bezel is dropped further down this file), and 07-stage.css's halo was
+     lighting a card that is no longer there. */
+  background: none;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  /* AND THE CLIP GOES WITH IT. `.morph` is `overflow: hidden` so a card's
+     faces cannot escape it; here the thing inside is taller than the height
+     the engine writes, and clipping it would cut the device off at a line that
+     means nothing on this route. */
+  overflow: visible;
+  width: calc(352px * var(--k));
+  display: block;
+}
+/* the engine swaps the backdrop for a flat fill during a move (§3.48). There is
+   no backdrop here, so there is nothing to swap and nothing to match. */
+.morph.appmorph.moving { background: none }
+
+/* ---- AND THE DEVICE LOSES ITS BEZEL ---------------------------------
+   `.pdev`'s shadow is two rings: `0 40px 90px -30px` is depth, and
+   `0 0 0 8px #0b0d10` is a black band drawn around all four edges to read as
+   the body of a phone. On `/demo/*-v5` that band is doing a job — the device
+   is one object on a page of controls and a rail, and the band is what says it
+   is a device. On the home page it is a picture frame: the object is already
+   the argument, it sits on the field with nothing around it to be told apart
+   from, and on a narrow frame it is a phone's body drawn on a phone.
+
+   So the band goes and the depth stays, in both compositions — `.appmorph` is
+   the wide one, `.mdev` the narrow one (30-mobile-tour.css). The screen's own
+   42px radius and its white hairline are untouched: they are the edge of the
+   screen, not a bezel around it. Nothing moves, because a box-shadow was never
+   in the layout.
+
+   SCOPED TO THE HOME PAGE'S TWO WRAPPERS, deliberately. `.pdev` is the same
+   element the twelve demo routes draw, and this is a decision about this page.
+
+   AND ON THE WIDE ONE THE DEPTH IS NOT ON `.pdev` AT ALL — see `.appdev`
+   below. The narrow tour keeps it here: it has one device per section and
+   nothing ever stacks. */
+.mdev .pdev { box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .9) }
+.appmorph .pdev { box-shadow: none }
+
+/**
+ * THE DEVICE IS CENTRED ON THE PLATE, not pinned to its top.
+ *
+ * The engine writes `.morph` a height sized for a four-card deck — 696 on a
+ * desktop — and the device is 766 before scaling. Anchored at the top it would
+ * hang 70px below the box the rest of the composition is laid out around;
+ * centred, it overhangs evenly and the plate's height stops mattering, which is
+ * what it should do on a route with no cards in it.
+ */
+.appmorph .appdev {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: calc(352px * var(--k));
+  height: calc(766px * var(--k));
+  /* THE FLOOR, AND IT IS WHAT MAKES THE SLIDE POSSIBLE AT ALL.
+     -------------------------------------------------------------------------
+     The original transition clears the OUTGOING screen by 55% of the move
+     (`outFr` is `lin(0.05, 0.55, fr)`) while the incoming one is still 45% of
+     a screen-height away from landing. On the card deck that was fine: behind
+     both faces sat `.cswap`, a plate with its own surface. This file took that
+     surface away on purpose — "an opaque device inside a blurred plate is a
+     phone drawn inside a phone" — so on this route the same move left the
+     uncovered band with nothing behind it, and the field showed through.
+
+     MEASURED, because that band is not obvious from reading the numbers: with
+     the field temporarily painted magenta, a resting frame had 0 see-through
+     pixels inside the screen and a frame at `in-y: 63%` had 3,897 of 7,193
+     sampled — 54% of the screen. The floor is `#000` because that is `.pdev`'s
+     own background, so what shows while a screen is on its way in is the
+     device's screen, dark, exactly as the plate used to read.
+
+     The radius is the screen's, scaled: `.pdev` is 352x766 with a 42px radius
+     and is scaled by `transform: scale(var(--k))`, and this box is that same
+     box already multiplied out. A square floor would put four black corners
+     outside the device's own silhouette. */
+  background: #000;
+  border-radius: calc(42px * var(--k));
+  /* THE DEPTH BELONGS TO THE CARRIER, NOT TO THE SCREEN.
+     -------------------------------------------------------------------------
+     It was on `.pdev`, and `.pdev` is the thing there are TWO of during a
+     crossfade — so both drew the same `0 40px 90px -30px` and the shadows
+     summed. Measured in the band 6 to 70px under the device: it lost 20% of its
+     luminance mid-move and its darkest point went from 85 to 47, then snapped
+     back when the outgoing screen unmounted. A shadow that darkens and recovers
+     on every chapter change is the smudge that reads as dirt.
+
+     Here there is exactly one of it however many screens are stacked, and it
+     never fades, because this element neither mounts nor changes opacity.
+
+     THE LENGTHS ARE MULTIPLIED OUT BY `--k` because they used to be scaled for
+     free. On `.pdev` the shadow sat inside `transform: scale(var(--k))`, and a
+     transform scales a box-shadow along with everything else; this box is the
+     already-multiplied one, so at `--k: .64` an unscaled 90px blur would render
+     half again as large as it used to. Same numbers, same appearance, at every
+     step of the ladder at the bottom of this file. */
+  box-shadow:
+    0 calc(40px * var(--k)) calc(90px * var(--k)) calc(-30px * var(--k))
+    rgba(0, 0, 0, .9);
+}
+
+/* THE CHAPTER'S SCREEN ARRIVES RATHER THAN REPLACING THE LAST ONE IN PLACE.
+   The engine holds its own index through a move — see AppDevice — so the swap
+   happens once the plate has landed, and a screen that simply appeared on that
+   frame would read as a glitch in a page whose every other change is a curve.
+   Short, because the plate's own move is what a reader is watching and this is
+   only the thing inside it catching up. */
+.appmorph .appswap { position: absolute; inset: 0 }
+
+/* ---- THE SCREEN CHANGE: ONE SCREEN, RELIEVED IN THE BLIND --------------
+   It fades to the floor, the chapter changes while nothing is visible, and it
+   fades back up. `--sw-o` is the V, written every frame by `engine.ts` off the
+   same `fr` that drives everything else on this stage — so the fade is
+   SCRUBBED: it tracks the wheel, runs backwards when the reader scrolls back,
+   and holds where it is if they stop.
+
+   IT WAS A CROSSFADE BETWEEN TWO LAYERS, AND EACH OF ITS DEFECTS CAME FROM
+   HAVING TWO. Measured, so the next person does not try it again expecting a
+   different result: the outgoing screen restarted its script the instant it
+   began to leave — a frame-to-frame delta of 17.8 against a median of 0.11,
+   the largest discontinuity in the whole move — because it was re-keyed and
+   React remounts on a new key. The incoming screen played its script while it
+   was still a ghost, with content moving under the blend in a quarter of the
+   sampled steps. And a flick past two boundaries could change screens with no
+   transition at all. None of the three is reachable with one screen.
+
+   THE FLOOR IS WHAT THE FADE FADES TO, and it is `.appdev`'s `#000` below —
+   the device's own screen colour. Without it every ancestor is transparent up
+   to `body` and the fade would go to the FIELD, which is the flash this page
+   had before any of this: (165,244,202) mid-fade against (32,32,32) at rest, a
+   sevenfold jump in brightness.
+
+   THE FALLBACK IS THE RESTING FRAME, deliberately: a paint before the engine's
+   first pass — or on a narrow frame, where it never starts — lands the screen
+   opaque. Nothing has to run for this to look right. */
+.appmorph .appswap {
+  position: absolute;
+  inset: 0;
+  opacity: var(--sw-o, 1);
+}
+
+/* A SCREEN DOES NOT ARRIVE TWICE.
+   -------------------------------------------------------------------------
+   Each of these screens animates its own elements in when it mounts —
+   `enterUp` on `.enter` children, `drise` on rows and panels — because until
+   this page put a fade in front of them, a screen mounting WAS a chapter
+   arriving. It is the fade now, and the stagger played after it: measured, the
+   fade was done at 180ms and the elements went on rising for another 562ms.
+
+   A NEGATIVE DELAY, NOT `animation: none`, and the difference is the whole
+   trick. `none` deletes the animation; restoring it later creates a fresh one
+   that plays from the top, which would move this bug 1.1 seconds later rather
+   than fix it. A delay of -1200ms leaves the animation in place with its clock
+   already past the end — every arrival here finishes by 810ms — so the element
+   simply renders at rest, and at the lift it is still past the end and still
+   plays nothing. `!important` because the authored staggers set this property
+   themselves.
+
+   IT IS LIFTED, and it has to be: `Layer` drops `noentry` at 1100ms so that
+   every element created after that — every later scene, every sheet, every
+   loop pass — staggers the way it was written to. This suppresses one arrival,
+   not the screen's motion. */
+.appmorph .appswap.noentry .enter > *,
+.appmorph .appswap.noentry .enter-one,
+.appmorph .appswap.noentry [data-motion] * {
+  animation-delay: -1200ms !important;
+}
+
+/* NOTHING TO DISABLE, AND THAT IS WHY THIS BLOCK IS SHORT. There is no
+   animation here to switch off — the fade is a scrubbed custom property, which
+   is a direct response to the reader's own input rather than motion played at
+   them. What this pins is the one state that would be wrong: `engine.ts` rounds
+   `t` under this preference, so a move can sit at a position where `--sw-o` is
+   0, and that would be an empty device. Pinned, the change is instant whatever
+   the engine writes. */
+@media (prefers-reduced-motion: reduce) {
+  .appmorph .appswap { opacity: 1 }
+}
+
+/* THE SAME LADDER AS 17-demo.css, and it has to stay the same: a device that
+   is 0.95 on `/demo/perps-v5` and 0.87 here is two devices. Keyed to viewport
+   HEIGHT because that is what a 766px-tall object runs out of first. */
+@media (max-height: 899px) { .morph.appmorph { --k: .95 } }
+@media (max-height: 839px) { .morph.appmorph { --k: .87 } }
+@media (max-height: 779px) { .morph.appmorph { --k: .79 } }
+@media (max-height: 719px) { .morph.appmorph { --k: .71 } }
+@media (max-height: 659px) { .morph.appmorph { --k: .64 } }
+
+/* Below the width where the lockup stacks, the column is the constraint rather
+   than the height — the device has to fit beside nothing instead of beside the
+   copy, and 86vw is the same bound `.morph` itself uses. */
+@media (max-width: 1080px) {
+  .morph.appmorph { --k: min(.95, calc(86vw / 352px)) }
+}

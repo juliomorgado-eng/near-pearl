@@ -1,0 +1,21 @@
+import { Nav } from '@/components/Nav';
+import { Stage } from '@/components/stage/Stage';
+import { LightZone } from '@/components/light/LightZone';
+
+/**
+ * The page.
+ *
+ * NO `QuoteBand`. It repeated the stage's own proof stat a second time right
+ * after the stage — harmless at four chapters' worth of scroll between the
+ * two, redundant at one. `LightZone`'s own testimonial band (`Marquee`)
+ * carries the social-proof job from here.
+ */
+export function Site() {
+  return (
+    <>
+      <Nav />
+      <Stage />
+      <LightZone />
+    </>
+  );
+}

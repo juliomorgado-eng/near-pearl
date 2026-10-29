@@ -1,0 +1,403 @@
+/* =========================================================================
+   /demo/earn-v5 — TWO VAULTS, A STAKE, AND BOTH AT ONCE
+   -------------------------------------------------------------------------
+   The Vaults half is quoted from `rec-Earn + being able to send:pay from your
+   earn balance.MP4`: the Beta badge, the subtitle, the paragraph, the table's
+   own column headers, the `TVL … · rate` line under each name, and the whole
+   of Taler's sheet. The Staking pane is quoted too now — it has a screenshot
+   of its own, and it turned out to be this same table with `Asset` / `Balance`
+   over it, so both tabs share one set of classes. See `STAKES` in state.ts.
+
+   THE ACCOUNT HOME THIS CHAPTER OPENS ON IS NOT HERE. It is the same screen
+   `/demo/own-v5` opens on, and it lives in 29-account-home.css scoped to
+   `.pdev.app` — one account, one stylesheet.
+
+   `.pdev.app` carries the face, the palette, the tempo, the CTA and the sheet
+   mechanics. SCOPED TO `.pdev.earn`, all of it.
+   ========================================================================= */
+
+.pdev.earn .pdview { padding: 0 16px }
+
+.pdev.earn .ernpage { flex: 1; min-height: 0; display: flex; flex-direction: column }
+
+/* THE SAME 30px THE ASSETS SCREEN'S HEADING GETS. `.ownh` in
+   27-demo-own-v5.css is the first thing in its own `.pdview` too, so the two
+   pages' titles now start at the same height — which they must, because they
+   are two rooms in one app reached from the same home and a reader crosses
+   between them in one scroll. It was 14, and the Earn title sat sixteen pixels
+   proud of the Assets one for no reason anybody chose. */
+.pdev.earn .ernhead { flex: none; display: flex; align-items: center; gap: 8px; padding: 30px 0 2px }
+.pdev.earn .ernhead b { font-size: 22px; font-weight: 600 }
+.pdev.earn .ernbeta {
+  font-style: normal; font-size: 11px; font-weight: 600; padding: 3px 7px; border-radius: 6px;
+  background: rgba(39, 117, 202, .28); color: #6FB4FF;
+}
+.pdev.earn .ernsub { flex: none; font-size: 14px; color: rgba(255, 255, 255, .5) }
+
+/* THE TAB ROW GETS AIR ABOVE IT, which is most of what was wrong with this
+   screen: everything sat directly under everything else, so the title, the
+   subtitle, the tabs and the blurb read as one dense block instead of four
+   things. The frame gives the subtitle room to end before the tabs begin. */
+.pdev.earn .erntabs {
+  flex: none; display: flex; align-items: center; gap: 22px; height: 40px; margin-top: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+.pdev.earn .erntab {
+  position: relative; height: 40px; display: flex; align-items: center;
+  font-size: 15px; font-weight: 600; color: rgba(255, 255, 255, .42);
+  transition: color var(--dur) var(--ease-out);
+}
+.pdev.earn .erntab.on { color: #fff }
+.pdev.earn .erntab.on::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: #fff; border-radius: 2px;
+}
+
+.pdev.earn .ernpane { flex: 1; min-height: 0; display: flex; flex-direction: column }
+.pdev.earn .ernblurb {
+  flex: none; margin: 22px 0 0; font-size: 13px; line-height: 1.45;
+  color: rgba(255, 255, 255, .5);
+}
+
+/* THE TABLE IS THE BALANCES CARD AGAIN — two containers, not one.
+   -------------------------------------------------------------------------
+   It was three loose strips on the page, then one flat card, and the frame is
+   neither: it is a DARK OUTER holding a LIGHTER PLATE, which is exactly the
+   construction `29-account-home.css` arrived at for the three balances on the
+   home screen. Same app, same idea, and it is worth naming: the container sits
+   BELOW the page (25% toward black) and the thing inside it sits above
+   (`--btc-card`), so the plate reads as an object on a tray rather than as a
+   region of the page with lines drawn on it.
+
+   THE HEADER IS ON THE TRAY, NOT ON THE PLATE. `Vault` and `Balance` are
+   labels FOR the rows, so they sit outside the block the rows are in — which
+   is also why they are the same 13px grey the home's `Balances` caption is.
+
+   AND THEY ARE INSET TO THE COLUMNS THEY LABEL. `Vault` starts where the vault
+   NAMES start, past the mark, and `Balance` ends where the figures end, short
+   of the chevron. Pushed to the card's own edges — which is what
+   `space-between` did — they label the box instead of the columns. */
+.pdev.earn .erntable {
+  flex: none; margin-top: 20px; border-radius: 20px; padding: 0 6px 6px;
+  background: rgba(0, 0, 0, .25);
+}
+
+.pdev.earn .erncols {
+  display: flex; align-items: center; justify-content: space-between;
+  /* left: the plate's 1px edge, the row's 14, the 30 mark and the 18 beside it.
+     right: the same edge, the row's 14, the 17 chevron and the 22 beside it. */
+  padding: 12px 54px 10px 63px;
+  font-size: 13px; color: rgba(255, 255, 255, .5);
+}
+.pdev.earn .erncols i { font-style: normal }
+
+/* the plate: one block for both rows, with the divider as its own furniture */
+.pdev.earn .ernlist {
+  display: flex; flex-direction: column; border-radius: 15px; overflow: hidden;
+  background: var(--btc-card); border: 1px solid var(--btc-edge);
+}
+.pdev.earn .ernrow {
+  flex: none; display: flex; align-items: center; gap: 18px; padding: 9px 14px;
+  border-bottom: 1px solid var(--btc-edge);
+}
+/* the plate's own edge is the last row's bottom — a divider there is a rule
+   under nothing */
+.pdev.earn .ernrow:last-child { border-bottom: none }
+.pdev.earn[data-motion] .ernrow { animation: drise 340ms var(--ease-out) both }
+/* two rows on the Vaults tab, three on Staking — the third step is for the
+   Solana row, and 60ms is the step both tables share */
+.pdev.earn .ernrow:nth-child(2) { animation-delay: 60ms }
+.pdev.earn .ernrow:nth-child(3) { animation-delay: 120ms }
+.pdev.earn .ernrowt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px }
+.pdev.earn .ernrowt b {
+  display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600;
+  white-space: nowrap;
+}
+.pdev.earn .ernrowt em {
+  font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .45);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.pdev.earn .ernpromo {
+  font-style: normal; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 5px;
+  background: rgba(39, 117, 202, .28); color: #6FB4FF;
+}
+.pdev.earn .ernbal {
+  margin-left: auto; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums;
+  /* right-aligned for the STAKING rows, where a fiat line sits under the
+     figure and is the wider of the two. On a vault row there is one child and
+     the box is its width, so this changes nothing there. */
+  text-align: right;
+}
+/* what a stake is worth, under what it is. Same 12px grey as the APR on the
+   other side of the row, so the two sub-lines read as one tier. */
+.pdev.earn .ernbal em {
+  display: block; margin-top: 2px;
+  font-style: normal; font-size: 12px; font-weight: 400;
+  color: rgba(255, 255, 255, .45);
+}
+
+/* A NETWORK WITH NOTHING STAKED ON IT, DIMMED RATHER THAN OMITTED.
+   -------------------------------------------------------------------------
+   The frame lists Ethereum and Solana at zero, and that is the point of the
+   tab: the header says `Asset`, not `NEAR`, because staking is something the
+   app offers on several networks and this account has used one of them. Drop
+   the empty rows and the screen claims NEAR is the only thing you can stake.
+
+   The dimming is the frame's own: the symbol falls to the grey the APR under
+   it already uses, so a row with nothing in it reads as available rather than
+   as disabled. The mark keeps its full colour — it is the brand, not a state. */
+.pdev.earn .ernzero .ernrowt b,
+.pdev.earn .ernzero .ernbal { color: rgba(255, 255, 255, .5); font-weight: 500 }
+.pdev.earn .ernzero .ernrowt em { color: rgba(255, 255, 255, .3) }
+/* THE ARROW STANDS OFF FROM THE FIGURE by more than the row's own gap — 22
+   against 18. They are not one column: the figure is the row's answer and the
+   arrow is what the row does. It was 28 for one pass, which is what the frame
+   measures, and 28 starved the name column until `Taler USDC` wrapped onto two
+   lines and took the row's height with it. The names do not wrap now, so the
+   next person to widen this can see what it costs. */
+.pdev.earn .ernchev {
+  width: 17px; height: 17px; flex: none; margin-left: 4px;
+  color: rgba(255, 255, 255, .35);
+}
+
+/* ---- the stake --------------------------------------------------------- */
+/* THE STAKING PANE'S OWN CLASSES ARE GONE, all seven of them. It was a single
+   card — `.ernstake` with a 30px `.ernstakev` figure, a `.ernstakeu` dollar
+   line and a pulsing `.ernlive` "Accruing" chip — composed here because no
+   recording had opened that tab. It has a screenshot now, and what it shows is
+   the table above: the pane renders `.erntable` / `.erncols` / `.ernlist` like
+   the Vaults tab, so there is one table in this file instead of two things that
+   looked alike. `@keyframes ernpulse` went with the chip that used it.
+   See `STAKES` in state.ts. */
+
+/* ---- the vault's sheet ------------------------------------------------- */
+
+.pdev.earn .ernsheet { padding-bottom: 20px }
+.pdev.earn .ernsh { display: block; font-size: 18px; font-weight: 600; margin: 10px 0 6px }
+.pdev.earn .erndesc {
+  font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, .5); margin-bottom: 14px;
+}
+.pdev.earn .ernstat { display: grid; grid-template-columns: 1fr 1fr; gap: 10px }
+.pdev.earn .ernstat span { display: flex; flex-direction: column; gap: 2px }
+.pdev.earn .ernstat i { font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernstat b { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums }
+
+.pdev.earn .ernfees { margin: 14px 0; display: grid; gap: 9px }
+.pdev.earn .ernfees > div {
+  display: flex; align-items: flex-start; gap: 12px; padding-top: 9px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.pdev.earn .ernfees dt {
+  flex: none; display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: rgba(255, 255, 255, .45);
+}
+.pdev.earn .ernfees dd {
+  margin-left: auto; text-align: right; font-size: 12px; font-weight: 500; max-width: 58%;
+}
+
+.pdev.earn .ernside {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 12px;
+  background: rgba(255, 255, 255, .05);
+}
+.pdev.earn .ernsg {
+  display: grid; place-items: center; padding: 8px 0; border-radius: 9px;
+  font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, .55);
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+.pdev.earn .ernsg.on { background: rgba(255, 255, 255, .12); color: #fff }
+
+.pdev.earn .ernamt { text-align: center; padding: 20px 0 14px }
+/* THE FIGURE SHRINKS AS IT LENGTHENS. `0` and `22.555228` are the same control
+   holding two and nine glyphs, and at one size the long one runs into the edges
+   of a sheet that is already inset twice. `--len` is set inline in Phone.tsx;
+   the arithmetic is here because the width it has to fit is this box's. */
+.pdev.earn .ernamtv {
+  display: flex; align-items: baseline; justify-content: center; gap: 6px;
+  font-size: min(30px, calc(300px / var(--len, 2)));
+  font-weight: 600; letter-spacing: -.025em; font-variant-numeric: tabular-nums;
+}
+.pdev.earn .ernamtv em { font-style: normal; font-size: 17px; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernamtu {
+  display: block; margin-top: 3px; font-size: 13px; color: rgba(255, 255, 255, .45);
+  font-variant-numeric: tabular-nums;
+}
+
+.pdev.earn .ernavail {
+  display: flex; align-items: center; gap: 10px; padding: 11px 13px; border-radius: 13px;
+  background: rgba(255, 255, 255, .05); margin-bottom: 12px;
+}
+.pdev.earn .ernavail .ernrowt em { font-size: 12px }
+.pdev.earn .ernavail .ernrowt b { font-size: 14px; font-variant-numeric: tabular-nums }
+.pdev.earn .ernmax {
+  margin-left: auto; font-size: 13px; font-weight: 600; padding: 6px 11px; border-radius: 9px;
+  background: rgba(255, 255, 255, .1);
+}
+/* the one control on these screens that is ALREADY a fill, so its press takes
+   the fill away rather than adding one — the frames show it losing its plate */
+.pdev.earn [data-lit='1'].ernmax { background: rgba(255, 255, 255, .02) }
+
+.pdev.earn .ernsettle { margin-top: 6px }
+/* the sheet waits to be dismissed — see the note in Phone.tsx */
+.pdev.earn .ernsettle .bcta { margin-top: 18px }
+.pdev.earn .ernsettleh { display: block; font-size: 15px; font-weight: 600; margin-bottom: 12px }
+.pdev.earn[data-motion] .ernsettle { animation: drise 300ms var(--ease-out) both }
+.pdev.earn .ernref {
+  display: flex; align-items: center; margin-top: 14px; padding-top: 11px;
+  border-top: 1px solid rgba(255, 255, 255, .08); font-size: 12px;
+}
+.pdev.earn .ernref i { font-style: normal; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernref b { margin-left: auto; font-weight: 500; font-variant-numeric: tabular-nums }
+
+@media (prefers-reduced-motion: reduce) {
+  .pdev.earn[data-motion] .ernrow, .pdev.earn[data-motion] .ernsettle { animation: none }
+}
+
+/* =========================================================================
+   UNIVERSAL SEND — the screen that spends the yield
+   -------------------------------------------------------------------------
+   Read off `ScreenRecording_09-02-2026 22-01-47_1.MP4` at two frames a second.
+   The shape is: a title and a one-line subtitle, three summary rows each with a
+   token dot, a label above a value and a chevron; then a bordered box carrying
+   the amount, its dollar value, a `Pay with` divider, and a row of source chip,
+   balance and `Use max`.
+
+   IT REUSES THE VAULT SHEET'S FIGURE RULES rather than restating them. The
+   amount is the same control at a different size — `--len` shrinks it as it
+   lengthens, for the same reason and with the same arithmetic — so the two
+   fields in this chapter cannot drift apart.
+   ========================================================================= */
+
+/* THE THIRD ROOM STARTS WHERE THE OTHER TWO DO. `.ernhead` above carries the
+   note: the Earn page and the Assets screen both begin their title 30px into
+   their own `.pdview`, because they are rooms in one app reached from one home
+   and a reader crosses between them in a single scroll. Universal Send is the
+   third, reached from the same screen by the button beside the one that opens
+   Assets, and it was starting at 4 — hard against the top edge, and 26px proud
+   of both its neighbours for no reason anybody chose. Same number, same
+   reason, and it is not a value to taste: it is the rule this file already
+   states. */
+.pdev.earn .ernsend { padding-top: 30px }
+.pdev.earn .ernsendh { display: block; font-size: 21px; font-weight: 600; letter-spacing: -.02em }
+.pdev.earn .ernsendp {
+  margin: 5px 0 16px; font-size: 13px; line-height: 1.4;
+  color: rgba(255, 255, 255, .5); max-width: 30ch;
+}
+
+/* the three summary rows. Not controls on this cut — see the note in Phone.tsx
+   — so they carry no `.can` and no press state, only the shape of one. */
+.pdev.earn .ernsrow {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 13px; margin-bottom: 8px;
+  border-radius: 16px; background: rgba(255, 255, 255, .045);
+}
+/* THE DOT MUST NOT STRETCH. It is the first child of a flex row and it has no
+   `flex` of its own, so it took the row's cross-axis stretch and rendered as an
+   ellipse — a token mark drawn wider than it is tall, which is the one thing a
+   coin cannot be. `> :first-child` rather than a class, because the three rows
+   carry two different marks (a `Dot` and the recipient's blank) and both are
+   the same shape in the same slot. */
+.pdev.earn .ernsrow > :first-child { flex: none }
+/* THE TEXT COLUMN IS NAMED, and it has to be. This was `> span`, meaning "the
+   middle one", and it was not: BOTH marks in the first slot are spans too — the
+   recipient's `.ernswal` and, on the other two rows, the `Dot`'s `.swdot`. So
+   this rule swept them up, and it WON, because `.pdev.earn .ernsrow > span`
+   carries an element selector that `.pdev.earn .ernswal` cannot match on
+   specificity: (0,3,1) against (0,3,0), and the later rule loses.
+
+   WHAT THAT DID to the recipient's wallet is worth writing down, because the
+   symptom looked like broken artwork rather than a layout bug. The mark became
+   `display:flex; flex-direction:column`, so `place-items:center` only centred
+   it across the column — the CROSS axis — while the main axis fell to
+   `justify-content: flex-start` and pinned the 16px glyph to the top of its
+   26px circle. Measured: 4.27px above centre, which is exactly half the
+   difference. The two token rows hid the same bug, because their artwork fills
+   its circle exactly and an image with nowhere to move cannot look off-centre.
+
+   `> :first-child { flex: none }` above still holds the marks; this only stops
+   claiming to be them. */
+.pdev.earn .ernstxt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px }
+.pdev.earn .ernsrow i { font-style: normal; font-size: 11.5px; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernsrow b { font-size: 14.5px; font-weight: 600 }
+/* the recipient has no token, so it gets the wallet glyph the frame draws */
+.pdev.earn .ernswal {
+  width: 26px; height: 26px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(255, 255, 255, .12);
+  color: rgba(255, 255, 255, .82);
+}
+/* 16, where the filled version sat at 15: an outline needs a little more room
+   than a solid to read as the same size, because its weight is on the edge
+   rather than through the middle. */
+.pdev.earn .ernswali { width: 16px; height: 16px; display: block }
+.pdev.earn .ernschev { width: 17px; height: 17px; flex: none; color: rgba(255, 255, 255, .4) }
+
+/* ---- the amount, and what pays for it ---------------------------------- */
+.pdev.earn .ernsamt {
+  margin-top: 6px; padding: 20px 14px 14px;
+  border-radius: 18px; background: rgba(255, 255, 255, .045);
+  text-align: center;
+}
+.pdev.earn .ernsfig {
+  display: flex; align-items: baseline; justify-content: center; gap: 6px;
+  font-size: min(30px, calc(300px / var(--len, 2)));
+  font-weight: 600; letter-spacing: -.025em; font-variant-numeric: tabular-nums;
+}
+.pdev.earn .ernsfig em { font-style: normal; font-size: 17px; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernsusd {
+  display: block; margin-top: 3px; font-size: 13px; color: rgba(255, 255, 255, .45);
+  font-variant-numeric: tabular-nums;
+}
+
+/* `Pay with` is a divider with a word in it, which is what the frame draws:
+   a hairline across the box, interrupted by the label. */
+.pdev.earn .ernspayl {
+  display: flex; align-items: center; gap: 10px;
+  margin: 16px 0 11px; font-size: 12px; color: rgba(255, 255, 255, .45);
+}
+.pdev.earn .ernspayl::before,
+.pdev.earn .ernspayl::after {
+  content: ''; flex: 1; height: 1px; background: rgba(255, 255, 255, .1);
+}
+
+.pdev.earn .ernspay { display: flex; align-items: center; gap: 10px }
+/* the source chip is the one live control in this box */
+.pdev.earn .ernspick {
+  display: flex; align-items: center; gap: 6px; flex: none; max-width: 46%;
+  padding: 6px 8px 6px 6px; border-radius: 999px;
+  background: rgba(255, 255, 255, .07);
+  font-size: 13px; font-weight: 600;
+}
+.pdev.earn .ernspick b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pdev.earn .ernspick .ernschev { width: 15px; height: 15px }
+.pdev.earn .ernspbal {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; text-align: left;
+}
+.pdev.earn .ernspbal i { font-style: normal; font-size: 11px; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernspbal b {
+  font-size: 12.5px; font-variant-numeric: tabular-nums;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pdev.earn .ernspmax {
+  flex: none; padding: 7px 12px; border-radius: 999px;
+  background: rgba(255, 255, 255, .1); font-size: 12.5px; font-weight: 600;
+}
+
+/* ---- the pay-with picker ----------------------------------------------- */
+.pdev.earn .ernpsheet { padding-bottom: 16px }
+.pdev.earn .ernph { display: block; font-size: 18px; font-weight: 600; margin: 10px 0 12px }
+.pdev.earn .ernpsec {
+  display: block; margin: 14px 0 6px; font-size: 12.5px; color: rgba(255, 255, 255, .45);
+}
+.pdev.earn .ernprow {
+  display: flex; align-items: center; gap: 11px;
+  padding: 9px 10px; border-radius: 14px;
+}
+.pdev.earn .ernprowl { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px }
+.pdev.earn .ernprowl b { font-size: 15px; font-weight: 600 }
+.pdev.earn .ernprowl i { font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .45) }
+.pdev.earn .ernprowr { text-align: right; display: flex; flex-direction: column; gap: 1px }
+.pdev.earn .ernprowr b { font-size: 14.5px; font-weight: 600; font-variant-numeric: tabular-nums }
+.pdev.earn .ernprowr i {
+  font-style: normal; font-size: 12px; color: rgba(255, 255, 255, .45);
+  font-variant-numeric: tabular-nums;
+}

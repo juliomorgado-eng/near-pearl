@@ -1,0 +1,174 @@
+/* =========================================================================
+   THE 404 — see app/not-found.tsx
+   -------------------------------------------------------------------------
+   The hero's field and ink, one column, and a chart going to zero along the
+   foot. Everything is scoped to `.nf`, so importing this from the not-found
+   file is safe whichever page the stylesheet outlives.
+
+   The green is the same literal the stage, the curtain and the closing plate
+   write (07-stage.css `.gcss`, 32-splash.css) — this page's greens have never
+   been tokens, see the note in 32-splash.css.
+   ========================================================================= */
+
+.nf {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 104px var(--gut) clamp(180px, 30vh, 300px);
+  background: linear-gradient(150deg, #5EFAA7 0%, #5EFAA7 50%, #16B862 100%);
+  color: var(--hero-ink);
+}
+
+/* the eyebrow mark, where the nav's brand sits on the stage */
+.nf-brand {
+  position: absolute;
+  top: 22px;
+  left: var(--gut);
+  display: flex;
+  border-radius: 6px;
+}
+.nf-brand .nearw {
+  display: block;
+  height: 26px;
+  aspect-ratio: 596 / 137;
+  background: var(--nearlock-src) center / contain no-repeat;
+}
+
+.nf-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  text-align: center;
+  animation: nfin 700ms var(--ease-out) 120ms both;
+}
+@keyframes nfin { from { opacity: 0; translate: 0 14px } }
+
+.nf-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(31, 31, 31, .18);
+  background: rgba(255, 255, 255, .32);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+/* a live-order dot, in the short side's red: the one thing on the page that
+   says something went wrong */
+.nf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #E5484D;
+  box-shadow: 0 0 0 0 rgba(229, 72, 77, .5);
+  animation: nfpulse 1.8s var(--ease-out) infinite;
+}
+@keyframes nfpulse { 70%, 100% { box-shadow: 0 0 0 8px rgba(229, 72, 77, 0) } }
+
+.nf-title {
+  margin-top: clamp(22px, 3vh, 32px);
+  font-size: clamp(2.6rem, 6.4vw, 5.6rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+/* the hero's emphasis voice — Montreal light, same tracking */
+.nf-soft {
+  display: block;
+  font-weight: 300;
+}
+
+.nf-body {
+  margin: clamp(18px, 2.6vh, 26px) auto 0;
+  max-width: 44ch;
+  font-size: var(--fs-body-lg);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.nf-ctas {
+  margin-top: clamp(28px, 4vh, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+/* the stage's asks, as 31-hero-green.css draws them on this field */
+.nf .btn-primary { background: #000; color: #fff }
+.nf .btn-primary .arw { color: #5EFAA7 }
+.nf .btn-primary:hover { background: #000; color: #5EFAA7; box-shadow: none }
+.nf .btn-outline {
+  color: var(--hero-ink);
+  border-color: rgba(31, 31, 31, .5);
+  backdrop-filter: none;
+}
+.nf .btn-outline:hover { background: #000; border-color: #000; color: #fff }
+
+/* ---- the chart -----------------------------------------------------------
+   Full bleed along the foot, in the ink at low weight so it is texture, not
+   content. `preserveAspectRatio="none"` stretches it to any width; the
+   strokes are `non-scaling-stroke` so the stretch never thickens a wick. */
+.nf-chart {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(150px, 28vh, 280px);
+  z-index: 1;
+  pointer-events: none;
+}
+.nf-chart svg {
+  /* the right edge is left to the price chip, the way a chart leaves its
+     last price on the axis rather than on top of the last candle */
+  width: calc(100% - 120px);
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.nf-c line,
+.nf-floor {
+  stroke: var(--hero-ink);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.nf-c line { opacity: .22 }
+.nf-c rect { fill: var(--hero-ink); opacity: .16 }
+.nf-c.up rect { fill: none; stroke: var(--hero-ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: .3 }
+.nf-floor { opacity: .35; stroke-dasharray: 4 6 }
+
+/* candles land one after another, left to right, like the curtain's */
+.nf-c {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: nfdrop 420ms var(--ease-out) calc(300ms + var(--i) * 32ms) both;
+}
+@keyframes nfdrop { from { opacity: 0; transform: translateY(-18px) } }
+
+.nf-price {
+  position: absolute;
+  right: var(--gut);
+  bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: .06em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--hero-ink);
+  color: #5EFAA7;
+  animation: nfin 400ms var(--ease-out) 1300ms both;
+}
+
+@media (max-width: 640px) {
+  .nf { padding-top: 96px }
+  .nf-brand .nearw { height: 22px }
+  .nf-ctas .btn { flex: 1 1 100%; justify-content: center }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-inner, .nf-c, .nf-price, .nf-dot { animation: none }
+}

@@ -1,0 +1,723 @@
+/* =========================================================================
+   THE DEMO PAGES — shared
+   -------------------------------------------------------------------------
+   The design system behind every `/demo/*` route: the page around the phone,
+   the phone itself, and the atoms all five flows are built from — cards,
+   rows, sheets, fields, pickers, segmented controls, checklists, CTAs.
+
+   Everything is scoped under `.pd`, so nothing in this file can reach the
+   composed page at `/`, `/guided` or `/live`. Each flow's own screens live in
+   the numbered file after this one.
+
+   It borrows four components from the phone shell (the chart, the keypad, the
+   progress list and the token dot) and nothing else.
+
+   The device is drawn at a fixed 352 x 766 — the recording's own 1206 x 2622,
+   divided down — and SCALED as a whole on short viewports. Reflowing an app
+   layout at three sizes would be three layouts to keep honest; scaling it is
+   one, and it is what a phone actually looks like on a desk.
+   ========================================================================= */
+
+.pd {
+  min-height: 100vh; background: #05070A; color: #fff;
+  font-family: var(--font-body); padding: 0 0 80px;
+
+  /* NOTHING IN THIS UI IS SET BELOW 12px.
+     `--fs-micro` is .74rem, which is 11.84 — under the floor by a rounding
+     error, and used for the transport counter, the chapter numbers and the
+     back link. Redefining it here rather than chasing every call site keeps
+     the token meaning what it means everywhere else on the site. */
+  --fs-micro: 12px;
+}
+
+/* =========================================================================
+   NO KEPLER PAST THIS POINT
+   -------------------------------------------------------------------------
+   `04-type.css` styles `em` as an ELEMENT: every one on the site is set in the
+   Kepler italic stack at 1.22x with a .9 line-height, an inline-block box and
+   -2 tracking. That is the display voice of the marketing page, where an `em`
+   is a word set against a Montreal roman and the whole effect is deliberate.
+
+   These screens use `em` for what the tag means inside an app — the small line
+   under a figure, the name under a ticker, the label on a tab, the sentence
+   under a sheet title. There are dozens of them, and every one was inheriting
+   a serif it was never meant to be, at a size nobody asked for. The ones with
+   an explicit `font-size` in their own rule hid half of it, which is why it
+   read as "some labels look wrong" rather than as one cause.
+
+   The app UI is Montreal, all of it. Per-element rules still win over this —
+   `.dlit em` and its dozen siblings are (0,2,1) — so the deliberate sizes and
+   block displays are untouched; only the marketing voice is taken back out.
+
+   `i` is here for a smaller version of the same problem: the UA sets it
+   italic, PP Neue Montreal ships no italic cut, and the browser answers by
+   synthesising a slant.
+
+   `:where()` is doing real work in that selector, not tidying it. `.pd em`
+   is (0,1,1) and beats `.dfsub`, `.dvdesc` and every other single-class rule
+   that sets a deliberate size — so a plain reset silently retyped half these
+   screens at the device's 13px. Wrapped in `:where()` the selector weighs
+   (0,1,0): still enough to beat the bare `em` element rule, never enough to
+   beat a rule that has an opinion. Written first in the file for the same
+   reason, so an equal-weight class later on wins on order.
+   ========================================================================= */
+.pd :where(em, i) {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  display: inline;
+  transform: none;
+}
+
+/* ---- the page's own head ---------------------------------------------- */
+
+.pdtop { max-width: 1180px; margin: 0 auto; padding: 22px 24px 2px }
+.pdback {
+  display: inline-block; font-family: var(--font-mono); font-size: var(--fs-micro);
+  letter-spacing: .1em; text-transform: uppercase; color: rgba(255, 255, 255, .48);
+  text-decoration: none; transition: color var(--dur) var(--ease-out);
+}
+.pdback:hover { color: var(--near-green) }
+.pd h1 {
+  font-family: var(--font-display); font-size: clamp(1.85rem, 3.4vw, 2.55rem);
+  line-height: 1; letter-spacing: -.02em; margin: 10px 0 0; font-weight: 400;
+}
+.pdtop p {
+  max-width: 66ch; margin: 9px 0 0; font-size: var(--fs-caption);
+  line-height: 1.5; color: rgba(255, 255, 255, .62);
+}
+.pdlinks { display: flex; gap: 8px; margin-top: 13px }
+.pdlinks a {
+  font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .08em;
+  text-transform: uppercase; text-decoration: none; color: rgba(255, 255, 255, .6);
+  border: 1px solid rgba(255, 255, 255, .16); border-radius: 999px; padding: 6px 13px;
+  transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+.pdlinks a:hover { color: #fff; border-color: rgba(255, 255, 255, .42) }
+
+/* ---- the two columns --------------------------------------------------- */
+
+.pdgrid {
+  max-width: 1180px; margin: 0 auto; padding: 14px 24px 0;
+  display: grid; grid-template-columns: auto minmax(340px, 1fr); gap: 46px; align-items: start;
+}
+
+.pdstage { position: sticky; top: 26px; display: grid; justify-items: center; gap: 14px }
+
+.pdphone {
+  --k: 1; position: relative;
+  width: calc(352px * var(--k)); height: calc(766px * var(--k));
+}
+/* THE DEVICE IS DRAWN AT ITS OWN SIZE, 352 x 766, AND ONLY SHRINKS WHEN IT
+   CANNOT FIT.
+   The ladder used to start shrinking at 1180px of viewport and reach .62 by
+   800, which meant it was scaled down on every laptop anyone actually owns —
+   12px type rendered at 10, and the reason the UI read as small was never the
+   type scale. It needs 766 for itself plus 94 for the sticky offset, the gap
+   and the transport, so 1 holds down to a 860px viewport; each step below is
+   the largest scale that still clears that sum. */
+@media (max-height: 899px) { .pdphone { --k: .95 } }
+@media (max-height: 839px) { .pdphone { --k: .87 } }
+@media (max-height: 779px) { .pdphone { --k: .79 } }
+@media (max-height: 719px) { .pdphone { --k: .71 } }
+@media (max-height: 659px) { .pdphone { --k: .64 } }
+
+.pdheld {
+  /* above the device, not below it: below is where the transport lives, and a
+     badge that lands on the pause button is a badge that hides the way out */
+  position: absolute; left: 50%; top: -8px; translate: -50% -100%;
+  font-family: var(--font-mono); font-size: var(--fs-micro); letter-spacing: .07em;
+  text-transform: uppercase; color: #04140E; background: var(--near-green);
+  border-radius: 999px; padding: 4px 11px; white-space: nowrap;
+}
+
+/* ---- transport --------------------------------------------------------- */
+
+.pdbar { width: calc(352px * var(--k, 1)); display: grid; gap: 10px }
+.pdprog { display: block; height: 2px; background: rgba(255, 255, 255, .12); border-radius: 2px }
+.pdprog i {
+  display: block; height: 100%; background: var(--near-green); border-radius: 2px;
+  transform-origin: left center; transition: transform 120ms linear;
+}
+.pdctl { display: flex; align-items: center; gap: 8px }
+.pdctl button {
+  appearance: none; background: rgba(255, 255, 255, .07); color: #fff;
+  border: 1px solid rgba(255, 255, 255, .12); border-radius: 999px;
+  width: 32px; height: 32px; font-size: 12px; cursor: pointer; line-height: 1;
+  transition: background var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+.pdctl button:hover { background: rgba(255, 255, 255, .15); border-color: rgba(255, 255, 255, .3) }
+.pdctl .pdplay { background: var(--near-green); color: #04140E; border-color: transparent; font-size: 12px }
+.pdctl .pdplay:hover { background: #4dffb8 }
+.pdcount {
+  margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-micro);
+  color: rgba(255, 255, 255, .45); letter-spacing: .08em;
+}
+
+/* ---- the rail ---------------------------------------------------------- */
+
+.pdrail { max-height: calc(100vh - 60px); overflow-y: auto; padding-right: 10px; scrollbar-width: thin }
+.pdch { padding: 0 0 22px; opacity: .5; transition: opacity var(--dur-slow) var(--ease-out) }
+.pdch.on { opacity: 1 }
+.pdch h2 {
+  margin: 0; font-family: var(--font-display); font-size: 1.32rem; font-weight: 400;
+  letter-spacing: -.01em;
+}
+.pdblurb { margin: 4px 0 10px 0; font-size: var(--fs-caption); color: rgba(255, 255, 255, .5) }
+.pdsteps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px }
+
+.pdstep {
+  appearance: none; background: none; border: 0; width: 100%; text-align: left; cursor: pointer;
+  display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start;
+  padding: 8px 10px 8px 0; color: inherit; border-radius: 8px;
+  transition: background var(--dur) var(--ease-out);
+}
+.pdstep:hover { background: rgba(255, 255, 255, .05) }
+.pdstep .pdmark {
+  margin-top: 2px; justify-self: end; font-family: var(--font-mono);
+  font-size: 14px; letter-spacing: .04em; color: rgba(255, 255, 255, .3);
+  transition: color var(--dur) var(--ease-out);
+}
+.pdstep.past .pdmark { color: rgba(38, 194, 129, .6) }
+.pdstep.on .pdmark { color: var(--near-green) }
+.pdtxt b { display: block; font-weight: 400; font-size: var(--fs-body-sm); color: rgba(255, 255, 255, .68) }
+.pdstep.on .pdtxt b { color: #fff }
+/* the note belongs to the step being played: everywhere else it is noise */
+.pdtxt em {
+  display: block; font-style: normal; font-size: var(--fs-caption); line-height: 1.45;
+  color: rgba(255, 255, 255, .55); max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height var(--dur-slow) var(--ease-out), opacity var(--dur) var(--ease-out),
+              margin var(--dur-slow) var(--ease-out);
+}
+.pdstep.on .pdtxt em { max-height: 200px; opacity: 1; margin-top: 5px }
+
+/* the same note again under the phone, for the narrow layout */
+.pdnow { display: none }
+
+/* =========================================================================
+   THE DEVICE
+   ========================================================================= */
+
+.pdev {
+  position: absolute; inset: 0; width: 352px; height: 766px;
+  transform: scale(var(--k)); transform-origin: top left;
+  background: #000; border-radius: 42px; overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .1);
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .9), 0 0 0 8px #0b0d10;
+  display: flex; flex-direction: column;
+  font-size: 15px; line-height: 1.3; color: #fff;
+}
+
+.dstat {
+  flex: none; height: 44px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px; font-size: 14px; font-weight: 500; position: relative;
+}
+.dnotch {
+  position: absolute; left: 50%; top: 9px; translate: -50% 0;
+  width: 104px; height: 27px; border-radius: 999px; background: #000;
+}
+.dsig { display: flex; align-items: center; gap: 4px }
+.dbars, .dwifi, .dbat { display: block; background: rgba(255, 255, 255, .85); border-radius: 1px }
+.dbars { width: 15px; height: 9px; clip-path: polygon(0 70%, 22% 70%, 22% 100%, 0 100%, 26% 45%, 48% 45%, 48% 100%, 26% 100%, 52% 22%, 74% 22%, 74% 100%, 52% 100%, 78% 0, 100% 0, 100% 100%, 78% 100%) }
+.dwifi { width: 13px; height: 9px; clip-path: polygon(50% 100%, 0 30%, 12% 18%, 50% 58%, 88% 18%, 100% 30%) }
+.dbat { width: 22px; height: 11px; border-radius: 3px; background: rgba(255, 255, 255, .3); position: relative }
+.dbat::after {
+  content: ''; position: absolute; inset: 1.5px; width: 55%; border-radius: 2px; background: #fff;
+}
+
+.pdview { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 0 16px; overflow: hidden }
+
+/* ---- shared atoms ------------------------------------------------------ */
+
+.dlabel {
+  display: flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-size: 14px; color: rgba(255, 255, 255, .5);
+}
+.deye { width: 12px; height: 8px; border: 1px solid currentColor; border-radius: 0 0 8px 8px / 0 0 6px 6px; opacity: .8 }
+
+.dpair { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 13px }
+.dbtn {
+  display: block; text-align: center; padding: 11px 0; border-radius: 12px;
+  background: rgba(255, 255, 255, .09); font-size: 15px; font-weight: 500;
+}
+
+.dcard { margin-top: 15px; background: rgba(255, 255, 255, .045); border-radius: 16px; padding: 4px 13px 6px }
+.dcardh { display: block; padding: 10px 0 4px; font-size: 14px; color: rgba(255, 255, 255, .45) }
+
+.dgain { color: #26C281 }
+.down { color: #E5484D }
+
+.dchev { color: rgba(255, 255, 255, .35); font-size: 16px }
+.dspin {
+  display: inline-block; width: 15px; height: 15px; border-radius: 50%;
+  border: 1.6px solid rgba(255, 255, 255, .22); border-top-color: rgba(255, 255, 255, .9);
+  animation: dspin 800ms linear infinite;
+}
+.dspin.sm { width: 13px; height: 13px }
+.dspin.big { width: 30px; height: 30px; border-width: 2px; border-top-color: #2F80ED }
+@keyframes dspin { to { transform: rotate(360deg) } }
+
+/* ---- the account screen, which every recording opens on --------------------------------------------------- */
+
+.dacc { display: contents }
+.dhead { display: flex; align-items: center; gap: 9px; padding: 6px 0 2px }
+.dhead b { font-size: 17px; font-weight: 500 }
+.davatar { width: 25px; height: 25px; border-radius: 50%; background: var(--near-green) }
+.dhicons { margin-left: auto; display: flex; gap: 7px }
+.dhicons i { width: 22px; height: 22px; border-radius: 50%; background: rgba(255, 255, 255, .1) }
+
+.dtotal { display: block; font-size: 2.1rem; letter-spacing: -.02em; margin-top: 2px; font-weight: 500 }
+
+.drow {
+  display: flex; align-items: center; gap: 10px; padding: 11px 0;
+  border-top: 1px solid rgba(255, 255, 255, .06);
+}
+.dcardh + .drow { border-top: 0 }
+.drowl { flex: 1; display: block }
+.drowl em { display: block; font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .55) }
+.drowl > b { display: block; font-size: 19px; font-weight: 500; margin-top: 1px }
+.dpills { display: flex; align-items: center; gap: 5px; margin-top: 4px; font-size: 14px; color: rgba(255, 255, 255, .5) }
+.dpills i { font-style: normal }
+.dpills i.dgain {
+  background: rgba(38, 194, 129, .14); color: #26C281; border-radius: 5px; padding: 1px 5px;
+}
+.dpills b { font-weight: 500; color: rgba(255, 255, 255, .8) }
+.dpills .tok:nth-child(2) { margin-left: -9px }
+
+/* The Explore strip. It carries no state and drives nothing — it is here
+   because the account screen without it is a card floating in half a phone of
+   black, which is not what the app looks like. */
+.dexp { margin-top: 15px; flex: none; overflow: hidden }
+.dexph { display: block; font-size: 14px; color: rgba(255, 255, 255, .45); margin-bottom: 8px }
+.dexpr { display: flex; gap: 9px }
+.dexpc {
+  flex: none; width: 148px; padding: 10px; border-radius: 12px;
+  background: rgba(255, 255, 255, .045);
+}
+.dexpc i {
+  display: block; height: 40px; border-radius: 8px; margin-bottom: 8px;
+  background: linear-gradient(120deg, rgba(0, 236, 151, .22), rgba(0, 236, 151, .04));
+}
+.dexpc b { display: block; font-size: 14px; font-weight: 500; line-height: 1.25 }
+.dexpc em { display: block; font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .45); margin-top: 3px; line-height: 1.3 }
+
+/* ---- the tab bar -------------------------------------------------------- */
+
+.dtabs {
+  flex: none; display: grid; grid-template-columns: repeat(5, 1fr);
+  padding: 7px 4px 16px; border-top: 1px solid rgba(255, 255, 255, .07);
+  background: rgba(8, 10, 12, .9);
+}
+.dtab { display: grid; justify-items: center; gap: 3px; color: rgba(255, 255, 255, .42) }
+.dtab svg { width: 21px; height: 21px }
+.dtab em { font-style: normal; font-size: 14px }
+.dtab[aria-current] { color: var(--near-green) }
+.dtab[aria-current] .fl { fill: rgba(0, 236, 151, .22) }
+
+/* ---- amount entry, settlement, and the buttons under them -------------------------------------------------------- */
+
+.dftitle { display: block; font-size: 1.15rem; font-weight: 500; margin-top: 6px }
+.dfsub { display: block; font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .5); margin-top: 4px; line-height: 1.4 }
+
+.damt {
+  margin-top: 18px; background: rgba(255, 255, 255, .045); border-radius: 16px;
+  padding: 22px 14px 12px; text-align: center;
+}
+.damt > b { display: block; font-size: 2rem; font-weight: 500; letter-spacing: -.02em }
+.damt > b.off { color: rgba(255, 255, 255, .3) }
+.dpayrow {
+  display: flex; align-items: center; gap: 7px; margin-top: 16px; padding-top: 11px;
+  border-top: 1px solid rgba(255, 255, 255, .07); font-size: 14px;
+}
+.dpayrow i { margin-left: auto; font-style: normal; color: rgba(255, 255, 255, .45) }
+
+.dcta {
+  display: block; text-align: center; margin-top: 13px; padding: 12px 0; border-radius: 999px;
+  font-size: 15px; font-weight: 500; background: rgba(255, 255, 255, .92); color: #0B0F0D;
+  transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+.dcta.off { background: rgba(255, 255, 255, .11); color: rgba(255, 255, 255, .42) }
+.dcta.blue { background: #2F80ED; color: #fff }
+.dcta.light { background: #fff; color: #0B0F0D }
+.dghost {
+  display: block; text-align: center; margin-top: 9px; padding: 11px 0; border-radius: 999px;
+  font-size: 14px; background: rgba(255, 255, 255, .07); color: rgba(255, 255, 255, .8);
+}
+
+.dsettle { margin-top: 34px; display: grid; justify-items: center }
+.dcoin {
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0, 120, 255, .14);
+}
+.dsend { display: block; text-align: center; font-size: 1.05rem; font-weight: 500; margin: 12px 0 20px; line-height: 1.3 }
+.dsettle .plist { margin-bottom: 22px }
+.dsettle .dghost { width: 100% }
+
+/* ---- the layers --------------------------------------------------------- */
+
+.dlayer {
+  position: absolute; inset: 0; z-index: 8; pointer-events: none; border-radius: inherit;
+  overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
+}
+.dlayer.open { pointer-events: auto }
+.dscrim {
+  position: absolute; inset: 0; background: rgba(3, 5, 8, .66); opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+.dlayer.open .dscrim { opacity: 1 }
+
+.dsheet {
+  position: relative; background: #0E1113; border-radius: 22px 22px 0 0;
+  padding: 8px 16px 26px; translate: 0 100%;
+  /* A CLOSED SHEET IS HIDDEN, NOT MERELY MOVED.
+     `translate: 100%` shifts a sheet by its OWN height, which clears the phone
+     only for a sheet sitting on the bottom edge. The passkey dialog floats
+     90px above it, so its own height was 90px short of enough and its top
+     stayed on screen — a Sign In prompt peeking under every other screen. The
+     visibility flip is delayed by the slide so closing still animates. */
+  visibility: hidden;
+  transition: translate var(--dur-slow) var(--ease-out),
+              visibility 0s linear var(--dur-slow);
+  max-height: 94%; display: flex; flex-direction: column;
+}
+/* NO OPACITY ON THE WAY OUT.
+   A sheet that fades while it slides is transparent for the length of the
+   slide, and what shows through is the screen it is leaving behind — which,
+   on the way out of a submitted ticket, is a market that has already grown a
+   position. The layer clips, so sliding it clear is enough to hide it. */
+.dlayer.open .dsheet {
+  translate: 0 0; visibility: visible;
+  transition: translate var(--dur-slow) var(--ease-out), visibility 0s;
+}
+.dgrab {
+  width: 34px; height: 4px; border-radius: 3px; background: rgba(255, 255, 255, .22);
+  margin: 2px auto 10px; flex: none;
+}
+.dsh { display: block; font-size: 16px; font-weight: 500; margin-bottom: 12px }
+.dx { position: absolute; right: 16px; top: 14px; color: rgba(255, 255, 255, .5); font-size: 19px }
+
+/* Review send */
+.drevh { display: flex; align-items: center; padding: 4px 0 14px; font-size: 14px; color: rgba(255, 255, 255, .55) }
+.dshield {
+  width: 30px; height: 30px; margin: 0 auto; border-radius: 9px; background: rgba(38, 194, 129, .16);
+  position: relative;
+}
+.dshield::after {
+  content: ''; position: absolute; inset: 8px; border-radius: 3px; background: #26C281;
+}
+.drevt { display: block; text-align: center; font-size: 1.05rem; font-weight: 500; margin: 11px 0 18px; line-height: 1.3 }
+.drevl { margin: 0; display: grid; gap: 9px; border-top: 1px solid rgba(255, 255, 255, .07); padding-top: 13px }
+.drevl div { display: flex; justify-content: space-between; align-items: center; font-size: 14px }
+.drevl dt { color: rgba(255, 255, 255, .5) }
+.drevl dd { margin: 0; display: flex; align-items: center; gap: 5px; font-family: var(--font-mono) }
+.drevn { display: block; font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .38); margin-top: 14px; line-height: 1.4 }
+
+/* the passkey */
+.dsheet.pass { border-radius: 22px; margin: auto 10px 90px; padding: 22px 20px 20px; text-align: center }
+.dface {
+  width: 34px; height: 34px; margin: 4px auto 0; border-radius: 8px;
+  border: 2px solid #2F80ED; position: relative;
+}
+.dface::after {
+  content: ''; position: absolute; inset: 7px 6px; border-bottom: 2px solid #2F80ED;
+  border-radius: 0 0 6px 6px;
+}
+.dsheet.pass .dsh { margin: 10px 0 6px; font-size: 19px }
+.dpsub { display: block; font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .6); line-height: 1.45; margin-bottom: 16px }
+.dauth { display: grid; justify-items: center; gap: 9px; padding: 8px 0 4px }
+.dauth em { font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .6) }
+.ddone {
+  width: 30px; height: 30px; border-radius: 50%; border: 2px solid #2F80ED; color: #2F80ED;
+  display: grid; place-items: center; font-size: 17px;
+}
+
+/* ---- affordances --------------------------------------------------------- */
+
+.pd .can { cursor: pointer }
+.pd .can:hover { filter: brightness(1.16) }
+.pd .drow.can:hover, .pd .dli.can:hover { background: rgba(255, 255, 255, .04); filter: none }
+.pd .can:active { scale: .985 }
+.pd .can:focus-visible { outline: 2px solid var(--near-green); outline-offset: 2px; border-radius: 8px }
+.pd .dscrim.can { cursor: default }
+
+/* ---- narrow ------------------------------------------------------------- */
+
+@media (max-width: 1000px) {
+  .pdgrid { grid-template-columns: 1fr; gap: 26px; justify-items: center }
+  .pdstage { position: static }
+  .pdrail { max-height: none; overflow: visible; width: 100%; max-width: 640px }
+  /* with the rail unrolled under the phone the active note is a long scroll
+     away, so it is repeated where the eye already is */
+  .pdnow { display: block; width: 100%; max-width: 640px; margin: 0 auto; padding: 8px 24px 0 }
+  .pdnow b { display: block; font-size: var(--fs-body-sm) }
+  .pdnow p { margin: 5px 0 0; font-size: var(--fs-caption); color: rgba(255, 255, 255, .58); line-height: 1.5 }
+  .pdstep.on .pdtxt em { max-height: 0; opacity: 0; margin-top: 0 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdev *, .pd .pdprog i { animation: none !important; transition: none !important }
+}
+
+/* =========================================================================
+   ATOMS THE LATER FLOWS SHARE
+   -------------------------------------------------------------------------
+   Added when the second demo needed them. They live here rather than in a
+   flow's own file because the vault sheet in `/demo/swap` and the one in
+   `/demo/earn` are the same sheet in the same app, and the day they drift is
+   the day the two pages stop describing one product.
+   ========================================================================= */
+
+/* the yield chip that rides on a token row */
+.dchip {
+  flex: none; align-self: center; font-size: 14px; padding: 3px 7px; border-radius: 6px;
+  background: rgba(90, 150, 255, .14); color: #9CC0FF; white-space: nowrap;
+}
+
+/* a group heading inside a picker: Your tokens, More tokens, Your vaults */
+.dgroup {
+  display: block; font-size: 14px; color: rgba(255, 255, 255, .42);
+  margin: 12px 0 2px; flex: none;
+}
+
+/* the search field at the top of a picker */
+.dsearch {
+  display: flex; align-items: center; gap: 8px; flex: none;
+  min-height: 36px; padding: 0 11px; border-radius: 10px;
+  background: rgba(255, 255, 255, .06); font-size: 15px;
+}
+.dsearch i { font-style: normal; color: rgba(255, 255, 255, .4) }
+.dsearch b { font-weight: 400 }
+.dsearch em { font-style: normal; color: rgba(255, 255, 255, .35) }
+
+/* a vault's numbers, its fees, and the promo flag on the one that is free */
+.dvico { display: block; margin-bottom: 9px }
+.dsh.big { font-size: 1.05rem; margin-bottom: 6px }
+.dvdesc {
+  display: block; font-style: normal; font-size: 14px; line-height: 1.45;
+  color: rgba(255, 255, 255, .5); margin-bottom: 14px;
+}
+.dvstat { margin: 0 0 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px }
+.dvstat dt { font-size: 14px; color: rgba(255, 255, 255, .45) }
+.dvstat dd { margin: 0; font-size: 1.15rem; font-weight: 500 }
+.dvfees { margin: 0; display: grid; gap: 8px; border-top: 1px solid rgba(255, 255, 255, .07); padding-top: 11px }
+.dvfees div { display: grid; grid-template-columns: 108px 1fr; gap: 10px; font-size: 14px }
+.dvfees dt { color: rgba(255, 255, 255, .45); display: flex; flex-direction: column; align-items: flex-start; gap: 3px }
+.dvfees dd { margin: 0; color: rgba(255, 255, 255, .82); line-height: 1.35 }
+.dpromo {
+  font-style: normal; font-size: 14px; letter-spacing: .04em; padding: 1px 5px; border-radius: 4px;
+  background: rgba(90, 150, 255, .18); color: #9CC0FF;
+}
+
+/* the amount card in its compact form, and the balance row under it */
+.damt.tight { margin-top: 14px; padding: 16px 14px 12px }
+.damt.tight > b { font-size: 1.5rem }
+.damt.tight > b i { font-style: normal; color: rgba(255, 255, 255, .4); font-size: 1rem }
+.damt.tight > em { display: block; font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .45); margin-top: 3px }
+.davailrow { display: flex; align-items: center; gap: 8px; margin-top: 11px; font-size: 14px }
+.davailrow > span { display: flex; flex-direction: column; color: rgba(255, 255, 255, .45) }
+.davailrow > span i { font-style: normal; color: rgba(255, 255, 255, .82) }
+.dmax {
+  margin-left: auto; padding: 5px 10px; border-radius: 7px; font-size: 14px;
+  background: rgba(255, 255, 255, .1);
+}
+.dvsettings {
+  display: block; font-style: normal; text-align: center; font-size: 14px;
+  color: rgba(255, 255, 255, .4); margin-top: 11px;
+}
+
+/* the reference a settlement leaves behind, for when it has to be chased */
+.dref {
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, .07); margin-top: 12px; padding-top: 10px;
+  font-size: 14px; color: rgba(255, 255, 255, .45);
+}
+.dref b { font-weight: 400; font-family: var(--font-mono); color: rgba(255, 255, 255, .8) }
+
+/* a checklist, left-aligned under whatever it is reporting on */
+.dchecks { display: grid; justify-content: center; margin: 16px 0 }
+.dchecks.left { justify-content: start; margin: 12px 0 0 }
+
+.dftitle.sm { font-size: 1rem }
+.dsend.sm { font-size: .95rem; margin: 14px 0 0; text-align: left }
+.dtotal.sm { display: block; font-size: 1.75rem; font-weight: 500 }
+
+/* ---- the index ---------------------------------------------------------- */
+
+.pdindex { list-style: none; max-width: 1180px; margin: 26px auto 0; padding: 0 24px; display: grid; gap: 10px }
+.pdindex a {
+  display: flex; align-items: flex-start; gap: 24px; text-decoration: none; color: inherit;
+  padding: 20px 22px; border-radius: 16px; background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .07);
+  transition: background var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+.pdindex a:hover { background: rgba(255, 255, 255, .07); border-color: rgba(255, 255, 255, .2) }
+.pdix { flex: 1; min-width: 0 }
+.pdix b {
+  display: block; font-family: var(--font-display); font-size: 1.45rem; font-weight: 400;
+  letter-spacing: -.01em;
+}
+.pdix em {
+  display: block; font-style: normal; font-size: var(--fs-caption); line-height: 1.5;
+  color: rgba(255, 255, 255, .58); margin-top: 6px; max-width: 68ch;
+}
+.pdimeta { flex: none; display: grid; gap: 3px; text-align: right; padding-top: 5px }
+.pdimeta i {
+  font-style: normal; font-family: var(--font-mono); font-size: var(--fs-micro);
+  letter-spacing: .07em; color: rgba(255, 255, 255, .42);
+}
+
+@media (max-width: 700px) {
+  .pdindex a { flex-direction: column; gap: 10px }
+  .pdimeta { text-align: left; display: flex; gap: 12px; padding: 0 }
+}
+
+/* =========================================================================
+   THE HAND
+   -------------------------------------------------------------------------
+   A touch point, not a mouse cursor: these are phone screens, and an arrow
+   pointing at them would be the one thing on the page that is not from the
+   recordings. It travels on `translate` alone so the transition never touches
+   layout, and it sits above every sheet because a finger does.
+   ========================================================================= */
+
+.dhand {
+  position: absolute; left: 0; top: 0; z-index: 20; pointer-events: none;
+  width: 30px; height: 30px; margin: -15px 0 0 -15px;
+  translate: var(--tx, 50%) var(--ty, 50%);
+  transition: translate 300ms cubic-bezier(.33, 1, .38, 1), opacity 200ms linear;
+  display: grid; place-items: center;
+}
+.dhand.off { opacity: 0 }
+.dhand i {
+  display: block; width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  border: 1.5px solid rgba(255, 255, 255, .55);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+  transition: scale 160ms var(--ease-out), background 160ms linear;
+}
+/* the press: the dot squashes and a ring leaves it */
+.dhand.press i { scale: .74; background: rgba(255, 255, 255, .4) }
+.dhand.press::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, .6);
+  animation: dring 520ms var(--ease-out) forwards;
+}
+@keyframes dring {
+  from { scale: .6; opacity: .9 }
+  to { scale: 2.1; opacity: 0 }
+}
+
+/* and the control answers. A press with no response on the control is a dot
+   moving over a picture; this is what makes it land. */
+[data-tap].tapped {
+  filter: brightness(1.35);
+  transition: filter 60ms linear;
+}
+.kpkey.tapped { background: rgba(255, 255, 255, .45); filter: none }
+
+@media (prefers-reduced-motion: reduce) {
+  .dhand { display: none }
+}
+
+/* =========================================================================
+   THINGS ARRIVING — `[data-motion="rich"]`
+   -------------------------------------------------------------------------
+   Every demo that draws a hand also opts into this, because they are one
+   decision: the page is showing a person using the app, and the things a
+   person makes appear have to arrive rather than exist.
+
+   One curve, one distance, three durations. A vocabulary this small is what
+   makes the screen read as one surface rather than a set of widgets that each
+   animate their own way.
+
+   Every rule here is an ENTRANCE, never an exit. React unmounts these the
+   instant the state changes, and animating that out means keeping a dead
+   element alive to watch it leave — machinery for a moment nobody looks at,
+   because what leaves is almost always behind the thing that replaced it.
+   ========================================================================= */
+
+@keyframes drise {
+  from { opacity: 0; translate: 0 9px }
+  to { opacity: 1; translate: 0 0 }
+}
+@keyframes dpop {
+  from { opacity: 0; scale: .94 }
+  to { opacity: 1; scale: 1 }
+}
+
+/* -------------------------------------------------------------------------
+   THE SCREEN CHANGE, WHICH IS THE ONE THAT WAS ACTUALLY ABRUPT.
+
+   A sheet already slides. A whole screen did not: the account was replaced by
+   the assets list between two frames, with nothing connecting them. The
+   obvious fix — fade the container — is worse, because both screens sit on the
+   same black and fading one out to bring the other in flashes that black in
+   between.
+
+   So the container never moves. Its CONTENTS re-lay, top to bottom, and the
+   screen assembles itself in three hundred milliseconds. The background is
+   continuous the whole way through because it was never part of the
+   transition. Each flow keys `.pdview` on its screen name, which is what makes
+   these children remount and the animation run.
+
+   The screens declare `display: contents`, so these children are the screen's
+   own blocks — the header, the title, the card, the list — rather than one
+   wrapper. That is why the stagger reads as a page settling rather than a box
+   appearing.
+   ------------------------------------------------------------------------- */
+.pdev[data-motion] .pdview > * { animation: drise 300ms var(--ease-out) both }
+.pdev[data-motion] .pdview > *:nth-child(2) { animation-delay: 35ms }
+.pdev[data-motion] .pdview > *:nth-child(3) { animation-delay: 70ms }
+.pdev[data-motion] .pdview > *:nth-child(4) { animation-delay: 100ms }
+.pdev[data-motion] .pdview > *:nth-child(5) { animation-delay: 125ms }
+.pdev[data-motion] .pdview > *:nth-child(6) { animation-delay: 145ms }
+.pdev[data-motion] .pdview > *:nth-child(n + 7) { animation-delay: 160ms }
+/* a list animates its own rows, below. Letting it rise as a block as well
+   would be two staggers on the same pixels, which reads as a stutter. */
+.pdev[data-motion] .pdview > .dlist { animation: none }
+
+/* the refusal, wherever it appears. It arrives UNDER the field it belongs to
+   and pushes the button down, so it has to be seen arriving or the button
+   looks like it moved on its own. */
+.pdev[data-motion] .derr { animation: drise 240ms var(--ease-out) both }
+
+/* a checklist, and the spinner that replaces the button while it runs */
+.pdev[data-motion] .dochk,
+.pdev[data-motion] .dchecks { animation: drise 320ms var(--ease-out) both }
+
+/* a popover belongs to the control it hangs off, so it grows out of it rather
+   than sliding in from somewhere it has no relationship with */
+.pdev[data-motion] .dmenu { animation: dpop 200ms var(--ease-out) both; transform-origin: top right }
+
+/* rows arrive one after another: a list that appears whole reads as a
+   screenshot of a list */
+.pdev[data-motion] .dlist > .dli,
+.pdev[data-motion] .dsheet .dli { animation: drise 280ms var(--ease-out) both }
+.pdev[data-motion] .dlist > .dli:nth-child(2),
+.pdev[data-motion] .dsheet .dli:nth-child(2) { animation-delay: 45ms }
+.pdev[data-motion] .dlist > .dli:nth-child(3),
+.pdev[data-motion] .dsheet .dli:nth-child(3) { animation-delay: 90ms }
+.pdev[data-motion] .dlist > .dli:nth-child(n + 4),
+.pdev[data-motion] .dsheet .dli:nth-child(n + 4) { animation-delay: 125ms }
+.pdev[data-motion] .dempty { animation: drise 300ms var(--ease-out) both }
+
+/* the notice, the amount card, the rows a form is made of */
+.pdev[data-motion] .dwarn,
+.pdev[data-motion] .dvfees,
+.pdev[data-motion] .dref { animation: drise 300ms var(--ease-out) both }
+
+/* the keypad comes up from under whatever it belongs to, the way a keyboard
+   does. The ticket in /demo/perps-v2 also animates it back down — see
+   `18-demo-perps.css` — because there it lives inside a sheet whose height it
+   changes. */
+.pdev[data-motion] .kpwrap { animation: kprise 300ms var(--ease-out) both }
+@keyframes kprise {
+  from { translate: 0 100% }
+  to { translate: 0 0 }
+}
+
+/* the tick lands rather than appearing */
+.pdev[data-motion] .dchk.on .dbox::after { animation: dpop 180ms var(--ease-out) both }

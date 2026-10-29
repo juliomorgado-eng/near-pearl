@@ -1,0 +1,327 @@
+/* =========================================================================
+   THE NARROW TOUR — FOUR SECTIONS, AND NO TRICK
+   =========================================================================
+   See MobileTour.tsx for the argument. The arithmetic, because it is what
+   rules out every other arrangement:
+
+     the device lays out 352 x 766. A phone is 390 x 844. Those are the same
+     shape — 2.176 against 2.164 — so a device that is READABLE on a phone is
+     the whole phone, with nothing left over for words.
+
+   Every version that tried to keep the device and the copy on screen together
+   paid for it out of the device. The one this replaces split the frame 48/52,
+   which put `--k` at 0.40: a 142px-wide device, and since the scale is a
+   `transform`, 12px interface type rendering at 4.8px. Nothing in the demo
+   could be read, on the page whose whole argument IS the demo.
+
+   SO CO-PRESENCE IS NOT SIMULATED HERE. The sequence comes apart into four
+   ordinary sections — eyebrow, headline, device, copy — and the reader scrolls
+   through them the way they scroll through anything. No sticky composition, no
+   scrub, no snap, no scroll-driven timeline, no observer picking the chapter.
+   The device is 301px wide at 390 and 334 at 430, nothing is ever drawn on top
+   of anything, and the whole file needs no feature newer than `dvh`.
+
+   WHAT IS STILL SHARED is the field. `.stage-sticky` keeps its pinned box and
+   the sections scroll over the same gradient the wide page is built on; with
+   the engine off, `#gl` never gets its `.on` class and what shows is `.gcss`,
+   the CSS stack the field already carries as its own fallback. A phone gets
+   the field without the shader loop.
+
+   HEIGHT UNITS. `svh` for the device's scale — it is the viewport with the URL
+   bar showing, and it does not move, so the device is never re-scaled
+   mid-scroll. `dvh` for the pinned field, which has to fill whatever is
+   actually there.
+
+   Everything is scoped to the same 1080 breakpoint the lockup already stacks
+   at. Above it not one property changes.
+   ========================================================================= */
+
+.mtour { display: none }
+
+@media (max-width: 1080px) {
+  /* THE 588vh GOES AWAY. `#stage` is as tall as its own content, which is the
+     four sections — so scroll is 1:1 with the finger and there is nothing left
+     to scrub. The engine is not running here at all; see useStageEngine. */
+  #stage { height: auto }
+  .stage-sticky { height: 100dvh }
+  /* it exists to be cross-faded against the cream page by the closing shrink,
+     and with no shrink to drive it `--fade-light` sits at 0 and it is a black
+     sheet over the field */
+  .stage-black { display: none }
+
+  .mtour {
+    display: block;
+    position: relative;
+    z-index: 6;
+    /* up over the pinned field by one viewport, so the page starts where the
+       field starts rather than a screen below it */
+    margin-top: -100dvh;
+  }
+
+  /* ---- near's MARK, FIRST ITEM OF PERPS' OWN COLUMN --------------------
+     It was its own header above the whole tour, at a fixed 106px from the
+     top; that padding moves to Perps' own section (below) since there is no
+     header left to carry it. It was a co-brand there too — The Rollup's
+     mark, a rule, then near — and the first two were pulled with the rest of
+     it, same as everywhere else. */
+  .mbrow { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 0 0 clamp(22px, 4vh, 34px) }
+  .mbrow .nearw {
+    display: block; flex: none;
+    height: 29px; aspect-ratio: 596/137;
+    background: var(--nearlock-src) center/contain no-repeat;
+  }
+
+  /* ---- THE ASK, UNDER THE FIRST CHAPTER'S WHITE PLATE -------------------
+     `.mherocta` only ever has one instance — Perps, `i === 0` in MobileTour —
+     so this reads as "the hero's ask", moved. `.btn` is `inline-flex`
+     (05-buttons.css), so `text-align:center` on the phone (below) centres it
+     along with every line of `.friction` and `.herolegal` beneath it — no
+     flex column needed for that. */
+  .mherocta { margin-top: clamp(28px, 4.4vh, 44px) }
+  .mherocta .friction,
+  .mclose .friction {
+    margin: 12px 0 0; font-size: var(--fs-body-sm); color: rgba(255, 255, 255, .72);
+  }
+
+  /* ---- A CHAPTER -----------------------------------------------------
+     Eyebrow, headline, device, copy, in that order and in normal flow. The
+     section is taller than the viewport on purpose: this composition's whole
+     premise is that the device and the copy are not asked to share a screen,
+     and a section squeezed to fit one would be asking again. */
+  .mch {
+    /* flex, so `order` can put the device between the headline and the body
+       while the DOM keeps the copy together — see `.mchtext` in MobileTour. */
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--gut) clamp(56px, 9vh, 104px);
+  }
+  /* THE TOP OF THE PAGE, WHICH ONLY PERPS CARRIES. It used to be `.mtop`'s
+     own padding, a header the near mark sat in above the whole tour; the mark
+     is Perps' own first line now (`.mbrow` above), so the gutter that used to
+     clear the fixed nav moves to the one section that opens with it. */
+  .mch:first-of-type { padding-top: 106px }
+  /* the group is transparent to layout on a phone: its children (headline,
+     body, and on Perps the moved-in ask) are flex items of the section
+     itself, and the device (below, `order:4`) comes after all of them. It
+     used to run headline, device, body, with a numbered eyebrow ("01 PERPS")
+     above the headline; the reference this frame is matched to reads straight
+     from the headline into the body copy and shows the device last, no
+     number. */
+  .mchtext { display: contents }
+  .mchhead { order: 1 }
+  .mchbody { order: 2 }
+  .mherocta { order: 3 }
+  .mch > .mdev { order: 4 }
+
+  /* the size is the clamp `13-rollup.css` shares with the wide composition's
+     left column, whose 24px floor was written for this frame */
+  .mchhead {
+    margin: 0; color: #fff;
+    /* NOT `.h1`, so it never picked up `--w-roman` — the wide headline's own
+       weight (500, Medium). Named outright here so the narrow headline
+       matches it exactly rather than falling through to the browser's own
+       default bold for h1-h6, which nothing here ever named. The fourth
+       line stays whatever `.mchhead .wordmark` already sets (200, the
+       nearest loaded face below Medium) — that selector is more specific
+       than this one and wins regardless of order. */
+    font-weight: var(--w-roman);
+    line-height: 1.1; letter-spacing: -.022em;
+    text-shadow: 0 2px 40px rgba(0, 0, 0, .35);
+  }
+  .mchhead .wordmark { color: #fff }
+
+  .mchbody {
+    margin-top: clamp(22px, 3.4vh, 32px);
+    color: rgba(255, 255, 255, .84);
+    font-size: 16px; line-height: 1.55;
+  }
+  .mchbody p { margin: 0; max-width: 42ch }
+  .mchbody strong { color: #fff }
+
+  /* CENTRED ON A PHONE, TO MATCH THE REFERENCE — but only up to 759px: past
+     it `.mch` turns into the two-column row below (copy left, device right),
+     where centred text would read as a mistake against a left edge the
+     device also sits on. The white plate (`.rollquote`) stays exempt at every
+     width — it is a card, not a line of prose, and a quote card commonly
+     keeps its own text left-set even on an otherwise centred page. */
+  @media (max-width: 759px) {
+    .mchhead,
+    .mchbody,
+    .mherocta { text-align: center }
+    .mchbody > p { margin-inline: auto }
+    .mchbody .rollquote,
+    .mchbody .rollquote p { text-align: left }
+    /* `text-align` centres the old single inline-flex button; `.ctagroup` is
+       a flex row now, and a flex container ignores its own `text-align` for
+       positioning its children. */
+    .mherocta .ctagroup { justify-content: center }
+  }
+
+  /* ---- THE DEVICE, AS BIG AS THE COLUMN ALLOWS -----------------------
+     `--k` used to be chosen by viewport HEIGHT alone, a ladder of max-height
+     rules keyed to the desktop page, and the one width-keyed rule
+     (`min(.95, 86vw / 352px)`) never engaged on a phone because 352 fits
+     inside 86vw of 430. Nothing in that cascade ever asked whether the device
+     could be READ.
+
+     Three bounds now, tightest wins:
+       · 92vw / 352            — the column.
+       · (100svh - 190px) / 766 — the frame, less the nav and enough air to
+                                  show the device is a thing on a page rather
+                                  than the page. This is the binding one on a
+                                  phone: .854 at 390 x 844.
+       · .95                   — a ceiling. The device is drawn at its own size
+                                  on `/demo/*-v5` and blowing it past that here
+                                  would make the same screen two sizes.
+
+     At 390 x 844 that is a 301 x 654 device, with 12px interface type
+     rendering at 10.2 — twice the linear size of what it replaces.
+
+     `--k` is READ by `.pdev` (17-demo.css) as the scale on its transform, so
+     it must be declared on an ancestor of it and the box must carry the scaled
+     size, because a transform does not affect layout. */
+  .mdev {
+    --k: min(.95, calc(92vw / 352px), calc((100svh - 190px) / 766px));
+    position: relative;
+    width: calc(352px * var(--k));
+    height: calc(766px * var(--k));
+    margin: clamp(24px, 3.6vh, 34px) auto 0;
+  }
+
+  /* the device's simulated bezel is dropped for both compositions at once —
+     see `.appmorph .pdev, .mdev .pdev` in 25-home-app.css */
+
+  /* ---- THE WHITE PLATE COMES HOME ----------------------------------
+     `.qband` exists because the stacked lockup could not fit a 383px plate
+     under the phone without clipping the app card. This composition has room
+     for it in the chapter it belongs to — Perps, "first screen only" — so the
+     plate (`CARDS[0].aside`, the proof stat) is drawn in `.mchbody` and the
+     band that stood in for it is not. */
+  .qband { display: none }
+  .mchbody .rollquote {
+    margin: 0; padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, .13);
+    border-radius: 18px;
+    background: linear-gradient(45deg, rgba(201, 201, 201, .40), rgba(149, 149, 149, .352));
+    box-shadow: 0 18px 44px rgba(0, 0, 0, .28);
+    -webkit-backdrop-filter: blur(9px);
+    backdrop-filter: blur(9px);
+  }
+  .mchbody .rollquote p {
+    margin: 0; max-width: none;
+    font-family: var(--font-display); font-style: normal;
+    font-size: 17px; font-weight: 500; line-height: 1.4; color: rgba(255, 255, 255, .96);
+  }
+
+  /* ---- THE CLOSE ------------------------------------------------------
+     The closing plate's copy has no plate to land on here — there is no
+     shrink on a page whose scroll is its own — and the jurisdiction note is
+     not a design decision. Both live in an ordinary last section. */
+  .mclose {
+    padding: clamp(20px, 4vh, 40px) var(--gut) calc(120px + env(safe-area-inset-bottom, 0px));
+    /* centred, matching the reference — `.mclose` has no two-column variant at
+       any width, so this holds all the way to 1080 */
+    text-align: center;
+  }
+  /* `.h1` alone is `font-size: var(--fs-h1)`, a desktop display size: it set
+     this headline at 40.8px on a 426px screen. */
+  .mclose h2 {
+    margin: 0; color: #fff;
+    font-size: clamp(28px, 1.6vw + 22px, 46px);
+    line-height: 1.08; letter-spacing: -.022em;
+  }
+  /* the emphasised run's face, size and weight are set once for every headline
+     in the tour — see `.side.l h2 em` in 13-rollup.css */
+  .mclosebody {
+    margin: 18px auto 0; max-width: 42ch;
+    color: rgba(255, 255, 255, .82); font-size: 16px; line-height: 1.55;
+  }
+  .mclose .btn { margin-top: clamp(24px, 3.6vh, 32px) }
+  .mdisc {
+    margin: clamp(28px, 5vh, 44px) 0 0;
+    font-family: var(--font-mono, var(--font-body));
+    font-size: 11px; line-height: 1.55; color: rgba(255, 255, 255, .46);
+  }
+
+  /* THE NAV NEEDS A FOOTING IT NEVER NEEDED BEFORE. On a wide frame nothing
+     scrolls under it — the composition is pinned, and `.gshade`'s header scrim
+     is enough. Here headlines and interfaces pass beneath a transparent bar,
+     and at 360px "Everything you own," runs straight into "Sign in". A
+     gradient on the bar itself, not on the field: it has to travel with the
+     nav and it must not exist once the nav has its own cream backdrop. */
+  .nav::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 -20px;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(3, 8, 6, .88) 0%, rgba(3, 8, 6, .62) 58%, rgba(3, 8, 6, 0) 100%);
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+  .nav.on-light::before { opacity: 0 }
+
+  /* THE MODE PUCK GETS OUT OF THE CTA'S WAY. `/`, `/guided` and `/live` are
+     three routes of the same page and the puck is how you move between them,
+     but it is fixed 18px off the bottom right — which is where the fixed CTA
+     bar sits for most of this page. */
+  .modesw { bottom: calc(82px + env(safe-area-inset-bottom, 0px)) }
+}
+
+/* THESE TWO BLOCKS USED TO BRING `.mobcta` BACK FOR 620-1080, reasoning that
+   `.rollcta` (the wide lockup's CTA) had stopped being drawn there and left a
+   gap. That reasoning no longer holds — `11-grid.css` states the current
+   intent in as many words, "NOT DRAWN, AT ANY WIDTH": the narrow tour repeats
+   its own ask at the foot of every chapter, so a second floating one is noise,
+   not a fix for a gap.
+
+   AND THE OVERRIDE WAS BROKEN ON ITS OWN TERMS. `display:flex` here put
+   `.mobcta` back on screen without its `position:fixed` — that lives only in
+   `11-grid.css`'s `max-width:799px` block, out of range at 800-1080 — so the
+   bar rendered IN FLOW at its actual DOM position, a sibling between
+   `.lightbody` and `<Footer/>` in LightZone.tsx: a translucent, unstyled band
+   sitting between the cream panel and the footer, exactly where neither of
+   them expects a third thing to be drawn. Removed with the `footer`
+   padding and the pill's own centring, which existed only to serve it. */
+
+/* ---- TABLET WIDTHS ARE TWO COLUMNS ------------------------------------
+   Between 760 and 1080 the constraint flips: there is width to spare and the
+   height budget is the same, so a device centred under its own headline
+   leaves two empty gutters and makes the section twice as tall as it needs to
+   be. Copy left, device right — which is the wide composition's own
+   arrangement, minus the sticky. */
+@media (min-width: 760px) and (max-width: 1080px) {
+  /* THE MARK SITS OVER THE COPY COLUMN, NOT THE PAGE. Centred (the phone
+     rule, inherited from the base block above) put it on the viewport's own
+     axis — which is the gap between the two columns once the device is
+     beside the copy, not above either of them. Left-set, it shares the same
+     `var(--gut)` edge `.mchtext` starts from below it. */
+  .mbrow { justify-content: flex-start }
+  /* CENTRED, NOT TOP-ALIGNED. Flex-start read right for Perps — its column
+     runs mark, headline, white plate and the ask, tall enough to sit close to
+     the device's own height — and wrong for the other three, whose column is
+     a headline and a paragraph: against a device this much taller, the top
+     edge stranded a short block of copy above a large gap of empty field
+     while the device ran on beneath it. Centred is the one rule that reads
+     right on all four columns; Perps' mark lands a little below the device's
+     own top rather than flush with it, which is the trade. */
+  .mch { flex-direction: row; align-items: center; gap: clamp(30px, 4.6vw, 64px) }
+  /* AND HERE THE GROUP IS A REAL BOX. `display:contents` was what let `order`
+     interleave the device on a phone; a column needs something to be a column,
+     and three siblings of a device that spans their rows cannot be centred
+     against it — the device's height is shared out between them and they end
+     up pinned to its top and bottom with a hole in the middle. That hole is
+     what this line is. */
+  .mchtext { display: flex; flex-direction: column; flex: 1; min-width: 0 }
+  .mch > .mdev {
+    /* the device sets the section's height now, so it takes the frame less the
+       nav rather than leaving air below itself */
+    --k: min(.95, calc((100svh - 150px) / 766px));
+    flex: none;
+    margin: 0;
+  }
+  .mchbody p { max-width: 38ch }
+  /* `.herolegal`'s own left-alignment for this range lives in 37-legal.css,
+     which is imported after this file — the two rules are equal specificity
+     and the later one in the cascade wins regardless of what is written here.
+     See the note there. */
+}

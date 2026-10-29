@@ -1,0 +1,39 @@
+/* =========================================================================
+   THE near MARK IN THE HEADER, ONCE THE STAGE LETS GO
+   -------------------------------------------------------------------------
+   The nav carried near's bare wordmark as an inline SVG. Below the stage —
+   where the page turns cream and nothing else on screen says whose site it is
+   — it now carries the same mark the hero and the curtain do: near's N and its
+   wordmark, one file, in black, because that surface is the only one it is
+   ever seen on.
+
+   It was a co-brand here — The Rollup, a rule, then near — and The Rollup's
+   mark and the rule were pulled with the rest of the co-brand.
+
+   `near-logo-black.webp` is `near-logo-light.webp` with its RGB set to black
+   and its alpha untouched, so the header and the hero draw the same file in
+   two inks rather than two files that have to be kept in step. The wordmark
+   SVG it replaces was a different drawing — no N, different proportions — and
+   having both on one page was the thing worth fixing.
+
+   IT INHERITS THE ENTRANCE IT ALREADY HAD. `13-rollup.css:801` keeps `.brand`
+   at `opacity:0` while the stage owns the frame and reveals it with
+   `.on-light` off the shrink clock, so the mark arrives with it and declares
+   no transition of its own.
+
+   EVERY SELECTOR IS SCOPED TO `.nav`. The footer uses `.brand` too, with the
+   inline wordmark inside it, and it is a white mark on near-black — none of
+   this applies there and it must not leak.
+   ========================================================================= */
+
+/* SET FROM THE ARTWORK, not guessed: in `near-logo-black.webp` the wordmark
+   occupies y 14–121 of 137, so 78.8% of the box — at 26px that is a 20.5px
+   wordmark, against the 22px the bare SVG used to be. Slightly smaller is
+   correct now that it has an icon beside it carrying part of the weight. */
+.nav .brand .brandnear {
+  display: block;
+  flex: none;
+  height: 26px;
+  aspect-ratio: 596/137;
+  background: url('/img/near-logo-black.webp') center / contain no-repeat;
+}

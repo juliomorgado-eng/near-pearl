@@ -1,0 +1,54 @@
+/* =========================================================================
+   A CONTROL THAT WILL ACTUALLY RESPOND
+   -------------------------------------------------------------------------
+   THIS FILE WAS "THE THREE MODES". The site was `/` (autoplay, no pointer),
+   `/guided` (the script yields to you and heals back) and `/live` (no script at
+   all), and most of what was here served the last two: the "you have the wheel"
+   badge over the tab bar, the entrance timings keyed to `[data-mode]`, the puck
+   that switched between the routes. Those routes are gone.
+
+   WHAT SURVIVES IS `.can`, and it survives because it never belonged to a mode.
+   It is written by the MACHINE — a control gets it when the flow's own guard
+   says the action is available right now — so "Open long" goes quiet while the
+   stop loss is above entry, in exactly the same way it goes quiet in the
+   script. There is one source of truth for whether a thing can be done, and
+   this is its stylesheet half. The four v5 screens on the home page all write
+   it (`live(d.can(...))`), which is why this is not a file that could simply be
+   deleted with the routes it was named for.
+   ========================================================================= */
+
+/* ---- a control that will actually respond ------------------------------ */
+.can { cursor: pointer; -webkit-tap-highlight-color: transparent }
+/* the lift is tiny and the transition short: these are 12px controls inside a
+   340px phone, and anything more reads as a web page rather than a native app */
+.can { transition: background-color 140ms var(--ease-out), border-color 140ms var(--ease-out),
+  color 140ms var(--ease-out), filter 140ms var(--ease-out), transform 140ms var(--ease-out) }
+.can:hover { filter: brightness(1.14) }
+.can:active { transform: scale(.975) }
+.can:focus-visible {
+  outline: 2px solid var(--near-green, #00EC97); outline-offset: 2px; border-radius: 8px;
+}
+
+/* Rows and list items get a ground rather than a brightness bump — brightening
+   a transparent row does nothing at all, which is the kind of dead hover that
+   makes a reader stop trying controls. */
+.tmrow.can:hover, .etr.can:hover, .balrow.can:hover, .frow.can:hover,
+.ptrow.can:hover { background: rgba(255, 255, 255, .07); filter: none }
+.tmrow.on { background: rgba(0, 236, 151, .10) }
+
+/* The keypad is the one place a reader presses fast and repeatedly, so its
+   feedback has to be immediate and its target has to stay put. */
+.kpkey.can:active { transform: scale(.93) }
+.kpwrap.can { pointer-events: auto }
+
+/* A SHEET THAT OPENS MUST TAKE THE POINTER.
+   `.sheetslot` is pointer-events:none so a closed sheet never eats a click
+   meant for the screen underneath. An OPEN one has to take them back, or the
+   token list is a picture of a token list. */
+.sheet.open { pointer-events: auto }
+
+/* press feedback is a real press, not a hover: it is the state a touch reader
+   needs most, and there is no hover to tell them the target is live */
+@media (prefers-reduced-motion: reduce) {
+  .can:active, .kpkey.can:active { transform: none }
+}

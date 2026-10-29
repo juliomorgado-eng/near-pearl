@@ -1,0 +1,436 @@
+/* =========================================================================
+   /demo/swap-v5 — WHAT IS ACTUALLY A SWAP
+   -------------------------------------------------------------------------
+   Everything this screen shares with `/demo/perps-v5` it inherits: the face,
+   the palette, the tempo, the chrome row, the caret, the primary button, the
+   order checklist, the sheet mechanics. `.pdev.app` in 24-demo-app.css owns
+   all of it, which is why this file is short.
+
+   What is here is the form, the quote, the success state, and the picker —
+   and the picker is the only genuinely new idea, because nothing else in this
+   repo has had to make a list FEEL long.
+
+   SCOPED TO `.pdev.swp`, all of it.
+   ========================================================================= */
+
+.pdev.swp .pdview { padding: 0 16px }
+/* THE TOP BAR HOLDS ONE CONTROL, and it is not a back arrow. Swap is a tab —
+   you are already there and there is nothing behind it — so the name drops out
+   of the bar and becomes a heading on the page. */
+/* ONE ROW, AND IT IS THE ACCOUNT SCREEN'S ROW. `.swbar` used to sit above
+   this — a 50px strip outside `.pdview` holding nothing but the lock, which
+   made swap the only chapter with a two-band header. Its own note explained
+   that it had to restate the page's 16px padding to stop the lock bleeding
+   against the device edge; inside `.pdview` there is nothing to restate.
+
+   THE NUMBERS ARE `.ownhead`'s, not near them: 62px tall, 16 of padding above,
+   a 10px gap and the name at 17/600. It was 25px on a shorter row, which is
+   why the two screens read as different apps at the top even though everything
+   below the fold matches. Matched by the numbers, not by eye — the same thing
+   29-account-home.css says about this row's height. */
+.pdev.swp .swhead {
+  flex: none; display: flex; align-items: center; gap: 10px;
+  height: 62px; padding-top: 16px;
+}
+.pdev.swp .swhead b { font-size: 17px; font-weight: 600 }
+.pdev.swp .swhelp { width: 16px; height: 16px; color: rgba(255, 255, 255, .38) }
+
+/* the lock closes the row where `.ownscan` closes the account's — same chip,
+   same size, same corner. The colour is the one difference and it is the
+   point: green, because on a screen whose whole argument is confidentiality
+   the lock is not decoration. */
+.pdev.swp .swlock {
+  margin-left: auto;
+  width: 34px; height: 34px; border-radius: 11px; flex: none;
+  display: grid; place-items: center;
+  background: var(--btc-card); color: var(--btc-up);
+}
+.pdev.swp .swlock svg { width: 19px; height: 19px }
+
+/* ---- the form ----------------------------------------------------------- */
+
+.pdev.swp .swform { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-top: 6px }
+
+/* THE HAIRLINE IS WRITTEN DOWN NOW, and it used to arrive by accident.
+   This box was `.swfield` — which is ALSO a class in `07-stage.css`, the ported
+   site stylesheet, where it carries a background and a
+   `border: 1px solid rgba(255,255,255,.10)`. Our rule overrode the fill and
+   never mentioned the border, so the edge on these cards was a rule from an
+   unrelated component leaking in. Third time this repo has been bitten by one
+   class naming two things (`.btk`, then `.blev`), and the first where the thing
+   it broke was a COLOUR: `.swrow` there sets `color: rgba(255,255,255,.55)`,
+   which is why the amount was grey, and `.swrow b { color: #fff }` is why it
+   had been white for as long as it was a `<b>`.
+   Four names moved — swfield/swrow/swsub/swtop → swbox/swline/swfoot/swbar —
+   and the border is `--btc-edge`, the one hairline token every other card on
+   these screens is edged with. */
+.pdev.swp .swbox {
+  flex: none; padding: 16px; border-radius: 20px;
+  background: var(--btc-card); border: 1px solid var(--btc-edge);
+}
+.pdev.swp .swline { display: flex; align-items: center; gap: 10px }
+
+/* THE AMOUNT SHRINKS TO MAKE ROOM FOR THE PILL.
+   The field is 320px of page less its own 32 of padding, and the token pill and
+   the gap take about 100 of what is left — so the figure has ~150px, and at
+   0.52em per tabular glyph `n` of them fit at 270/n pixels. 28 is the ceiling a
+   short figure keeps; `6635.616976` is eleven glyphs and comes down to 24.
+   `--len` is set inline in Phone.tsx, which is where the string is. */
+.pdev.swp .swfin {
+  flex: 1; min-width: 0; display: flex; align-items: center;
+  font-size: min(28px, calc(270px / var(--len, 4)));
+  font-weight: 600; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pdev.swp .swfin b, .pdev.swp .swfinb { font-weight: 600 }
+.pdev.swp .swfin b.off, .pdev.swp .swfin.quiet { color: rgba(255, 255, 255, .3) }
+.pdev.swp .swfin.quiet span { color: #fff }
+
+/* THE TOKEN CHIP IS TINTED IN THE TOKEN'S OWN COLOUR, from `--tk` set inline
+   off the catalogue. Two grey pills make you read the pair to know which way
+   round it is; a green one and a gold one you know at a glance.
+   ONE PAIR OF ALPHAS RATHER THAN A TABLE OF TINTS: at 18% and 34% every one of
+   the twenty-seven brand colours lands somewhere readable on this ground, and a
+   hand-picked tint per token is twenty-seven chances to get one wrong and never
+   look at it again.
+   `given` is the source, chosen a screen ago. NOT `fixed`: that is a Tailwind
+   utility, and naming a modifier after one is a `position: fixed` nobody wrote
+   and nobody can see in this file. */
+.pdev.swp .swtok {
+  flex: none; display: flex; align-items: center; gap: 7px; height: 40px; padding: 0 11px 0 7px;
+  border-radius: 999px; font-size: 15px; font-weight: 600; white-space: nowrap;
+  background: color-mix(in srgb, var(--tk, #fff) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tk, #fff) 34%, transparent);
+}
+.pdev.swp .swtok .bcv { color: rgba(255, 255, 255, .55) }
+/* AND THE CHIP DEEPENS WHEN IT IS PRESSED, in the colour it is already wearing.
+   The shared 10% white does nothing legible over a tint that is already a
+   colour; going from 18/34 to 30/52 of the SAME colour is the chip being held
+   rather than a grey wash laid over it. Same idea as the picker rows it opens. */
+.pdev.swp .swtok {
+  transition: background-color var(--dur) var(--ease-out),
+              border-color var(--dur) var(--ease-out),
+              scale var(--dur) var(--ease-out);
+}
+.pdev.swp [data-lit='1'].swtok {
+  background: color-mix(in srgb, var(--tk, #fff) 30%, transparent);
+  border-color: color-mix(in srgb, var(--tk, #fff) 52%, transparent);
+  scale: .985;
+}
+/* the one state with no token behind it, so it has no colour to borrow */
+.pdev.swp .swtok.empty {
+  background: var(--btc-up); border-color: transparent; color: #04140E; padding: 0 12px;
+}
+.pdev.swp .swtok.empty .bcv { color: #04140E }
+
+.pdev.swp .swfoot {
+  display: flex; align-items: center; gap: 8px; margin-top: 10px;
+  font-size: 13px; color: rgba(255, 255, 255, .45); font-variant-numeric: tabular-nums;
+}
+.pdev.swp .swfoot i { font-style: normal; display: flex; align-items: center; gap: 6px }
+.pdev.swp .swfoot em { margin-left: auto; font-style: normal }
+/* the balance is a control — it fills the field with the whole position — so it
+   gets the press affordance the rest of this row has no business wearing.
+   `.can` is the shared class `live()` hands out; the hover is this file's,
+   because nothing else in the app is a live control drawn as plain dim text. */
+.pdev.swp .swmax.can:hover { color: rgba(255, 255, 255, .8) }
+/* the fiat/token flip: it is why the left side of this row is a dollar figure,
+   and it is drawn rather than wired — nothing in this cut types in fiat */
+.pdev.swp .swflip { width: 13px; height: 13px; color: rgba(255, 255, 255, .55) }
+
+/* the arrow between the two fields. It overlaps both by design — that is what
+   says they are one control and not two forms stacked.
+   A ROUNDED SQUARE, NOT A DISC, and the difference is not cosmetic: a circle
+   with a thick ring in the chart's near-black read as a badge sitting on top of
+   the form. The app cuts a notch out of the gap — same radius family as the
+   fields, one hairline, the page's own ground — so it reads as part of the
+   control it is joining. */
+.pdev.swp .swarrow {
+  align-self: center; width: 40px; height: 40px; margin: -8px 0; z-index: 1;
+  display: grid; place-items: center; border-radius: 13px;
+  background: var(--btc-bg); border: 1px solid rgba(255, 255, 255, .1);
+  color: rgba(255, 255, 255, .72);
+}
+.pdev.swp .swarrow svg { width: 16px; height: 16px }
+
+/* ---- the terms, and they are UNDER the button ---------------------------
+   NOT A CARD. Three plain rows on the page, which is what the app writes: a
+   fill and a hairline would make them a second thing on the screen, and they
+   are a footnote to the pair above. They also sit BELOW the primary button —
+   available to whoever wants them, in nobody's way — where the boxed version
+   was an obstacle between saying what you want and doing it. */
+
+.pdev.swp .swquote { flex: none; margin-top: 22px; display: grid; gap: 15px }
+.pdev.swp .swquote > div { display: flex; align-items: center; gap: 8px; min-height: 22px }
+.pdev.swp .swquote dt {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; color: rgba(255, 255, 255, .5);
+}
+.pdev.swp .swquote dd {
+  margin-left: auto; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums;
+}
+.pdev.swp .swqh { width: 14px; height: 14px; color: rgba(255, 255, 255, .34) }
+
+/* the tolerance is a CONTROL and the only one down here, so it is the only
+   thing on these rows wearing a fill */
+.pdev.swp .swslip {
+  font-style: normal; display: inline-flex; align-items: center; gap: 7px;
+  height: 30px; padding: 0 11px; border-radius: 999px;
+  background: var(--btc-card); font-size: 14px; font-weight: 600;
+}
+.pdev.swp .swsl { width: 15px; height: 15px; color: rgba(255, 255, 255, .6) }
+
+/* the button follows the pair rather than the frame — see the note in
+   Phone.tsx. Nothing on this form is pinned to the floor. */
+.pdev.swp .bcta { margin-top: 22px }
+.pdev.swp .bochk { margin-bottom: 4px }
+
+/* ---- the settlement, which is a screen and not a footer ----------------- */
+
+.pdev.swp .swset { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-top: 6px }
+.pdev.swp .swsetcard {
+  flex: none; padding: 22px 20px; border-radius: 24px; background: var(--btc-card);
+}
+.pdev.swp .swsetchk {
+  margin-top: 22px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .1);
+}
+/* the shared checklist was sized for a 210px column inside a sheet; here it is
+   the lower half of a card and gets the room that implies */
+.pdev.swp .swsetchk .plist { max-width: none; gap: 6px }
+.pdev.swp .swsetchk .pstep { min-height: 36px; gap: 13px }
+.pdev.swp .swsetchk .plabel { font-size: 15px }
+
+/* the icon and the label sit side by side AS ONE BLOCK, centred together.
+   `.bcta` is a centred grid, so two columns split the pill in half and put the
+   glyph against the left edge — `max-content` columns and a centred track is
+   what makes them read as one label with a mark on it. */
+.pdev.swp .swagain {
+  margin-top: 20px; grid-auto-flow: column; grid-auto-columns: max-content;
+  justify-content: center; gap: 10px; align-items: center;
+}
+.pdev.swp .swagain svg { width: 18px; height: 18px }
+
+/* the rail between the rows is the app's white, not the checklist's green:
+   what it marks is how far the list has got, and a green thread under a green
+   tick is the same fact drawn twice */
+.pdev.swp .swsetchk .pstep:not(:last-child)::before { top: 26px; bottom: -10px; width: 1.5px }
+.pdev.swp .swsetchk .pstep[data-state='done']::before { background: rgba(255, 255, 255, .8) }
+
+/* =========================================================================
+   THE REVIEW SHEET — where the figures are stated at full precision
+   -------------------------------------------------------------------------
+   The form is an input and rounds to what fits in a box; this is a statement
+   and does not. `3535.799` upstairs, `3,535.79972` here — same figure, four
+   more digits, and grouped, because down here it is a fact rather than
+   something you could have typed.
+   ========================================================================= */
+
+.pdev.swp .swrev { padding-bottom: 22px }
+.pdev.swp .swrevh { display: flex; align-items: center; padding: 6px 0 20px }
+.pdev.swp .swrevh b { font-size: 19px; font-weight: 600; letter-spacing: -.01em }
+.pdev.swp .swrevx {
+  margin-left: auto; width: 26px; height: 26px; display: grid; place-items: center;
+  color: rgba(255, 255, 255, .6);
+}
+.pdev.swp .swrevx svg { width: 20px; height: 20px }
+
+.pdev.swp .swrevleg { display: flex; align-items: center; gap: 15px }
+.pdev.swp .swrevt { display: flex; flex-direction: column; gap: 3px; min-width: 0 }
+.pdev.swp .swrevt b {
+  font-size: 21px; font-weight: 600; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.pdev.swp .swrevt i { font-style: normal; font-size: 14px; color: rgba(255, 255, 255, .45) }
+
+/* the arrow is INDENTED TO THE MARKS' COLUMN rather than centred: it is
+   reading order, not a control joining two boxes, and the two marks are the
+   column the eye is already travelling down */
+.pdev.swp .swrevar {
+  display: block; width: 54px; padding: 10px 0; color: rgba(255, 255, 255, .55);
+}
+.pdev.swp .swrevar svg { width: 22px; height: 22px; margin: 0 auto; display: block }
+
+.pdev.swp .swrevd {
+  margin-top: 22px; padding-top: 20px; display: grid; gap: 14px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+.pdev.swp .swrevd > div { display: flex; align-items: center; gap: 8px }
+.pdev.swp .swrevd dt { font-size: 14px; color: rgba(255, 255, 255, .5) }
+.pdev.swp .swrevd dd {
+  margin-left: auto; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums;
+}
+/* the sheet's button is the one that trades, so it gets room above it that the
+   form's — which only opens this — does not need */
+.pdev.swp .swrev .bcta { margin-top: 26px }
+
+/* =========================================================================
+   THE PICKER — the only new idea on this screen
+   -------------------------------------------------------------------------
+   Twenty-seven rows and six fit. Being long is not the same as FEELING long,
+   so the list travels: `s.at` is a row index, the track is translated by it,
+   and the transition below does the moving. The script stops three times
+   rather than gliding once — one continuous move reads as one fact, and what
+   a reader should come away with is that there was more every time they
+   looked.
+   ========================================================================= */
+
+.pdev.swp .swpick { height: 78%; padding-bottom: 0 }
+.pdev.swp .swpickh { flex: none; display: block; font-size: 20px; font-weight: 600; margin: 2px 0 14px }
+
+/* drawn and not wired — see the note in Phone.tsx */
+.pdev.swp .swsearch {
+  flex: none; display: flex; align-items: center; gap: 9px; height: 44px; padding: 0 14px;
+  margin-bottom: 16px; border-radius: 999px;
+  background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .07);
+}
+.pdev.swp .swsearch svg { width: 17px; height: 17px; color: rgba(255, 255, 255, .45) }
+.pdev.swp .swsearch em { font-style: normal; font-size: 15px; color: rgba(255, 255, 255, .38) }
+
+/* the section headers, and they are rows in the track like everything else —
+   `PICK_H` in state.ts is where these heights are actually decided */
+.pdev.swp .swsec {
+  flex: none; height: 34px; display: flex; align-items: center;
+  font-size: 13px; color: rgba(255, 255, 255, .45);
+}
+.pdev.swp .swcat {
+  flex: none; height: 52px; display: flex; align-items: center; gap: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+.pdev.swp .swcat i {
+  position: relative; font-style: normal; font-size: 15px; font-weight: 600;
+  display: flex; align-items: center; gap: 7px; height: 100%;
+  color: rgba(255, 255, 255, .42);
+}
+.pdev.swp .swcat i.on { color: #fff }
+/* the underline is the tab's own, not the row's — it marks one of the two */
+.pdev.swp .swcat i.on::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  border-radius: 2px; background: #fff;
+}
+.pdev.swp .swbeta {
+  font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 999px;
+  background: rgba(64, 132, 214, .22); color: #7FB6F2;
+}
+
+.pdev.swp .swlistwrap { flex: 1; min-height: 0; overflow: hidden; position: relative }
+/* HOW A FLICK MOVES A LIST. `--ease-out` leaves at full speed and slows evenly,
+   which is a thing being PUSHED; a list that has been thrown has most of its
+   distance behind it early and then a long, slowing tail carrying the weight.
+   Measured off the running page at 620ms: half the travel is gone in the first
+   100ms and the last 10px take about 300 — which is the shape, and it is the
+   tail that reads as momentum rather than as a cut.
+
+   620ms, AND IT WAS 380. The curve was right and the duration belonged to a
+   different script: three short hops of 266px and 198px, where the list now
+   makes one move of 410 and one back. Travelling twice the distance in the
+   same time is the jump the shorter version was trying not to be, and at 380
+   the tail — the part that reads as weight — was over before the eye had
+   caught up with the head. The stops are two now (see `STOPS` in
+   swapv5/state.ts); this is the other half of that change and neither works
+   without the other. */
+.pdev.swp .swlist {
+  display: flex; flex-direction: column;
+  transition: transform 620ms cubic-bezier(.32, .72, 0, 1);
+}
+/* the rail is drawn inside this wrap, so the rows are inset from it — a
+   holding's figure running under a scrollbar reads as a clipping bug */
+/* A ROW THAT CAN BE CHOSEN IS SHAPED LIKE ONE — the radius is what makes the
+   press read as the row lighting up rather than as a bar across the sheet.
+   IT DOES NOT REACH PAST ITS OWN COLUMN. It hung 8px into the left margin so
+   the fill would clear the mark, and `.swlistwrap` is `overflow: hidden`: the
+   highlight was clipped flat down its left edge, which is the one thing a
+   rounded rectangle must not be. */
+.pdev.swp .switem {
+  flex: none; height: 54px; display: flex; align-items: center; gap: 12px;
+  padding-right: 14px; border-radius: 13px;
+  transition: background-color var(--dur) var(--ease-out),
+              box-shadow var(--dur) var(--ease-out),
+              scale var(--dur) var(--ease-out);
+}
+
+/* THE ROW LIGHTS IN THE TOKEN'S OWN COLOUR, and that is the whole difference
+   between this and the flat grey slab it replaces.
+
+   `[data-lit]` in 24-demo-app.css paints 10% white, which is right for a
+   balance row on the account screen — those rows have no colour of their own.
+   A picker row does: `--tk` is the brand colour the token's PILL is already
+   tinted with, so choosing NEAR lights the row NEAR's green and choosing
+   Bitcoin lights it orange. One idea used twice.
+
+   NO EDGE, AND THAT IS THE DISCREET PART. A 1px inset line turned the row into
+   a chip — an object stuck on the list rather than a row of it — and made every
+   pixel where it met the sheet an edge to look at. A fill with round corners
+   and nothing drawn round it is the whole effect, and it is enough because it
+   is coloured: the row does not need an outline to be found, it needs to be a
+   different colour from its neighbours for a fifth of a second.
+
+   A NEUTRAL FLOOR UNDER THE TINT, because eight of these twenty-seven brands
+   are nearly black — XRP is #23292F and Arbitrum #2D374B, and 11% of either
+   over this sheet is nothing at all. The floor is what every row gets; the tint
+   is what a coloured one gets on top of it. Same reason the token pills use one
+   pair of alphas rather than a hand-picked tint each.
+
+   And it goes down a hair — `scale: .99`, half what it was, for the same
+   reason the edge went: this is a row being chosen, not a button being mashed. */
+.pdev.swp [data-lit='1'].switem {
+  background-color: rgba(255, 255, 255, .05);
+  background-image: linear-gradient(
+    color-mix(in srgb, var(--tk, #fff) 11%, transparent),
+    color-mix(in srgb, var(--tk, #fff) 11%, transparent));
+  scale: .99;
+}
+
+.pdev.swp .switem.own { height: 58px }
+
+/* a holding carries what you have of it, which is the whole reason `Your
+   tokens` is a section and not the top of the catalogue */
+.pdev.swp .switemv {
+  margin-left: auto; display: flex; flex-direction: column; align-items: flex-end;
+  line-height: 1.15; font-variant-numeric: tabular-nums;
+}
+.pdev.swp .switemv b { font-size: 15px; font-weight: 600 }
+.pdev.swp .switemv i { font-style: normal; font-size: 13px; color: rgba(255, 255, 255, .45) }
+
+/* the network badge, and it is the only thing separating two USD Coin rows */
+.pdev.swp .swchip { position: relative; flex: none; display: block }
+.pdev.swp .swnet {
+  position: absolute; right: -2px; bottom: -2px; width: 15px; height: 15px;
+  border-radius: 50%; box-shadow: 0 0 0 2px var(--btc-card);
+}
+.pdev.swp .switemt { display: flex; flex-direction: column; line-height: 1.15 }
+.pdev.swp .switemt b { font-size: 15px; font-weight: 600 }
+.pdev.swp .switemt em { font-style: normal; font-size: 13px; color: rgba(255, 255, 255, .45) }
+/* the token being spent is on the list and cannot be chosen — a swap from a
+   thing into itself is not a trade. It says so rather than going quiet. */
+.pdev.swp .switem.self { opacity: .42 }
+.pdev.swp .swself {
+  margin-left: auto; font-style: normal; font-size: 12px; padding: 3px 8px; border-radius: 7px;
+  background: rgba(255, 255, 255, .07); color: rgba(255, 255, 255, .6);
+}
+
+/* THE RAIL IS DRAWN, NOT NATIVE. A native scrollbar is the browser disagreeing
+   with the phone about what a scrollbar looks like, on a screen whose whole
+   claim is that it is a copy of an app. */
+.pdev.swp .swrail {
+  position: absolute; right: 0; top: 4px; bottom: 4px; width: 3px;
+  border-radius: 2px; background: rgba(255, 255, 255, .07);
+}
+.pdev.swp .swrail i {
+  position: absolute; left: 0; width: 3px; height: 34%; border-radius: 2px;
+  background: rgba(255, 255, 255, .28);
+  /* the rail rides the same curve as the track, or it arrives on its own clock */
+  transition: top 380ms cubic-bezier(.32, .72, 0, 1);
+}
+
+/* the list fades at both edges so a row leaving the frame reads as travelling
+   rather than as being clipped by a box */
+.pdev.swp .swlistwrap::before,
+.pdev.swp .swlistwrap::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 26px; pointer-events: none; z-index: 1;
+}
+.pdev.swp .swlistwrap::before { top: 0; background: linear-gradient(var(--btc-card), transparent) }
+.pdev.swp .swlistwrap::after { bottom: 0; background: linear-gradient(transparent, var(--btc-card)) }
+
+@media (prefers-reduced-motion: reduce) {
+  .pdev.swp .swlist, .pdev.swp .swrail i { transition: none }
+}

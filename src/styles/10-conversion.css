@@ -1,0 +1,250 @@
+/* ==========================================================================
+   v04 CONVERSION PASS
+   ========================================================================== */
+
+/* --- hero call to action ------------------------------------------------ */
+/* Rides --cue-out, the same 0->1 the scroll cue uses, so the button recedes on
+   the identical curve as the type above it. One variable, two elements, no
+   second clock to keep in sync. */
+.herocta{
+  /* opened up once the card peek dropped to 240px. The button needs air above
+     it more than the stats need air below, so the headline gap grows most. */
+  margin-top:clamp(34px,4.8vh,62px);
+  display:flex;flex-direction:column;align-items:center;gap:19px;
+  opacity:calc(1 - var(--cue-out,0));
+  transform:translate3d(0,calc(var(--cue-out,0) * 18px),0);
+  will-change:opacity,transform;
+}
+.herocta .friction{
+  margin:0;font-family:var(--font-body);font-size:.95rem;font-weight:400;
+  color:rgba(255,255,255,.72);letter-spacing:.005em;
+  text-shadow:0 1px 20px rgba(0,0,0,.4);
+}
+/* The three-stat row (`<dl class="hstats">`) and the proof line that briefly
+   replaced it are both gone from the hero — the proof moved into the Perps
+   chapter's white plate (`.side.r .rollquote`, from `CARDS[0].aside`). */
+@media(max-width:600px){
+  .herocta .friction{font-size:.88rem}
+}
+
+/* --- testimonial grid --------------------------------------------------- */
+/* Was a moving marquee. The cards are unchanged; only the container is new,
+   so .qcard's fixed 27rem width has to be released back to the grid. */
+
+/* --- tablet: keep the three-column lockup ------------------------------- */
+/* Below 1081 the lockup collapsed to one column and stacked the copy under a
+   short phone. On a tablet there is width for the desktop composition, so it
+   is restored from 768 up and only the proportions change: a narrower shell,
+   smaller side type, tighter gutters. Everything here has to out-specify the
+   max-width:1080 block above, including its !important alignment reset. */
+@media(min-width:800px) and (max-width:1080px){
+  .lockup{
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+    justify-items:stretch;
+    gap:clamp(12px,2vw,26px);
+    padding:64px var(--gut) 34px;
+  }
+  /* .side .face is absolutely positioned, so the column needs its own height
+     back. The stacked rule pinned it to 150/142px and clipped the overflow. */
+  .side{min-height:220px;height:auto;width:auto;max-width:none;overflow:visible}
+  .side.l,.side.r{height:auto}
+  .side.l .face{align-items:flex-end !important;text-align:right !important}
+  .side.r .face{align-items:flex-start !important;text-align:left !important}
+  .side h2,.permcopy h2{font-size:clamp(1.45rem,3.5vw,2.35rem)}
+  .side h2{max-width:13ch}
+  .side h2.stack{max-width:none;font-size:clamp(1.45rem,3.5vw,2.35rem)}
+  .side p{max-width:28ch;font-size:.9375rem;line-height:1.45}
+  .side .btn{font-size:.875rem;padding:8px 16px}
+  /* 300px is the floor. The card interior is laid out for ~348 and tolerates
+     300; below that the swap amounts wrap mid-number ("400" breaking to "40 / 0")
+     and the balance rows crush. So the shell gives up 48px and no more, and the
+     three-column range starts at 800 rather than 768 because that is the width
+     at which the two side columns are still worth reading. Under 800 the
+     stacked layout is the better composition anyway. */
+  .morph{width:300px}
+  /* the shell lost 48px of width, so the one piece of card type that is sized
+     to fill it has to come down with it, or a long quote wraps mid-number. */
+  .swamt{font-size:1.5rem}
+  /* the icon field goes back to the desktop full-height behaviour: with copy
+     beside the phone rather than beneath it, nothing needs the middle band */
+  /* cap 150 means the shell is full height wherever the viewport allows it
+     (696px needs 846px of height) and shrinks only when it genuinely cannot
+     fit, which is tablet landscape. */
+  :root{--m-h0-cap:150px}
+}
+
+/* --- one phone aspect on desktop and tablet ----------------------------- */
+/* The shell used to be a fixed WIDTH with a height that moved: 348x696 when
+   the viewport allowed it, but 300x618 in tablet landscape and shorter again
+   on a short desktop. Three different rectangles calling themselves the same
+   phone. It is now a single 1:2 rectangle from 800px up, matching what the
+   base path had always been (696 tall against 348 wide). The old 9/19.5 was
+   a real iPhone aspect but it made desktop 8% taller than every other
+   breakpoint's version of the same shell.
+   Height stays the driver because it is what the viewport actually constrains
+   (--m-h0 is capped by --m-h0-cap and animated by paintCards); width follows
+   from the ratio, so the shell can shrink to fit a short viewport without ever
+   changing shape. */
+@media(min-width:800px){
+  .morph{
+    aspect-ratio:1 / 2;
+    height:var(--m-h0);
+    width:auto;
+  }
+}
+
+/* --- scroll-step rail --------------------------------------------------- */
+/* Sits in the sticky stage, so it lives and dies with the card sequence. */
+/* Two elements on purpose. .stepdots is a full-bleed layer sharing .grad's
+   exact box, and carries the IDENTICAL clip-path, so when the gradient's
+   bounding box contracts into the CTA plate it wipes the rail away with it —
+   the dots are cut off by the same shrinking edge, not faded out on a separate
+   clock. Insets in a clip-path are relative to the element's own border box,
+   which is the whole reason the rail could not carry this itself. */
+.stepdots{
+  position:absolute;inset:0;z-index:6;pointer-events:none;
+  clip-path:inset(var(--ci-t) var(--ci-r) var(--ci-b) var(--ci-l) round var(--ci-rad));
+}
+.sdrail{
+  /* THE RIGHT GUTTER, WHICH IS THE DEVICE'S SIDE. It stood in the left one,
+     beside the copy column — so the rail was reading as furniture belonging to
+     the words, when what it indexes is the sequence the PHONE is playing. The
+     comp puts it against the device, and there the filled ring and the screen
+     it names are one glance apart instead of the width of the lockup.
+
+     `right`, NOT `left`. Setting both pins the element to the full width of
+     the frame, and `translateY(-50%)` would then centre a full-width box —
+     the dots would land back on the left with an invisible hit area laid
+     across the whole card. */
+  position:absolute;right:clamp(18px,2.6vw,42px);top:50%;
+  transform:translateY(-50%);
+  /* 12 between the rings, so the centres sit 22 apart — a shade over two
+     diameters. It was 20/34, and before that 32/46, which is over three
+     diameters of empty gutter between one mark and the next: at that pitch the
+     eye reads four separate dots that happen to be stacked, and has to be told
+     they are a sequence. What held it at 34 was the label on the active step
+     crowding the ring above it — and that label is hover-only again (see
+     below), so the constraint went with it. */
+  display:flex;flex-direction:column;gap:12px;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--dur-slow) var(--ease-out);
+}
+/* The rail is an orientation aid, not a control surface. It sits back at .62
+   and comes up only when pointed at, so it never competes with the card. */
+.stepdots.on .sdrail{
+  /* --shr is the eased shrink, 0 while the gradient is full-bleed and 1 once
+     it has closed into the plate. The rail dissolves on that same curve, so
+     the box closing is what takes the dots, not a timer of their own. */
+  opacity:calc(.62 * (1 - var(--shr, 0)));
+  pointer-events:auto;
+}
+.stepdots.on .sdrail:hover{opacity:calc(1 - var(--shr, 0))}
+/* THE BUTTON IS THE RING AND NOTHING ELSE, which is what makes the gap above
+   mean what it says. With the label in flow the button was as tall as a 12px
+   line of type — 18px, not 10 — so `gap:12` put the rings 30 apart however
+   small they were drawn. The label is absolute now (below), so the button
+   measures its ring and the pitch is 10 + 12 = 22.
+
+   `::before` gives back the pointer target that costs: a 10px button is a
+   smaller thing to hit than a ring looks like it should be. Inset by exactly
+   half the gap top and bottom, so the four targets tile the column without
+   overlapping each other. */
+.sdrail button{
+  position:relative;display:flex;align-items:center;
+  padding:0;background:none;border:0;cursor:pointer;color:#fff;
+}
+.sdrail button::before{content:'';position:absolute;inset:-6px -12px}
+/* A RING, AND IT IS 10px — 14 while it had to hold a permanent label beside
+   it, 7 before that. The rail is an orientation aid in a gutter, not a control
+   the eye should land on first, and at 14 with the labels gone it read as the
+   loudest thing in an empty column.
+
+   `.dot` was the class, and `18-demo-perps.css` has one too — a padded, filled
+   chip on the perps ticket, loaded after this file, which was turning these
+   into 22x16 pills with a background nobody wrote. `.sddot` cannot collide with
+   anything, which is the whole point of the prefix the rail's other classes
+   already had. */
+.sdrail .sddot{
+  width:10px;height:10px;border-radius:50%;flex:none;box-sizing:border-box;
+  background:transparent;
+  border:1.25px solid rgba(255,255,255,.34);
+  transition:background-color var(--dur) var(--ease-out),border-color var(--dur) var(--ease-out);
+}
+/* OUT OF FLOW, so it cannot set the button's height — see the note above. It
+   is hover-only, so nothing is lost by taking it out.
+
+   CENTRED BY FLEX, AND NOT BY `translate`, WHICH IS A BUILD TRAP AND NOT A
+   PREFERENCE. This was `top:50%; translate:0 -50%` alongside the entrance's
+   `transform:translateX(-6px)`, which reads correctly and does not work:
+   Lightning CSS (Tailwind v4's minifier) downlevels the individual `translate`
+   property into `transform` for older targets, and in one rule the later
+   `transform` then wins outright. The shipped declaration was
+   `transform:translate(-6px)` with the vertical centring simply gone — the
+   label sat 9px below its ring. `translate` in a rule that also sets
+   `transform` is silently dropped; assume that anywhere in this build.
+
+   `top:0;bottom:0` makes the box the ring's own height and the flex centres
+   the text across it, overhanging evenly. No transform involved, so the
+   entrance keeps `transform` to itself. */
+.sdrail .lbl{
+  /* IT OPENS INWARD, BECAUSE THE RAIL MOVED. Hanging off `left: 100% + 12px`
+     was right while the rail stood in the left gutter — the name grew away
+     from the card, into empty margin. Against the right edge that same rule
+     runs it off the frame, and `PERMISSIONLESS` is ~130px of nowrap type: it
+     would be clipped by the viewport on every width the rail is drawn at.
+
+     So it opens toward the card instead. The names are hover-only and sit over
+     the device's own margin for the moment they are up, which is the trade —
+     a word briefly over the frame beats a word permanently off it. */
+  position:absolute;right:calc(100% + 12px);top:0;bottom:0;
+  display:flex;align-items:center;
+  font-family:var(--font-mono,var(--font-body));
+  font-size:12px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(255,255,255,.82);
+  /* +6, not -6: the label still arrives FROM its ring, and its ring is now on
+     the other side of it. */
+  opacity:0;transform:translateX(6px);
+  transition:opacity var(--dur) var(--ease-out),transform var(--dur) var(--ease-out);
+  text-shadow:0 1px 14px rgba(0,0,0,.5);
+  white-space:nowrap;pointer-events:none;
+}
+/* A PASSED STEP IS A BRIGHTER RING, NOT A FILLED DISC. Filling it made a second
+   solid mark in a column whose whole grammar is "one of these is filled and it
+   is the one you are on" — two fills and the eye has to work out which green.
+   Progress still reads: the ring gets brighter behind you. */
+.sdrail button.done .sddot{border-color:rgba(255,255,255,.62)}
+/* the current one is the only filled mark on the rail, and it is the SAME SIZE
+   as the others. It was scaled 1.25 on top of the fill, which is the same fact
+   said twice and leaves the column with one mark out of line. */
+.sdrail button.now .sddot{
+  background:rgba(0,236,151,.92);border-color:transparent;
+}
+/* NO STEP IS LABELLED UNTIL IT IS POINTED AT. The active one carried its name
+   permanently for a while — it fits, there is room for it at 1440 — but a word
+   sitting in the gutter beside the card is a second thing to read on a screen
+   whose whole job is the card, and it moved down the column as the tour
+   advanced. Which step you are on is already said by the one filled ring, and
+   said without words.
+
+   Hover and focus-visible both, so the names are a keyboard tab away and not
+   only a mouse away; `aria-current="step"` on the button is what says it to a
+   screen reader either way. */
+.stepdots button:hover .lbl,
+.stepdots button:focus-visible .lbl{opacity:1;transform:none}
+.sdrail button:hover .sddot{border-color:#fff}
+/* the rail needs the left gutter the stacked layout does not have */
+@media(max-width:799px){ .stepdots{display:none} }
+@media(prefers-reduced-motion:reduce){
+  .stepdots,.stepdots .sddot,.sdrail .lbl{transition:none}
+}
+
+/* --- short desktop: the shell narrows, so its widest type follows --------- */
+/* With the aspect locked, a short viewport shrinks the shell by HEIGHT and the
+   width comes down with it. Below ~310px of shell the perps tab row and the
+   swap amounts no longer fit at full size. */
+@media(min-width:1081px) and (max-height:880px){
+  .swamt{font-size:1.5rem}
+  .ptabs{gap:13px}
+  .pt{font-size:.8125rem}
+}
+

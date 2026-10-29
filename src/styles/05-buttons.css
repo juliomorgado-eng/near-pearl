@@ -1,0 +1,37 @@
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--font-body);
+  font-weight:500;font-size:var(--fs-body-sm);letter-spacing:-.005em;padding:9px 22px;line-height:1.25;
+  border-radius:var(--radius-pill);border:1px solid transparent;
+  /* not `--tr-ui`: buttons have their own curve and their own in/out pair —
+     see the note in 12-motion.css for what was wrong with sharing one. */
+  transition:var(--tr-btn);white-space:nowrap;
+}
+.btn:hover .arw{transform:translateX(3px)}
+/* THE DEFAULT PRIMARY IS STILL THE GREEN PILL, and that is a correction.
+   The brushed gradient went in here first, on the reading that "the CTA
+   button" meant every `.btn-primary` on the site. It does not: it means the
+   big ask — `Create account` on the stage, the fixed bar's copy of it, and
+   `Get started` on the closing plate. Those three declare `--cta-fill` for
+   themselves in 33-hero-skyline.css and 36-final-cta.css.
+
+   THE ONE IT WAS WRONG FOR IS THE NAV. `Create account` sits in the header
+   over the cream panel, at 34px beside a ghost `Sign in`, and a white-to-grey
+   pill there is a silver lozenge on paper — no brand colour, and the white
+   half with nothing to be lighter than. It is the site's green button, which
+   is what it has always been.
+
+   THE SWEEP GOES WITH THE GRADIENT. `background-size` has nothing to grow
+   here: this is a flat fill, so the hover is the fill it always was. */
+.btn-primary{background:var(--near-green);color:#000}
+.btn-primary:hover{background:var(--green-300);box-shadow:var(--glow-green-sm)}
+.btn-primary:active{background:var(--green-500);transform:translateY(1px)}
+.btn-outline{border-color:var(--border-strong);color:#fff;backdrop-filter:blur(8px)}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.17)}
+/* thinner, not smaller — the type size is unchanged, only the space above and
+   below it. line-height:1.25 on .btn is what makes that possible; without it
+   the line box puts the padding back. */
+.btn-lg{padding:11px 25px;font-size:var(--fs-body-sm)}
+

@@ -1,0 +1,319 @@
+/* =========================================================================
+   THE STAGE TURNS GREEN — background and type colour, and nothing else
+   =========================================================================
+   The tour's field was near-black with a copper highlight and every word on it
+   was white. The supplied comp puts it on the two greens — #5EFAA7 lit through
+   the upper middle, #01A44D banked into the corners — with the type in
+   #1F1F1F. The field itself is changed at source (`.gcss` in 07-stage.css and
+   the shader's `STOPS` in gl/gradientField.ts); this file is the type and the
+   two surfaces that carry it.
+
+   WHY A FILE AND NOT FORTY EDITS. The colours being replaced do not sit
+   together: they are spread across four stylesheets, interleaved with the
+   PHONE's own colours, which do not change — the device stays dark, exactly as
+   it is in the comp, and it shares `07-stage.css` with the copy columns. A
+   sweep through those files by hand would have to tell `.side p` apart from
+   `.mrow .nm span` forty times and be right every time. Scoped to `#stage`,
+   `.mtour` and the two fixed elements that sit over them, this cannot reach
+   the device by accident, and it is one file to read, review or revert.
+
+   WHAT IS DELIBERATELY NOT HERE: the light zone below the tour, which was
+   already cream and is untouched; the demo routes; and every colour inside the
+   device.
+
+   ONE INK, ONE STRENGTH. #1F1F1F, at full, on every word — headline, body,
+   eyebrow, wordmark, friction line, legal. It was built as four strengths of
+   the same ink (1 / .82 / .62 / .46) so that hierarchy came from one decision
+   rather than four sampled greys, which is the usual right answer and is not
+   the one asked for here: no text on this page is faded. Hierarchy is carried
+   by size and weight alone, which the comp is already doing.
+
+   The opacities that remain are on BORDERS and PLATES — a ring on the step
+   rail, the hairline round the quote card, the fixed bar's fill. Those are not
+   text. */
+
+/* ON `:root`, AND THAT IS NOT A DETAIL. It was declared on `#stage` — which
+   reads correctly and quietly broke two rules: the nav and the fixed CTA bar
+   are `position: fixed` OUTSIDE the stage, so `var(--hero-ink)` there resolved to
+   nothing, the declaration was dropped as invalid, and `color` fell back to
+   inheritance. "Sign in" kept its border (a literal) and lost its colour (the
+   variable), which is exactly the shape of that bug. A token used by anything
+   fixed has to be reachable from the document root. */
+:root { --hero-ink: #1F1F1F }
+
+/* =========================================================================
+   THE FIVE LAYERS THAT MADE THE FIELD DARK
+   -------------------------------------------------------------------------
+   Retuning `.gcss` and the shader's palette moved almost nothing, and this is
+   why: v06.1 and v06.3 in 13-rollup.css each took the field down another stop,
+   deliberately and with a note saying so — "this page is a frame around a
+   lockup and a phone, not a light show". Five layers, and together they are
+   most of the old background:
+
+     .grad          a #02100C base under everything
+     .gcss          held at .80 opacity over that base
+     .grad::before  two black corner vignettes and a diagonal wash to .84
+     .grad::after   a #1C4419 corner light — a very dark green
+
+   (a fifth, `#gl{filter:brightness(.58)}`, went with the canvas itself.)
+
+   Every one of them is a background colour, which is what this change is
+   about. They are not deleted at source: the whole stack is one decision — a
+   dark frame — and it is either on or off. Off, and stated here in one place
+   next to the gradient that replaces it, is the version that can be read.
+
+   `!important` on `.gcss` only, because the rule being answered uses it too. */
+#stage .grad { background: #5EFAA7 }
+#stage .gcss { opacity: 1 !important }
+/* the vignettes and the diagonal wash */
+#stage .grad::before { background: none }
+/* the corner light. The comp's upper right is the isologo on the field, not a
+   plate over it — which is what the note on `.grad::after` says it wanted all
+   along, and could not have while the corner carried its own dark green. */
+#stage .grad::after { background: none }
+
+/* ---- THE HERO HEADLINE ------------------------------------------------- */
+/* `.herotype h1` (07-stage.css) is `color:#fff` with a soft black glow — cut
+   for the dark field and invisible on the green. The `.hw` units inherit it.
+   Ink, no glow, same as every other headline on the page. */
+#stage .herotype h1 {
+  color: var(--hero-ink);
+  text-shadow: none;
+}
+/* the closing line takes the same light-weight treatment near.com gets in the
+   copy columns below — same class, same ink override, one line down from
+   where it was first needed. */
+#stage .herotype h1 .wordmark { color: var(--hero-ink) }
+
+/* ---- THE COPY COLUMNS, BOTH COMPOSITIONS ------------------------------- */
+#stage .side h2,
+#stage .mchhead {
+  color: var(--hero-ink);
+  /* the shadow was there to lift white type off a bright patch of field. Dark
+     type on a light field does not need lifting, and a black glow under it
+     reads as a print registration error. */
+  text-shadow: none;
+}
+/* near.com closes the headline and steps back from it in the comp — the same
+   line, quieter, not a second colour */
+#stage .side h2 .wordmark,
+#stage .mchhead .wordmark { color: var(--hero-ink) }
+
+#stage .side p,
+#stage .mchbody { color: var(--hero-ink) }
+#stage .side p strong,
+#stage .mchbody strong { color: var(--hero-ink) }
+
+/* the closing plate is the same field, contracted — so it is the same ink. It
+   was white type, which on the green it now clips down to is barely there. */
+#stage .permcopy h2,
+#stage .permcopy .wordmark { color: var(--hero-ink); text-shadow: none }
+#stage .permcopy p { color: var(--hero-ink) }
+
+/* ---- THE ASK AND THE SMALL PRINT ------------------------------------- */
+#stage .mclose h2 { color: var(--hero-ink) }
+#stage .mclosebody { color: var(--hero-ink) }
+#stage .friction { color: var(--hero-ink) }
+#stage .perpsdisc,
+#stage .mdisc { color: var(--hero-ink) }
+#stage .perpsdisc b { color: var(--hero-ink) }
+/* the disclaimer under the CTA — a new element, white on the dark-field
+   default (37-legal.css), invisible on the green. Ink, no glow. */
+#stage .herolegal { color: var(--hero-ink); text-shadow: none }
+/* the proof line now lives inside the white plate (`.rollquote`), which is
+   paper on every theme — its text colour is set there, not here. */
+
+/* ---- THE BUTTON IS BLACK ----------------------------------------------- */
+/* `.btn-primary` is the green pill everywhere else on the site, including the
+   light zone's closing CTA, so this is scoped rather than retuned at source. */
+#stage .btn-primary,
+.mobcta .btn-primary {
+  background: #000;
+  color: #fff;
+}
+/* THE ARROW IS THE FIELD'S OWN GREEN. It marks the one control on the page
+   that goes somewhere, and it is the only piece of colour on a black pill —
+   which is what makes it read as a direction rather than as decoration. */
+#stage .btn-primary .arw,
+.mobcta .btn-primary .arw { color: #5EFAA7 }
+/* ON HOVER THE LABEL JOINS IT. The fill does not move — it is already the
+   darkest thing on the page and there is nowhere for it to go — so the whole
+   of the response is the word turning green under a pointer while the arrow
+   steps forward. `--tr-ui` already animates `color`, so the two are one
+   gesture on one clock. */
+#stage .btn-primary:hover,
+.mobcta .btn-primary:hover { background: #000; color: #5EFAA7; box-shadow: none }
+#stage .btn-primary:active,
+.mobcta .btn-primary:active { background: #000 }
+
+/* Sign in, which is the only nav control while the stage owns the frame — the
+   ask beside it stays collapsed until the page turns cream. */
+.nav:not(.on-light) .btn-ghost {
+  color: var(--hero-ink);
+  border-color: rgba(31, 31, 31, .5);
+}
+/* ON HOVER IT BECOMES THE OTHER BUTTON. It was an outline that darkened its
+   own border and took a 7% wash — the standard ghost hover, and on this field
+   it is barely an event. Filled black with white type is the same shape as
+   `Create account`, so pointing at it says what pressing it does. */
+.nav:not(.on-light) .btn-ghost:hover {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+.nav:not(.on-light) { color: var(--hero-ink) }
+
+/* "Learn more", beside the tracked "Start trading" — same ink-outline
+   treatment as the nav's own ghost button on this field, same black-fill
+   hover. */
+.rollcta .btn-outline,
+.mherocta .btn-outline {
+  color: var(--hero-ink);
+  border-color: rgba(31, 31, 31, .5);
+}
+.rollcta .btn-outline:hover,
+.mherocta .btn-outline:hover {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+/* THE NAV'S OWN FOOTING, WHICH WAS BLACK. `30-mobile-tour.css` gives the bar a
+   gradient so headlines and interfaces passing under it do not collide with
+   "Sign in" — right, and it was `rgba(3,8,6,.88)`, which on a green page is a
+   band of soot across the top of the frame. Same job, same shape, made of the
+   light end of the field instead. */
+@media (max-width: 1080px) {
+  .nav:not(.on-light)::before {
+    background: linear-gradient(180deg, rgba(94, 250, 167, .92) 0%, rgba(94, 250, 167, .5) 58%, rgba(94, 250, 167, 0) 100%);
+  }
+}
+
+/* THE FIXED BAR IS PAPER, NOT SMOKED GLASS. It was a dark translucent pill,
+   which is right over a dark field and wrong twice over a light one: it is a
+   black band across the bottom of a green page, and the ask inside it is now
+   black on black. White plate, black pill — the same pairing as the quote
+   card, and the button keeps being the one filled black shape on the screen. */
+@media (max-width: 1080px) {
+  .mobcta {
+    background: rgba(255, 255, 255, .82);
+    border-color: rgba(31, 31, 31, .10);
+    box-shadow: 0 8px 34px rgba(1, 90, 44, .18);
+  }
+  .mobcta span { color: var(--hero-ink) }
+}
+
+/* ---- THE STEP RAIL ----------------------------------------------------- */
+/* BLACK AT REST, ALL FOUR. They went in as a ladder — .38 for a step ahead,
+   .62 for one behind, full for the one you are on — which is the usual way to
+   say "you are here" and reads on this field as three marks that have not
+   finished loading. Every ring is solid, and the current step is the one that
+   is FILLED. That is the whole distinction, and it is enough.
+
+   Hover no longer touches the mark either: the only thing pointing at a step
+   does is show its name. */
+#stage .sdrail .sddot,
+#stage .sdrail button.done .sddot,
+#stage .sdrail button:hover .sddot { border-color: #000 }
+/* the filled mark was near-green, which on this field is the field */
+#stage .sdrail button.now .sddot { background: #000; border-color: #000 }
+#stage .sdrail .lbl { color: var(--hero-ink); text-shadow: none }
+
+/* ---- THE WHITE PLATE (the proof stat) -------------------------------- */
+/* It was glass over a dark field: a translucent white fill, a white hairline
+   and a backdrop blur, all of which exist to let a dark field through. On a
+   light one the same plate is a pale smudge, so the comp makes it paper. */
+#stage .side.r .rollquote,
+#stage .mchbody .rollquote {
+  background: #fff;
+  border-color: rgba(31, 31, 31, .08);
+  box-shadow: 0 18px 44px rgba(1, 90, 44, .12);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#stage .side.r .rollquote p,
+#stage .mchbody .rollquote p { color: var(--hero-ink) }
+
+/* ---- THE MARK IN THE FIELD IS GONE ----------------------------------- */
+/* It was a #00DC8D pinwheel at .25 in the top-right corner. On the green it
+   is a shape the size of a third of the frame lying on the field, and the
+   comp draws that corner empty. The element stays in GradientField.tsx —
+   this is the stylesheet saying it is not drawn. */
+#stage .isomark { display: none }
+
+/* the scroll cue is drawn on the field, under the hero — same ink, quietest
+   strength, since it is an instruction and not a thing to read */
+#stage .scrollcue { color: var(--hero-ink) }
+#stage .scrollcue .bar {
+  background: linear-gradient(180deg, var(--hero-ink), transparent);
+}
+
+/* =========================================================================
+   THE CLOSING CTA TAKES THE SAME FIELD AS THE FOOTER
+   -------------------------------------------------------------------------
+   `.finalcta` is the light zone's last plate and it was built as the stage's
+   dark field in miniature: a #000 base, four soft blobs in `.ctagrad`, a
+   radial veil, two black corner vignettes and a diagonal wash in `::before`,
+   and two copper lights in `::after` — six layers, in the same order and at
+   the same strengths as `.grad` had them, which is exactly what its own note
+   says it is for. `36-final-cta.css` later put a photograph on it instead;
+   that file is held out (globals.css) and this is what plays in its place.
+
+   FLAT, AND THE SAME FLAT AS THE FOOTER RIGHT AFTER IT — not the hero's own
+   150deg sweep, which is what this block held before. Two plates in a row
+   both claiming to be "the field" is one thing if they are the same colour
+   and a visible seam if they are not; the footer's own #5EFAA7 is what
+   settles which one wins. `.ctagrad` is gone from FinalCta.tsx along with the
+   parallax hook that drove it — nothing is left to paint the blobs on.
+
+   AND THE TYPE FOLLOWS THE FIELD, which the brief does not have to say
+   twice: `.finalcta` sets `color:#fff` on the section, so the headline, the
+   supporting line and the emphasised run were all white — invisible on this
+   green. Ink, at full, like every other word on the page.
+   ========================================================================= */
+.finalcta {
+  background: #5EFAA7;
+  color: var(--hero-ink);
+}
+.finalcta::before,
+.finalcta::after { background: none }
+.finalcta p { color: var(--hero-ink) }
+/* "confidentially" takes the same light-weight `.wordmark` treatment as
+   near.com in the copy columns — `.wordmark`'s own base rule is white
+   (07-stage.css, right for the dark field it was written for); wrong here. */
+.finalcta .wordmark { color: var(--hero-ink) }
+
+/* the ask is the same black pill with the same green arrow it is on the stage.
+   `--near-green` would put a green fill on a green field. */
+.finalcta .btn-primary {
+  background: #000;
+  color: #fff;
+}
+.finalcta .btn-primary .arw { color: #5EFAA7 }
+.finalcta .btn-primary:hover { background: #000; color: #5EFAA7; box-shadow: none }
+.finalcta .btn-primary:active { background: #000 }
+
+/* =========================================================================
+   THE FOOTER STAYS DARK — GRAY, NOT THE GREEN OF THE FIELD ABOVE IT
+   -------------------------------------------------------------------------
+   The field above turned green; the footer was asked to stay its own dark
+   plate rather than follow, on the brief's own reference (a near-black
+   gray, not #000 — the same family as the field's ink, several steps
+   darker). `NearMark` and the social icons are `fill="currentColor"`, so
+   they follow `footer`'s own colour without their own rule.
+
+   `.light`'s OWN BACKGROUND HAS TO MATCH IT. `08-light.css` states why that
+   element is dark in the first place: "so the light panel's rounded bottom
+   corners reveal the footer colour rather than the page behind it" —
+   `.lightbody`'s bottom-left and bottom-right corners are rounded, and
+   whatever sits behind them in that sliver shows through. Same gray as the
+   footer, so the sliver reads as the footer's own edge rather than a notch
+   cut into it. */
+.light { background: #272727 }
+footer { background: #272727; color: #fff }
+.fcol h4 { color: rgba(255, 255, 255, .45) }
+.fcol a { color: rgba(255, 255, 255, .78) }
+.fcol a:hover { color: var(--near-green) }
+.fbot { border-top-color: rgba(255, 255, 255, .14); color: rgba(255, 255, 255, .5) }
+.socials a { border-color: rgba(255, 255, 255, .22) }
+.socials a:hover { border-color: var(--near-green); color: var(--near-green) }

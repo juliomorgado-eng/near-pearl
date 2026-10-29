@@ -1,0 +1,195 @@
+/* ==========================================================================
+   v04 MOTION PASS  2026-08-25
+   ========================================================================== */
+
+/* --- 1. transition:all is gone ------------------------------------------
+   Ten rules transitioned EVERY property. That makes the browser watch all of
+   them, and it silently animates anything a future edit happens to change —
+   including layout properties, which is how a hover starts costing a reflow.
+   One token, named properties, same visual result. background-color rather
+   than the background shorthand: the colour is the only animatable part. */
+:root{
+  --tr-ui:
+    background-color var(--dur) var(--ease-out),
+    border-color     var(--dur) var(--ease-out),
+    color            var(--dur) var(--ease-out),
+    opacity          var(--dur) var(--ease-out),
+    transform        var(--dur) var(--ease-out);
+  --dur-press:120ms;
+}
+
+/* --- 1b. buttons get their own curve, and this is why -------------------
+   The buttons were already transitioning — `.btn` has carried `--tr-ui` all
+   along — and they still read as a hard cut. `--ease-out` is
+   `cubic-bezier(.16,1,.3,1)`, an expo-out: at 240ms it is 90% of the way there
+   inside the first 55, and the remaining 185ms move almost nothing. On a
+   TRANSFORM that is exactly right — it is what makes the cards and the arrow
+   feel like they are being flicked into place. On a COLOUR there is no
+   momentum to sell, so all the eye gets is the jump, and the tail is invisible.
+
+   So the fills and the labels come off that curve. `--ease-soft` is an ordinary
+   ease-out that spends its time across the whole duration; nothing about it is
+   clever, and that is the point — a colour crossfade should be even.
+
+   IN IS FASTER THAN OUT, 200 against 420. Pointing at a control should feel
+   answered, so the arrival is brisk; taking the pointer away is not a decision
+   the reader is waiting on, so the state dissolves rather than snapping back.
+   The asymmetry is one line — `:hover` overrides the duration and inherits
+   everything else.
+
+   `box-shadow` joins the list. It was not in `--tr-ui` at all, so the green
+   pill's glow appeared and vanished instantly under a fill that was fading —
+   two halves of one button on two different clocks.
+
+   `transform` stays on the press duration: 120ms, because a press has to land
+   inside the same moment as the click. It is the one part of a button that
+   should never be soft. */
+:root{
+  --ease-soft:cubic-bezier(.22,.61,.36,1);
+  --dur-btn-in:200ms;
+  --dur-btn-out:420ms;
+  /* `background-size` AND `filter` ARE IN BOTH LISTS BECAUSE THE ASK IS A
+     GRADIENT. `background-image` does not interpolate, so the hover cannot
+     swap one fill for another — it grows the gradient's tile until only the
+     white end is inside the pill (see `--cta-fill` in 02-tokens.css).
+     `background-size` is what carries that; `filter` is still here for the
+     press. Without them the sweep and the dip would both be instantaneous
+     while everything beside them eased.
+
+     THE SWEEP KEEPS ITS OWN DURATION AND CURVE, AND THAT IS THE FIX FOR A REAL
+     COMPLAINT: it arrived hard and left softly. Every other property on a
+     button uses the in/out pair above — fast in, slow out — which is right for
+     a colour, where the in is a state landing and the reader is already
+     looking at it. The sweep is not a state landing, it is a 320% TRAVEL
+     across the pill, and 200ms of that reads as a cut while the 420ms exit
+     reads as a move. The asymmetry that flatters a fill exposes a journey.
+
+     SO IT IS SYMMETRIC: the same 460ms and the same curve in both directions,
+     which is the only way in and out can feel alike.
+
+     AND THE CURVE IS AN EASE-IN-OUT, NOT `--ease-soft`. That one is
+     (.22,.61,.36,1) — an ease-OUT, off the mark at speed. On a fill that is
+     what makes a hover feel responsive; on a travel it is what makes the start
+     feel like a jolt, because the fastest part of the move is its first frame.
+     `(.4,0,.2,1)` starts from rest and arrives at rest, so the white gathers
+     itself, crosses, and settles. */
+  --dur-sweep:460ms;
+  --ease-sweep:cubic-bezier(.4,0,.2,1);
+  --tr-btn:
+    background-color var(--dur-btn-out) var(--ease-soft),
+    border-color     var(--dur-btn-out) var(--ease-soft),
+    color            var(--dur-btn-out) var(--ease-soft),
+    box-shadow       var(--dur-btn-out) var(--ease-soft),
+    background-size  var(--dur-sweep)   var(--ease-sweep),
+    filter           var(--dur-btn-out) var(--ease-soft),
+    transform        var(--dur-press)   var(--ease-soft);
+  /* THE SAME LIST AT THE IN DURATION, WRITTEN OUT. The obvious way to do this
+     is `transition-duration` on `:hover` with five positional values — and it
+     is a trap, because a positional list is bound to whatever
+     `transition-property` resolves to ON THAT ELEMENT. The nav's own
+     `Create account` transitions EIGHT properties (four of them for the
+     collapse it does when the page turns cream), so five durations would be
+     repeated cyclically and land on the wrong ones. A whole second list has no
+     position to get wrong. */
+  --tr-btn-in:
+    background-color var(--dur-btn-in) var(--ease-soft),
+    border-color     var(--dur-btn-in) var(--ease-soft),
+    color            var(--dur-btn-in) var(--ease-soft),
+    box-shadow       var(--dur-btn-in) var(--ease-soft),
+    background-size  var(--dur-sweep)  var(--ease-sweep),
+    filter           var(--dur-btn-in) var(--ease-soft),
+    transform        var(--dur-press)  var(--ease-soft);
+}
+.btn:hover,
+.btn:focus-visible{transition:var(--tr-btn-in)}
+/* the arrow travels on the same curve as the fill it sits on, so a button
+   answers as one object rather than as a colour and a glyph on two clocks */
+.btn .arw{transition:transform var(--dur-btn-out) var(--ease-soft)}
+.btn:hover .arw{transition-duration:var(--dur-btn-in)}
+
+/* --- 2. hover motion is pointer-gated -----------------------------------
+   Touch fires a synthetic hover on tap and then STRANDS it: the card stays
+   lifted, the arrow stays nudged, until something else is tapped. Colour-only
+   hovers are left ungated — a stuck tint is invisible, a stuck transform is a
+   bug. These five were the transform-carrying ones. */
+.btn:hover .arw,
+.balrow:hover .bar,
+.card:hover,
+.mmid .rot:hover,
+.swmid .rot:hover{transform:none}
+
+@media (hover:hover) and (pointer:fine){
+  .btn:hover .arw       {transform:translateX(3px)}
+  .balrow:hover .bar    {transform:translateX(3px)}
+  .card:hover           {transform:translateY(-2px)}
+  .mmid .rot:hover,
+  .swmid .rot:hover     {transform:rotate(180deg)}
+}
+
+/* --- 3. press feedback on the tour's controls ---------------------------
+   Everything inside the phone answered to hover and nothing answered to a
+   press, which is what made it read as a picture of an app rather than an app.
+   96.5% for a beat is below the threshold of "something moved" and above the
+   threshold of "something responded". 120ms, because press feedback has to
+   land inside the same moment as the click.
+   No :active on .balrow's arrow or the tab labels — one element per press. */
+.tab,.pt,.et,.etr,.balrow,.picker,.seg button,.pacts button,.swreview,.eye{
+  transition:var(--tr-ui);
+}
+/* NOT behind the hover gate. That gate exists because touch fires a FALSE
+   hover; :active on touch is a real press, and press feedback is the state a
+   touch user needs most — there is no hover to tell them the target is live. */
+.tab:active,.pt:active,.et:active,.etr:active,
+.balrow:active,.picker:active,.seg button:active,
+.pacts button:active,.eye:active{
+  transform:scale(.965);
+  transition-duration:var(--dur-press);
+}
+/* .swreview already had its own translateY(1px) press. It was inheriting the
+   240ms UI duration from --tr-ui above, which turns a press into a slow sink.
+   Press feedback has to land inside the same moment as the click. */
+.swreview:active{transition-duration:var(--dur-press)}
+
+/* --- 4. the FAQ rows had no hover at all --------------------------------
+   A full-width clickable row with no affordance. The glyph is what the eye is
+   already on when it reaches for one of these, so the glyph is what answers:
+   it brightens and leans a degree toward the rotation it is about to make.
+   No transform on the row itself — 8 rows of type shifting under the cursor is
+   noise, not feedback. */
+@media (hover:hover) and (pointer:fine){
+  .acc-btn:hover .plus{color:var(--near-green);transform:rotate(8deg)}
+  .acc-btn[aria-expanded="true"]:hover .plus{transform:rotate(53deg)}
+  .acc-btn:hover .t{color:var(--l-fg)}
+}
+.acc-btn .t{transition:color var(--dur) var(--ease-out)}
+.acc-btn .plus{transition:transform var(--dur) var(--ease-out),color var(--dur) var(--ease-out)}
+
+/* --- 5. the testimonial reveal was 15 cards at once ---------------------
+   Simultaneous entry reads as a single block wiping in, and it also meant
+   fifteen concurrent blur transitions on one frame. A left-to-right stagger
+   across the first eight costs nothing and turns the wipe into a sweep. The
+   rest are off-screen when the rail reveals, so they need no delay. */
+.marquee.mq-in .qcard:nth-child(1){transition-delay:0ms}
+.marquee.mq-in .qcard:nth-child(2){transition-delay:45ms}
+.marquee.mq-in .qcard:nth-child(3){transition-delay:90ms}
+.marquee.mq-in .qcard:nth-child(4){transition-delay:135ms}
+.marquee.mq-in .qcard:nth-child(5){transition-delay:180ms}
+.marquee.mq-in .qcard:nth-child(6){transition-delay:225ms}
+.marquee.mq-in .qcard:nth-child(7){transition-delay:270ms}
+.marquee.mq-in .qcard:nth-child(8){transition-delay:315ms}
+
+/* --- 6. reduced motion: gentler, not zero -------------------------------
+   The old block set transition-duration to .01ms on EVERYTHING, which removes
+   the fades that carry meaning along with the movement that causes trouble.
+   Restricting transition-property instead keeps colour and opacity working and
+   makes every transform and filter snap — which is the actual ask. Animations
+   still collapse to a single iteration, so the scroll cue stops looping. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    transition-property:opacity,color,background-color,border-color,box-shadow,fill,stroke !important;
+    transition-duration:160ms !important;
+  }
+  .marquee.mq-in .qcard{transition-delay:0ms !important}
+  .rv{opacity:1;transform:none}
+}
+
