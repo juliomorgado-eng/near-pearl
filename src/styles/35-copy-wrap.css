@@ -71,3 +71,21 @@
 #stage .mdisc {
   text-wrap: pretty;
 }
+
+/* =========================================================================
+   EVERYWHERE ELSE — BOTH ROUTES
+   -------------------------------------------------------------------------
+   The rules above were written for the stage. The light zone, the nav, the
+   closing plate and the footer get the same two decisions, site-wide: every
+   heading balances (a two- or three-line title with a lone word under it
+   reads as a mistake), every run of prose wraps pretty (no orphan on the
+   last line). Element selectors at zero specificity on purpose — any rule
+   above, or any component that sets its own `text-wrap`, still wins. One
+   file, so `/` and `/v2` cannot drift.
+   ========================================================================= */
+:where(h1, h2, h3, h4, h5, h6, .h1, .h2, .h4, .display, summary, .acc-btn, figcaption) {
+  text-wrap: balance;
+}
+:where(p, li, dd, blockquote, .lead, .acc-panel, .acc-body) {
+  text-wrap: pretty;
+}

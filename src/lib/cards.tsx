@@ -43,7 +43,7 @@ export const CARDS: Card[] = [
       <div className="rollquote">
         <p>
           <b>$30B+</b> in all-time cross-chain volume. The same NEAR Intents
-          settlement layer that routes your swap into PEARL.
+          settlement layer that routes your swap into&nbsp;PEARL.
         </p>
       </div>
     ),

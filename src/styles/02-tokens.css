@@ -84,9 +84,12 @@
   --pearl-teal:#206e76; --pearl-teal-bright:#79c2bf;
   --pearl-divider:rgba(246,242,237,.12); --pearl-divider-strong:rgba(246,242,237,.24);
   --pearl-field:linear-gradient(150deg,#F0EFEA 0%,#F0EFEA 45%,#f0c3ae 100%);
+  /* the two lustre colours, named so the hero's moving layers (07-stage.css
+     `.gcss::before/::after`) and this static stack stay one decision */
+  --pearl-sheen:rgba(255,255,255,.62); --pearl-breath:rgba(0,236,151,.18);
   --pearl-lustre:
-    radial-gradient(58% 52% at 74% 22%,rgba(255,255,255,.62) 0%,rgba(255,255,255,0) 72%),
-    radial-gradient(52% 46% at 14% 92%,rgba(0,236,151,.18) 0%,rgba(0,236,151,0) 70%);
+    radial-gradient(58% 52% at 74% 22%,var(--pearl-sheen) 0%,transparent 72%),
+    radial-gradient(52% 46% at 14% 92%,var(--pearl-breath) 0%,transparent 70%);
   --glow-pearl-sm:0 0 16px rgba(240,195,174,.45);
   /* TWO BRANDS, TWO ROLES. NEAR green marks what near.com does — the ask,
      the rails, the infrastructure, every control that goes somewhere.

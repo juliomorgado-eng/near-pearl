@@ -21,6 +21,9 @@ html:has(.theme-near) {
   --pearl-lustre: linear-gradient(transparent, transparent);
   /* `.stage-black` and `#stage .grad` read paper as the field's flat */
   --pearl-paper: #5EFAA7;
+  /* the hero's drifting lustre (07-stage.css) is v1's; the green field is still */
+  --pearl-sheen: transparent;
+  --pearl-breath: transparent;
   --focus-ring: var(--near-green);
 }
 
@@ -56,17 +59,34 @@ html:has(.theme-near) .acc-btn .plus { color: var(--green-600) }
   html:has(.theme-near) .acc-btn:hover .plus { color: var(--l-fg) }
 }
 
-/* STORY ON PAPER. Green text fails on #F3F2EF (#3FEFAD is 1.4:1), so the
-   NEAR runs are ink under a green rule, and the Pearl runs are plain ink —
-   on this page the asset does not get a colour of its own. */
-html:has(.theme-near) .story .k-near {
-  color: var(--l-fg);
-  text-decoration: underline 2px var(--near-green);
-  text-underline-offset: .22em;
+/* ---- THE PEARL ISLAND --------------------------------------------------
+   NEAR leads this page, so Pearl gets one room of its own: the Story band —
+   the section that is about the asset — is Pearl's canvas, inset as a
+   rounded plate in the paper zone. Inside it, everything v1 draws applies
+   again: cream type, blush for Pearl, green for the rails (40-story.css),
+   because the `--l-*` scale is re-pointed at Pearl's on the plate itself.
+   Contrast is v1's: cream 18.0:1, blush 12.5:1, #3FEFAD 13.9:1 on #080807. */
+html:has(.theme-near) .story {
+  --l-bg: var(--pearl-canvas);
+  --l-surface: var(--pearl-surface);
+  --l-gray: var(--pearl-surface-2);
+  --l-fg: var(--pearl-cream);
+  --l-fg-2: var(--pearl-muted);
+  --l-fg-3: var(--pearl-muted-2);
+  --l-border: var(--pearl-divider);
+  --l-border-strong: var(--pearl-divider-strong);
+  --fg: var(--l-fg); --fg-2: var(--l-fg-2); --fg-3: var(--l-fg-3);
+  --border: var(--l-border); --border-strong: var(--l-border-strong);
+  margin-inline: clamp(10px, 2vw, 28px);
+  border-radius: clamp(20px, 2.4vw, 32px);
+  background: var(--pearl-lustre-dark), var(--pearl-canvas);
+  color: var(--pearl-cream);
 }
-html:has(.theme-near) .story .k-pearl { color: var(--l-fg) }
-html:has(.theme-near) .story .st-num.k-near,
-html:has(.theme-near) .story .st-num.k-pearl { color: var(--green-600); text-decoration: none }
+/* a faint blush sheen in one corner, so the plate reads as Pearl's surface
+   and not as a black box: 10% blush, nowhere near text contrast */
+html:has(.theme-near) {
+  --pearl-lustre-dark: radial-gradient(60% 70% at 92% 0%, rgba(240, 195, 174, .10) 0%, transparent 70%);
+}
 
 /* ---- the nav over paper ------------------------------------------------ */
 html:has(.theme-near) .nav.on-light {
@@ -90,3 +110,8 @@ html:has(.theme-near) .socials a { border-color: rgba(255, 255, 255, .22) }
 html:has(.theme-near) .socials a:hover { border-color: var(--near-green); color: var(--near-green) }
 
 html:has(.theme-near) ::selection { background: var(--near-green); color: #000 }
+
+/* the drifting lustre layers paint nothing here (sheen and breath are
+   transparent above) — take them out so they do not animate for nothing */
+html:has(.theme-near) .gcss::before,
+html:has(.theme-near) .gcss::after { display: none }

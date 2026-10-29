@@ -59,7 +59,45 @@
   /* PEARL: paper through 45%, easing to blush, under the two-radial lustre.
      Both are tokens (02-tokens.css) so the curtain and the 404 paint the
      identical surface — the curtain's fade is invisible only if they match. */
-  background:var(--pearl-lustre),var(--pearl-field);
+  background:var(--pearl-field);
+  overflow:hidden;
+}
+/* THE LUSTRE MOVES. The two radials of `--pearl-lustre` are drawn here as two
+   layers instead of one background, so each can drift on its own clock — the
+   white sheen and the green breath slide past each other the way light moves
+   on a pearl you turn in your hand. Slow (31s and 43s, alternate), small (a
+   few percent of the frame), and transform-only, so it composites and never
+   repaints. Each layer is 150% of the frame (inset -25%), so the radial
+   positions below are the token's, re-expressed in that larger box; at rest
+   (the first keyframe) they land exactly where the static token paints them,
+   which is what keeps the splash curtain's hand-off (32-splash.css) seamless.
+   `transform` only in the keyframes — no `translate` beside it (README, build
+   traps). Reduced motion: still. */
+.gcss::before,
+.gcss::after{
+  content:'';position:absolute;inset:-25%;pointer-events:none;
+  will-change:transform;
+}
+.gcss::before{
+  background:radial-gradient(38.7% 34.7% at 66% 31.3%,var(--pearl-sheen) 0%,transparent 72%);
+  animation:lustre-sheen 31s cubic-bezier(.45,0,.55,1) infinite alternate;
+}
+.gcss::after{
+  background:radial-gradient(34.7% 30.7% at 26% 78%,var(--pearl-breath) 0%,transparent 70%);
+  animation:lustre-breath 43s cubic-bezier(.45,0,.55,1) infinite alternate;
+}
+@keyframes lustre-sheen{
+  0%  {transform:none}
+  50% {transform:translate3d(-6%,4%,0) scale(1.08)}
+  100%{transform:translate3d(-2%,-3%,0) scale(.96)}
+}
+@keyframes lustre-breath{
+  0%  {transform:none}
+  50% {transform:translate3d(7%,-5%,0) scale(1.1)}
+  100%{transform:translate3d(3%,2%,0) scale(1.02)}
+}
+@media (prefers-reduced-motion:reduce){
+  .gcss::before,.gcss::after{animation:none}
 }
 .gshade{
   position:absolute;inset:0;pointer-events:none;
