@@ -16,9 +16,9 @@
   "dependencies": {
     "@hugeicons/core-free-icons": "^4.3.5",
     "gsap": "^3.15.0",
-    "next": "16.3.8",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -26,9 +26,15 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.3.8",
+    "eslint-config-next": "^16.4.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.32.0"
+  "packageManager": "pnpm@10.32.0",
+  "pnpm": {
+    "overrides": {
+      "source-map-js": "^1.2.2",
+      "zod": "^4.6.6"
+    }
+  }
 }
