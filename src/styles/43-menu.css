@@ -1,0 +1,154 @@
+/* =========================================================================
+   /versions — THE REVIEW MENU (app/versions/page.tsx)
+   -------------------------------------------------------------------------
+   NEAR x Pearl in one view: the v2 green field as the header band, Pearl's
+   pearl cropped off its corner, the cards on paper with the PEARL chip and
+   NEAR green on the one action. Scoped by `html:has(.theme-menu)`; the
+   splash curtain belongs to the landing, not to this page.
+   ========================================================================= */
+
+html:has(.theme-menu) .splash { display: none }
+html:has(.theme-menu) body { background: #F3F2EF; color: #0B0D0D }
+
+.vm { min-height: 100svh; padding-bottom: 72px }
+
+/* ---- the header band --------------------------------------------------- */
+.vm-head {
+  position: relative; overflow: hidden; isolation: isolate;
+  background: linear-gradient(150deg, #5EFAA7 0%, #5EFAA7 50%, #16B862 100%);
+  color: #1F1F1F;
+  padding: clamp(40px, 7vh, 80px) var(--gut) clamp(150px, 20vh, 220px);
+  border-radius: 0 0 clamp(24px, 3vw, 44px) clamp(24px, 3vw, 44px);
+}
+.vm-headin { position: relative; max-width: 1280px; margin-inline: auto }
+.vm-pearl {
+  position: absolute; z-index: -1; pointer-events: none; border-radius: 50%;
+  width: clamp(360px, 46vw, 760px); aspect-ratio: 1;
+  right: calc(clamp(360px, 46vw, 760px) * -.16); bottom: calc(clamp(360px, 46vw, 760px) * -.5);
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, 0) 16%),
+    radial-gradient(circle at 40% 36%, #f6f2ed 0%, #f0d9cc 34%, #f0c3ae 58%, #c99a86 80%, #6f8f8a 100%);
+  box-shadow: inset -40px -40px 90px rgba(32, 110, 118, .28), 0 40px 100px rgba(10, 46, 38, .22);
+  animation: vm-float 38s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+}
+.vm-pearl.sm {
+  width: clamp(40px, 4.4vw, 72px); right: auto; bottom: auto;
+  left: 58%; top: 34%; opacity: .9;
+  box-shadow: inset -5px -5px 12px rgba(32, 110, 118, .3), 0 8px 20px rgba(10, 46, 38, .2);
+  animation-duration: 26s;
+}
+@keyframes vm-float {
+  0%   { transform: none }
+  50%  { transform: translate3d(-14px, -10px, 0) }
+  100% { transform: translate3d(8px, -18px, 0) }
+}
+
+.vm-brow { display: flex; align-items: center; gap: clamp(10px, 1.1vw, 16px) }
+.vm-brow .nearw {
+  display: block; flex: none; height: clamp(28px, 2.4vw, 36px); aspect-ratio: 596 / 137;
+  background: var(--nearlock-src) center / contain no-repeat;
+}
+/* the co-brand is v2's (41-theme-near.css shows it only there); here it is
+   always on, at this page's smaller eyebrow */
+html:has(.theme-menu) .vm .cobrand { display: inline-flex; align-items: center; gap: clamp(8px, .9vw, 14px) }
+html:has(.theme-menu) .vm .cox { font-weight: 300; line-height: 1; font-size: clamp(18px, 1.6vw, 24px) }
+html:has(.theme-menu) .vm .pearlw { display: block; width: auto; height: calc(clamp(28px, 2.4vw, 36px) * .78) }
+
+.vm-kicker {
+  margin-top: clamp(36px, 6vh, 64px);
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(31, 31, 31, .7);
+}
+.vm-title {
+  margin-top: 16px; max-width: 16ch;
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(2.6rem, 5.6vw, 5.4rem); line-height: 1.02; letter-spacing: -.03em;
+}
+.vm-chip {
+  background: #080807; color: #f0c3ae;
+  padding: 0 .2em .04em; border-radius: .16em; white-space: nowrap;
+}
+.vm-sub { margin-top: 22px; max-width: 46ch; font-size: clamp(1.05rem, 1.3vw, 1.25rem); line-height: 1.45 }
+
+/* ---- the cards --------------------------------------------------------- */
+.vm-grid {
+  list-style: none; margin: calc(clamp(150px, 20vh, 220px) * -.72) auto 0; padding: 0 var(--gut);
+  max-width: calc(1280px + 2 * var(--gut));
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px);
+  position: relative;
+}
+.vm-card {
+  display: flex; flex-direction: column; height: 100%;
+  background: #fff; border: 1px solid rgba(11, 13, 13, .08);
+  border-radius: clamp(18px, 1.8vw, 26px); overflow: hidden;
+  box-shadow: 0 1px 0 rgba(11, 13, 13, .04), 0 24px 60px -32px rgba(11, 13, 13, .35);
+  transition: transform 500ms var(--ease-out), box-shadow 500ms var(--ease-out);
+}
+.vm-frame { padding: 10px 10px 0; background: #EDECE7 }
+.vm-bar {
+  display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 6px;
+  font-family: var(--font-mono); font-size: 11px; color: rgba(11, 13, 13, .5);
+}
+.vm-bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(11, 13, 13, .16) }
+.vm-bar span {
+  margin-left: 10px; flex: 1; text-align: center; padding: 3px 10px;
+  background: rgba(255, 255, 255, .7); border-radius: 6px; margin-right: 26px;
+}
+.vm-shot { overflow: hidden; border-radius: 10px 10px 0 0; aspect-ratio: 16 / 10; background: #ddd }
+.vm-shot img {
+  width: 100%; height: 100%; object-fit: cover; object-position: top left;
+  transition: transform 900ms var(--ease-out);
+}
+
+.vm-meta { display: flex; flex-direction: column; flex: 1; padding: clamp(20px, 2vw, 28px) }
+.vm-num { font-family: var(--font-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #00A268 }
+.vm-name { margin-top: 10px; font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 2vw, 2rem); line-height: 1.08; letter-spacing: -.02em }
+.vm-lead { margin-top: 10px; font-size: 15px; line-height: 1.5; color: #4A4E4D }
+.vm-points { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px }
+.vm-points li { position: relative; padding-left: 18px; font-size: 14px; color: #0B0D0D }
+.vm-points li::before {
+  content: ''; position: absolute; left: 0; top: .5em; width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff 0%, #f6f2ed 30%, #f0c3ae 75%, #c99a86 100%);
+  box-shadow: 0 0 0 1px rgba(32, 110, 118, .25);
+}
+.vm-foot {
+  margin-top: auto; padding-top: 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.vm-sw { list-style: none; margin: 0; padding: 0; display: flex }
+.vm-sw li {
+  width: 22px; height: 22px; border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff, inset 0 0 0 1px rgba(11, 13, 13, .12);
+}
+.vm-sw li + li { margin-left: -5px }
+.vm-open {
+  display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px;
+  border-radius: 999px; background: #00EC97; color: #000; font-size: 14px; font-weight: 500;
+  transition: background 300ms var(--ease-out);
+}
+.vm-open .arw { transition: transform 400ms var(--ease-out) }
+
+@media (hover: hover) and (pointer: fine) {
+  .vm-card:hover { transform: translateY(-6px); box-shadow: 0 1px 0 rgba(11, 13, 13, .04), 0 40px 80px -36px rgba(11, 13, 13, .45) }
+  .vm-card:hover .vm-shot img { transform: scale(1.03) }
+  .vm-card:hover .vm-open { background: #3FEFAD }
+  .vm-card:hover .vm-open .arw { transform: translateX(3px) }
+}
+.vm-card:focus-visible { outline: 2px solid #00A268; outline-offset: 4px }
+
+.vm-note {
+  margin: 48px auto 0; padding: 0 var(--gut); text-align: center;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: #767A78;
+}
+
+@media (max-width: 700px) {
+  /* the small pearl would sit on the title once it wraps */
+  .vm-pearl.sm { display: none }
+}
+@media (max-width: 1000px) {
+  .vm-grid { grid-template-columns: 1fr; max-width: 640px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vm-pearl { animation: none }
+  .vm-card, .vm-shot img { transition: none }
+}
