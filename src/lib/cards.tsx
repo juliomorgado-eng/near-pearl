@@ -5,17 +5,12 @@
 
 /**
  * THE RISK NOTE — a compliance requirement, not a design decision. Rendered
- * under the hero's asks (`.dw-legal`).
- *
- * TWO LINES, split on the `<br />`: two separate statements, not one sentence.
+ * under the hero's asks (`.dw-legal`) as one running paragraph, wrapping on
+ * its own measure.
  */
-export const RISK_NOTE = (
-  <>
-    PEARL is a new, volatile crypto asset and its value can fall to zero.
-    <br />
-    Nothing on this page is investment advice. Only trade what you can afford to lose.
-  </>
-);
+export const RISK_NOTE =
+  'PEARL is a new, volatile crypto asset and its value can fall to zero. ' +
+  'Nothing on this page is investment advice. Only trade what you can afford to lose.';
 
 /**
  * THE Q4 PEARL CAMPAIGN'S LINK. PENDING: the tracked link / `ref` is still to

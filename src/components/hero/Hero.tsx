@@ -29,7 +29,7 @@ export function Hero() {
           </div>
 
           <h1 className="display">
-            <span className="dw-chip">PEARL</span> is now on <span className="dw-near">near.com</span>
+            <span className="dw-chip"><span className="dw-chip-t">PEARL</span></span> is now on <span className="dw-near">near.com</span>
           </h1>
           <p className="dw-lead">
             Swap into and out of PEARL across supported chains. Confidential by

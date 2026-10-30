@@ -55,8 +55,10 @@ html:has(.dw-hero) .dw-sea {
 }
 html:has(.dw-hero) .dw-scene,
 html:has(.dw-hero) .dw-pearl {
-  --sw: max(138cqw, 185cqh);
-  --ax: 89cqw; --ay: 69cqh;
+  /* 195cqh, not 185: the scene's top is ay − .3596·sw, and at 69cqh a
+     near-square frame (1024×768) left a strip of bare dark above it */
+  --sw: max(127cqw, 195cqh);
+  --ax: 83cqw; --ay: 65cqh;
 }
 html:has(.dw-hero) .dw-scene {
   position: absolute;
@@ -135,18 +137,23 @@ html:has(.dw-hero) .dw-scrim {
 
 /* ---- the copy and the device -------------------------------------------- */
 html:has(.dw-hero) .dw-inner {
-  width: 100%; max-width: 1120px; margin-inline: auto;
-  padding: calc(62px + clamp(24px, 5vh, 64px)) var(--gut) clamp(40px, 7vh, 96px);
+  /* the comp's measure: copy from 486 to the phone's right edge at 1515 on a
+     2000 frame — 1029 of content — and the block centred top to bottom
+     (the top only ever grows to clear the 62px nav) */
+  width: 100%; max-width: calc(1029px + 2 * var(--gut)); margin-inline: auto;
+  padding: max(78px, clamp(40px, 7vh, 96px)) var(--gut) calc(clamp(40px, 7vh, 96px) + 12px);
   display: grid; grid-template-columns: minmax(0, 1fr) auto;
   align-items: center; gap: clamp(32px, 6vw, 120px);
 }
 
 html:has(.dw-hero) .dw-brow {
+  --nh: clamp(30px, 2.6vw, 37.5px);
   display: flex; align-items: center; gap: clamp(12px, 1.2vw, 18px);
+  margin-bottom: clamp(26px, 3.5vh, 40px);
 }
 html:has(.dw-hero) .dw-brow .nearw {
   display: block; flex: none;
-  height: clamp(32px, 2.7vw, 42px); aspect-ratio: 596 / 137;
+  height: var(--nh); aspect-ratio: 596 / 137;
   background: url('/img/near-logo-light.webp') center / contain no-repeat;
 }
 html:has(.dw-hero) .dw-brow .cobrand { display: inline-flex; align-items: center; gap: clamp(10px, 1.1vw, 16px); flex: none }
@@ -157,32 +164,19 @@ html:has(.dw-hero) .dw-brow .cox { font-family: var(--font-body); font-weight: 3
    ascenders clear near's x-height the way near's N does, and the two read as
    one weight. Baselines stay shared (checked in pixels). */
 html:has(.dw-hero) .dw-brow .pearlw {
-  display: block; width: auto; height: calc(clamp(32px, 2.7vw, 42px) * .86);
+  display: block; width: auto; height: calc(var(--nh) * .968);
   /* grown from the centre, its baseline dropped ~1.5px below near's */
   translate: 0 -4%;
   filter: brightness(0) invert(.96) sepia(.12);
 }
 
-/* THE SPACE ABOVE THE CHIP IS THE SPACE BELOW IT. Under the chip the next
-   line's letters start ~.245em down (its padding, plus `.dw-chip`'s
-   margin-bottom), so the gap from the logos is set in the same em rather than
-   in vh — the two stay equal at every size. */
 html:has(.dw-hero) .dw-copy .display {
-  margin-top: .235em;
-  font-size: clamp(2.9rem, 6vw, 6rem); line-height: 1.04; max-width: 10.5ch;
+  font-size: clamp(2.9rem, 6vw, 5.3rem); line-height: 1.04; max-width: 12ch;
   color: #fff;
 }
-/* the asset, on a pane of the water: a glass chip, pearl-white type.
-   EVEN ON ALL FOUR SIDES, measured to the glyphs rather than the box. The
-   chip keeps its original width — .4em of inline padding in all — so the
-   headline breaks exactly where it always did; that .4em is only shared out
-   differently, because the face's own bearings already put ~.08em before the
-   P and ~.01em after the L. Above and below, `text-box` trims the line box to
-   cap height and baseline (PEARL has no descenders) and `--cp` is the visible
-   space, the same as the sides'. Without `text-box` (Firefox for now) the
-   fallback is the old box. */
+/* the asset, on a pane of the water: a glass chip, its letters in Pearl's
+   own gradient (the Figma lockup's stops, left to right) */
 html:has(.dw-hero) .dw-chip {
-  --cp: .2473em;
   display: inline-block;
   padding: .02em .2em .06em; margin-right: .06em;
   border-radius: .14em;
@@ -193,45 +187,56 @@ html:has(.dw-hero) .dw-chip {
   color: #F3E7DE;
   white-space: nowrap;
 }
+/* the comp's padding, read off it in pixels at 85px type: 26 / 25 beside
+   the word, 22 above the caps, 21 under the baseline — so it wraps PEARL
+   rather than sitting around a line box. `text-box` trims to cap height and
+   baseline; the inline values give back the face's own bearings (~.08em
+   before the P, ~.01em after the L). Without `text-box` the box above holds. */
 @supports (text-box: trim-both cap alphabetic) {
   html:has(.dw-hero) .dw-chip {
     text-box: trim-both cap alphabetic;
-    padding: var(--cp) calc(var(--cp) - .0135em) var(--cp) calc(var(--cp) - .081em);
-    /* a little room under it, so the next line sits as far below the chip
-       as the logos sit above it (`.display` margin-top) — about the chip's
-       own padding */
-    margin-bottom: .08em;
+    padding: .259em .28em .247em .225em;
+    /* taller than the line it sits on, and in the comp it does not push the
+       lines apart: the headline keeps its 1.04 spacing either way it breaks */
+    margin-block: -.2em;
   }
+}
+html:has(.dw-hero) .dw-chip-t {
+  background: linear-gradient(90deg, #FFF6EE 0%, #F2CDBE 35%, #FFFFFF 55%, #D9EEE6 80%, #F4D8CB 100%);
+  background-clip: text;
+  color: transparent;
 }
 html:has(.dw-hero) .dw-near { color: #00EC97 }
 
 html:has(.dw-hero) .dw-lead {
-  margin-top: clamp(18px, 2.6vh, 28px); max-width: 33ch;
-  font-size: var(--fs-body-lg); line-height: 1.45; color: rgba(255, 255, 255, .82);
+  margin-top: clamp(14px, 1.65vh, 19px); max-width: 33ch;
+  font-size: clamp(16px, 1.25vw, 18px); line-height: 1.42; color: rgba(255, 255, 255, .82);
 }
 
 html:has(.dw-hero) .dw-cta {
-  margin-top: clamp(26px, 4vh, 38px);
+  margin-top: clamp(24px, 3.15vh, 36px);
   display: flex; flex-wrap: wrap; align-items: center; gap: 14px clamp(20px, 2.4vw, 30px);
 }
-html:has(.dw-hero) .dw-ask { background: #F3EEE8; color: #0B0D0D; border-color: transparent }
+html:has(.dw-hero) .dw-ask { padding: 8.5px 22px; font-size: 14px; background: #F3EEE8; color: #0B0D0D; border-color: transparent }
 html:has(.dw-hero) .dw-ask .arw { color: #00C47D }
 @media (hover: hover) and (pointer: fine) {
   html:has(.dw-hero) .dw-ask:hover { background: #fff; box-shadow: 0 10px 30px -10px rgba(243, 238, 232, .35) }
 }
 /* no underline: the arrow is the affordance, and it leans on hover the way
    the ask's does */
-html:has(.dw-hero) .dw-link { font-weight: 500; color: #fff; text-decoration: none }
+html:has(.dw-hero) .dw-link { font-size: 16px; font-weight: 500; color: #fff; text-decoration: none }
 html:has(.dw-hero) .dw-link .arw { display: inline-block; transition: transform var(--dur-base) var(--ease-out) }
 html:has(.dw-hero) .dw-link:hover .arw { transform: translateX(3px) }
+/* the measure is the comp's: two lines on a wide frame, the first ending
+   at "Nothing on" */
 html:has(.dw-hero) .dw-legal {
-  margin-top: clamp(22px, 3vh, 32px); max-width: 52ch;
-  font-size: 12px; line-height: 1.5; color: rgba(255, 255, 255, .5);
+  margin-top: clamp(20px, 2.6vh, 30px); max-width: 32.6em;
+  font-size: 10px; line-height: 1.55; color: rgba(255, 255, 255, .5);
 }
 
 /* THE DEVICE — `.pdev` lays out at 352 x 766 and reads `--k` as its scale (17-demo.css) */
 html:has(.dw-hero) .dw-dev {
-  --k: min(.78, calc((100svh - 180px) / 766px));
+  --k: min(.773, calc((100svh - 180px) / 766px));
   position: relative; flex: none;
   width: calc(352px * var(--k)); height: calc(766px * var(--k));
 }
