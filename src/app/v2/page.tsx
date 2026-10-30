@@ -6,11 +6,11 @@ import { Site } from '@/components/Site';
  * Pearl's. The hidden marker is the whole switch: 41-theme-near.css scopes
  * every rule to `html:has(.theme-near)`. `variant` swaps the light zone's
  * content (LightZone.tsx). Kept out of the index; it is a
- * variant for review, and `/` is the canonical page.
+ * variant for review, and `/v1` is the canonical page.
  */
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
-  alternates: { canonical: '/' },
+  alternates: { canonical: '/v1' },
 };
 
 export default function NearTheme() {

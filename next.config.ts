@@ -61,8 +61,8 @@ const nextConfig: NextConfig = {
    */
   async rewrites() {
     return [
-      { source: '/pearl', destination: '/' },
-      { source: '/r/:source', destination: '/' },
+      { source: '/pearl', destination: '/v1' },
+      { source: '/r/:source', destination: '/v1' },
     ];
   },
 
@@ -78,7 +78,11 @@ const nextConfig: NextConfig = {
    * against each other.
    */
   async redirects() {
-    return [{ source: '/preview', destination: '/', permanent: true }];
+    return [
+      { source: '/preview', destination: '/v1', permanent: true },
+      // the menu moved from /versions to the root; old links still land on it
+      { source: '/versions', destination: '/', permanent: false },
+    ];
   },
 };
 

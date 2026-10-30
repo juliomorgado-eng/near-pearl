@@ -9,7 +9,7 @@ import { HeroV3 } from '@/components/v3/HeroV3';
  */
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
-  alternates: { canonical: '/' },
+  alternates: { canonical: '/v1' },
 };
 
 export default function Announcement() {
