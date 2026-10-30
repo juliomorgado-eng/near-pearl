@@ -1,9 +1,0 @@
-/* ============================================================
-   REFACTOR DELTA
-   ------------------------------------------------------------
-   This file held one rule: hide the desktop `.rollcta .offer` under 1080 so
-   the stacked `.offerslot` could carry the same sentence. The partner offer
-   was pulled with the rest of the co-brand, so both slots are gone and this
-   file has nothing left to do. Kept as an import (globals.css) so the numbered
-   order does not shift.
-   ============================================================ */

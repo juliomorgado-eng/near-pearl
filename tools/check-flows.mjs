@@ -28,12 +28,11 @@ const FLOWS = 'src/components/stage/phone/flows';
 const DEMO = 'src/components/demo';
 const SHELL = 'src/components/demo/shell';
 /* [source file, name it is written out under] */
-/* TWO MACHINES, WHERE THERE WERE SEVENTEEN. The site was twenty routes and
-   every one of them had a script worth walking; it is one route now, and what
-   is left is the chapters the phone can still play — swap, which is on stage,
-   and the account it opens from. Perps and earn went with their files when the
-   page became PEARL's. Every entry in this list must point at a file that
-   exists, or this checker breaks the moment one comes out. */
+/* ONE MACHINE, WHERE THERE WERE SEVENTEEN. The site was twenty routes and
+   every one of them had a script worth walking; it is one page now, and the
+   phone on it plays one chapter — the swap. Perps, earn and the account
+   chapter went with their files. Every entry in this list must point at a file
+   that exists, or this checker breaks the moment one comes out. */
 const MODULES = [
   [`${FLOWS}/machine.ts`, 'machine'],
   /* the tour's price table. Its own module because putting it in the account
@@ -45,9 +44,8 @@ const MODULES = [
   [`${DEMO}/swapv5/catalogue.ts`, 'swapv5-catalogue'],
   [`${DEMO}/swapv5/state.ts`, 'swapv5-state'],
   [`${DEMO}/swapv5/script.ts`, 'swapv5-script'],
-  /* the account chapter — the tour's "Everything you own, one screen" */
+  /* the account's holdings, which the swap reads its balances from */
   [`${DEMO}/ownv5/state.ts`, 'ownv5-state'],
-  [`${DEMO}/ownv5/script.ts`, 'ownv5-script'],
 ];
 
 /* The flow files are types plus plain data — no JSX, no bundler features — so
@@ -84,7 +82,6 @@ const load = (f) => import(pathToFileURL(join(dir, `${f}.mjs`)).href);
 const { applyBeat, stateAt } = await load('machine');
 const machines = {
   'swap-v5': (await load('swapv5-script')).swapV5Flow.machine,
-  'own-v5': (await load('ownv5-script')).ownV5Flow.machine,
 };
 
 let fail = 0;
@@ -198,7 +195,7 @@ for (const [name, m] of Object.entries(machines)) {
     readFileSync('src/components/demo/shell/deck.ts', 'utf8').match(/const PACE = ([\d.]+);/)[1],
   );
   console.log('\n== the short cuts run the length they say they do');
-  for (const [name, limit] of [['swap-v5', 23625], ['own-v5', 14400]]) {
+  for (const [name, limit] of [['swap-v5', 23625]]) {
     const m = machines[name];
     const authored = m.beats.reduce((t, b) => t + (b.ms ?? 0), 0) + (m.outro ?? 0);
     const real = Math.round(authored * PACE);

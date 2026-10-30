@@ -1,8 +1,5 @@
 /**
- * `× Pearl`, beside near's mark in the hero eyebrow. Drawn on every route but
- * shown only on `/v2` (41-theme-near.css): `/` is Pearl-led already and keeps
- * near alone in its eyebrow. `display:none` takes it out of the accessibility
- * tree too, so `/` reads exactly as before.
+ * `× Pearl`, beside near's mark in the hero eyebrow (`.dw-brow`, 44-hero.css).
  *
  * The wordmark is Pearl Research's own logotype file, served as an <img>.
  */

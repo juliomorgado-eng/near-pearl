@@ -1,14 +1,9 @@
 import { CTA_URL } from '@/lib/cards';
 
 /**
- * Two-state nav. It ships dark and transparent over the stage; the engine adds
- * `.on-light` off the shrink clock — not off a scroll threshold, or the nav
- * would still be dark when the shrink finishes after the last scroll event.
- *
- * The brand is hidden while the stage owns the frame (the lockup carries it)
- * and revealed again in the light zone, where nothing else carries a brand —
- * which is why it is the CO-BRAND that reappears there and not near alone. See
- * 38-nav-lockup.css; the two marks are the hero's own, in black.
+ * The header: transparent over the hero, near's mark hidden (the hero's
+ * eyebrow carries the brand), Sign in and Start trading. Its look over the
+ * water — white ghost, muted-green ask — is 44-hero.css.
  */
 export function Nav() {
   return (

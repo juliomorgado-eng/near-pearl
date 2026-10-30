@@ -8,26 +8,21 @@ import { Splash } from '@/components/Splash';
 /**
  * WHAT A SHARED LINK SAYS.
  *
- * EVERY WORD BELOW IS ON THE PAGE. The title is the hero's own first line;
- * the description is the hero's headline, verbatim from `components/stage
- * /Hero.tsx`. Nothing here is a summary written for the card — a share
- * preview that promises something the page does not say is the one kind of
- * copy nobody proofreads.
- *
- * IT REPLACES A DESCRIPTION THAT HAD GONE STALE. The old one led on
- * confidentiality — "everything you do onchain is public, it doesn't have to
- * be" — which was the hero's argument two copy passes ago and is not on this
- * page any more. Metadata drifts silently, because the only place it shows is
- * somewhere the author is not looking.
+ * EVERY WORD BELOW IS ON THE PAGE. The title is the hero's headline and the
+ * description its lead, verbatim from `components/hero/Hero.tsx`. Nothing here
+ * is a summary written for the card — a share preview that promises something
+ * the page does not say is the one kind of copy nobody proofreads. Metadata
+ * drifts silently, because the only place it shows is somewhere the author is
+ * not looking: change the hero, change these.
  *
  * NO CO-BRAND. The page was published under a near.com × The Rollup lockup with
  * a partner referral on every LOGIN url; that is all gone, and so is its half
  * of this metadata.
  */
-const TITLE = 'near.com — Trade PEARL, confidentially';
+const TITLE = 'PEARL is now on near.com';
 const DESCRIPTION =
-  'Trade PEARL, confidentially. Swap in from any chain, any asset you already ' +
-  'hold. All from near.com. Nobody can trace the trade back to you.';
+  'Swap into and out of PEARL across supported chains. Confidential by ' +
+  'default. Powered by NEAR Intents.';
 
 export const metadata: Metadata = {
   /* WITHOUT THIS, `opengraph-image.tsx`'S OUTPUT RESOLVES TO A RELATIVE URL
@@ -69,8 +64,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  /* the engine flips this to the light paper as the closing plate lands */
-  themeColor: '#F0EFEA',
+  /* the water's own dark, so a phone's browser chrome runs into the hero */
+  themeColor: '#020706',
 };
 
 /* THE SESSION GATE FOR THE CURTAIN, and it has to be a parsing-time script.
@@ -130,17 +125,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           face it does use is self-hosted in public/fonts, so none of that came
           back. What is here is the curtain's gate and two of our own images.
 
-          THE PRELOAD IS FOR THE EYEBROW'S ONE MARK. near's wordmark is drawn
-          as a CSS `background-image`, which the browser cannot discover until
-          it has fetched and parsed the stylesheet. The curtain shows that
-          eyebrow in its first half second and the hero shows the same file
-          immediately after, so starting the request from the HTML helps both.
-          The Rollup's mark and the skyline photograph were both pulled — the
-          co-brand on request, the photo when the hero went back to green — so
-          their preloads went with them. */}
+          THE PRELOADS ARE FOR THE CURTAIN'S TWO IMAGES. near's wordmark and
+          the pearl are drawn as CSS `background-image`s, which the browser
+          cannot discover until it has fetched and parsed the stylesheet. The
+          curtain shows both in its first half second and the hero shows the
+          same files immediately after, so starting the requests from the
+          HTML helps both. */}
       <head>
         <InlineScript html={GATE} />
-        <link rel="preload" as="image" href="/img/near-logo-black.webp" />
+        <link rel="preload" as="image" href="/img/near-logo-light.webp" />
+        <link rel="preload" as="image" href="/img/water/pearl.webp" />
       </head>
       <body>
         {/* FIRST, BEFORE THE CONTENT IT COVERS. The stacking is settled by
@@ -152,9 +146,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Splash />
         {children}
 
-        {/* The source capture, the CTA view events and the chapter depth
-            events. It draws nothing; see the component for why it is here and
-            not inside `<Site />`. */}
+        {/* The source capture and the CTA view events. It draws nothing; see
+            the component for why it is here. */}
         <Analytics />
 
         {/* THE COUNTER. A self-hosted Umami instance, which is the whole reason

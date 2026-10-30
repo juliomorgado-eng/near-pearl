@@ -61,28 +61,24 @@ const nextConfig: NextConfig = {
    */
   async rewrites() {
     return [
-      { source: '/pearl', destination: '/v1' },
-      { source: '/r/:source', destination: '/v1' },
+      { source: '/pearl', destination: '/' },
+      { source: '/r/:source', destination: '/' },
     ];
   },
 
   /**
-   * `/preview` WAS THE TOUR WHILE THE HOLDING PAGE HELD `/`, and links to it
-   * went out. The route is gone, so without this they 404 — a worse answer
-   * than the page they were promised, which now lives one path up.
-   *
-   * PERMANENT, and that is the honest status: `/preview` existed for one
-   * reason and that reason has ended. A 308 also tells a crawler which url is
-   * canonical, which matters because that route carried `robots: noindex` for
-   * exactly as long as it existed and nothing should now be weighing the two
-   * against each other.
+   * OLD ADDRESSES LAND ON THE PAGE. `/preview` was the tour while a holding
+   * page held `/`; `/versions` and `/v1`–`/v4` were the review menu and the
+   * drafts it compared, all retired once the deep-water announcement became
+   * the page. Links to any of them went out, so they answer with `/` rather
+   * than a 404. Permanent: none of them is coming back.
    */
   async redirects() {
-    return [
-      { source: '/preview', destination: '/v1', permanent: true },
-      // the menu moved from /versions to the root; old links still land on it
-      { source: '/versions', destination: '/', permanent: false },
-    ];
+    return ['/preview', '/versions', '/v1', '/v2', '/v3', '/v4'].map((source) => ({
+      source,
+      destination: '/',
+      permanent: true,
+    }));
   },
 };
 
