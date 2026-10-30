@@ -151,8 +151,15 @@ html:has(.dw-hero) .dw-brow .nearw {
 }
 html:has(.dw-hero) .dw-brow .cobrand { display: inline-flex; align-items: center; gap: clamp(10px, 1.1vw, 16px); flex: none }
 html:has(.dw-hero) .dw-brow .cox { font-family: var(--font-body); font-weight: 300; line-height: 1; font-size: clamp(20px, 1.7vw, 28px); color: rgba(255, 255, 255, .8) }
+/* Pearl's logotype at .86 of near's box, not .78: at .78 its P and l only
+   reached the top of near's lowercase and its own lowercase sat a third
+   shorter, so the pair read as near and a footnote. Ten percent up, the
+   ascenders clear near's x-height the way near's N does, and the two read as
+   one weight. Baselines stay shared (checked in pixels). */
 html:has(.dw-hero) .dw-brow .pearlw {
-  display: block; width: auto; height: calc(clamp(32px, 2.7vw, 42px) * .78);
+  display: block; width: auto; height: calc(clamp(32px, 2.7vw, 42px) * .86);
+  /* grown from the centre, its baseline dropped ~1.5px below near's */
+  translate: 0 -4%;
   filter: brightness(0) invert(.96) sepia(.12);
 }
 
@@ -212,13 +219,11 @@ html:has(.dw-hero) .dw-ask .arw { color: #00C47D }
 @media (hover: hover) and (pointer: fine) {
   html:has(.dw-hero) .dw-ask:hover { background: #fff; box-shadow: 0 10px 30px -10px rgba(243, 238, 232, .35) }
 }
-html:has(.dw-hero) .dw-link {
-  font-weight: 500; color: #fff;
-  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .28em;
-  text-decoration-color: rgba(255, 255, 255, .4);
-  transition: text-decoration-color var(--dur-base) var(--ease-out);
-}
-html:has(.dw-hero) .dw-link:hover { text-decoration-color: currentColor }
+/* no underline: the arrow is the affordance, and it leans on hover the way
+   the ask's does */
+html:has(.dw-hero) .dw-link { font-weight: 500; color: #fff; text-decoration: none }
+html:has(.dw-hero) .dw-link .arw { display: inline-block; transition: transform var(--dur-base) var(--ease-out) }
+html:has(.dw-hero) .dw-link:hover .arw { transform: translateX(3px) }
 html:has(.dw-hero) .dw-legal {
   margin-top: clamp(22px, 3vh, 32px); max-width: 52ch;
   font-size: 12px; line-height: 1.5; color: rgba(255, 255, 255, .5);
@@ -237,7 +242,7 @@ html:has(.dw-hero) .dw-dev .pdev { box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .
   html:has(.dw-hero) .dw-hero { align-items: flex-start }
   html:has(.dw-hero) .dw-inner { grid-template-columns: 1fr; justify-items: start; padding-top: 96px }
   html:has(.dw-hero) .dw-brow .nearw { height: 28px }
-  html:has(.dw-hero) .dw-brow .pearlw { height: 22px }
+  html:has(.dw-hero) .dw-brow .pearlw { height: 24px }
   html:has(.dw-hero) .dw-brow .cox { font-size: 20px }
   html:has(.dw-hero) .dw-dev { --k: min(.82, calc(80vw / 352px)); justify-self: center; margin-top: 12px }
   /* the surface stays behind the headline; the pearl sits behind the phone */
